@@ -36,5 +36,5 @@ for _a, __a in enumerate(subspace_sizes):
             
 
 plt.tight_layout()
-plt.savefig("clf_10f_100ch_150chs_5d seed:654.png")
-# plt.savefig("10f_100ch_150chs_5d seed:654.png")
+plt.savefig("clf_10f_100ch_150chs_5d seed_654.png")
+# plt.savefig("10f_100ch_150chs_5d seed_654.png")
