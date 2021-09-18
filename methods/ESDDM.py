@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.random.mtrand import dirichlet
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KernelDensity
 from scipy.stats import hmean
@@ -6,7 +7,7 @@ from scipy.stats import hmean
 _SQRT2 = np.sqrt(2)
 
 class ESDDM(BaseEstimator, ClassifierMixin):
-    def __init__(self, sigma=3, immobilizer=5, n_detectors = 3, subspace_size='auto', random_state=None):
+    def __init__(self, sigma=3, immobilizer=5, n_detectors = 3, subspace_size='auto', random_state=None, drf_level=None):
         self.immobilizer = immobilizer
         self.sigma = sigma
         self.n_detectors = n_detectors
@@ -17,7 +18,13 @@ class ESDDM(BaseEstimator, ClassifierMixin):
         self.count = 0
         self.confidence=[]
 
-        self.drf_level = np.sqrt(self.n_detectors)
+        self.drf_level = drf_level
+        if drf_level is None:
+            self.drf_level = np.round(np.sqrt(self.n_detectors))
+
+        if self.drf_level < 1:
+            self.drf_level = 1
+            
 
     def feed(self, X, y, pred):
 
@@ -97,7 +104,7 @@ class ESDDM(BaseEstimator, ClassifierMixin):
             self.confidence.append(drf_cnt)
 
             # Detekcja
-            if drf_cnt > self.drf_level:
+            if drf_cnt >= self.drf_level:
                 self.drift.append(2)
                 self.base_kernels = self.temp_kernels
             else:
