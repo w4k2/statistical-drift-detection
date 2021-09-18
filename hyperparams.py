@@ -49,7 +49,8 @@ random_states = np.random.randint(0,10000, tries)
 print(random_states)
 
 for f_id, f in enumerate(n_features):
-
+    print(f_id, f)
+    
     results = np.zeros((tries, len(subspace_sizes), len(n_detectors)))
     results_err = np.zeros((tries, len(subspace_sizes), len(n_detectors)))
 
@@ -57,7 +58,7 @@ for f_id, f in enumerate(n_features):
         for ss_id, ss in enumerate(subspace_sizes):
             for det_id, det in enumerate(n_detectors):
                 
-                print(rs, ss, det)
+                print(rs_id, ss, det)
 
                 stream = sl.streams.StreamGenerator(n_drifts=n_drifts,
                                                     n_chunks=n_chunks,
@@ -77,36 +78,36 @@ for f_id, f in enumerate(n_features):
                 elements = clf.detector.combined_elements
                 elements_all = np.array(clf.detector.all_elements)
 
-                try:
-                    # Plot
-                    fig, ax = plt.subplots(5, 1, figsize=(5,10))
-                    for i in range(det):
-                        for j in range(2):
-                            ax[j].plot(elements[i,j,:])
+                # try:
+                #     # Plot
+                #     fig, ax = plt.subplots(5, 1, figsize=(5,10))
+                #     for i in range(det):
+                #         for j in range(2):
+                #             ax[j].plot(elements[i,j,:])
 
-                    ax[0].set_title("TDM")
-                    ax[1].set_title("CMCD")
+                #     ax[0].set_title("TDM")
+                #     ax[1].set_title("CMCD")
 
-                    ax[2].plot(hmean(elements_all, axis=0))
-                    ax[2].set_title("Harmonic mean all")
+                #     ax[2].plot(hmean(elements_all, axis=0))
+                #     ax[2].set_title("Harmonic mean all")
 
-                    ax[3].plot(clf.detector.confidence)
-                    ax[3].hlines(clf.detector.drf_level, 0, n_chunks, ls=":", color='r')
-                    ax[3].set_title("Decision confidence")
+                #     ax[3].plot(clf.detector.confidence)
+                #     ax[3].hlines(clf.detector.drf_level, 0, n_chunks, ls=":", color='r')
+                #     ax[3].set_title("Decision confidence")
 
-                    ax[4].plot(np.linspace(0, stream.n_chunks-1, len(stream.concept_probabilities)),
-                            stream.concept_probabilities)
-                    ax[4].set_title("Concept")
+                #     ax[4].plot(np.linspace(0, stream.n_chunks-1, len(stream.concept_probabilities)),
+                #             stream.concept_probabilities)
+                #     ax[4].set_title("Concept")
 
-                    for i in range(5):
-                        ax[i].set_xticks(drifts)
-                        ax[i].grid(ls=":")
+                #     for i in range(5):
+                #         ax[i].set_xticks(drifts)
+                #         ax[i].grid(ls=":")
 
-                    plt.tight_layout()
-                    plt.savefig("foo.png")
-                    plt.clf()
-                except:
-                    pass
+                #     plt.tight_layout()
+                #     plt.savefig("foo.png")
+                #     plt.clf()
+                # except:
+                #     pass
 
                 # Error / Score
 
