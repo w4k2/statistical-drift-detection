@@ -111,14 +111,9 @@ for f_id, f in enumerate(n_features):
 
                 # Error / Score
 
-                error = dderror(n_chunks, n_drifts, drifts)
-                results_err[rs_id, ss_id, det_id] = error
-                print(error)
-
                 score = np.mean(eval.scores)
                 results[rs_id, ss_id, det_id] = score
                 print(score) 
 
-    print(results, results_err)
-    np.save('results/hyperparams_%i_features' % f, results)
+    print(results)
     np.save('results/hyperparams_clf_%i_features' % f, results)
