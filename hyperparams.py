@@ -58,7 +58,7 @@ for f_id, f in enumerate(n_features):
         for ss_id, ss in enumerate(subspace_sizes):
             for det_id, det in enumerate(n_detectors):
                 
-                print(rs_id, ss, det)
+                print(f, rs_id, ss, det)
 
                 stream = sl.streams.StreamGenerator(n_drifts=n_drifts,
                                                     n_chunks=n_chunks,
