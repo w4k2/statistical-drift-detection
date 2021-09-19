@@ -37,12 +37,12 @@ n_chunks = 100
 chunk_size = 150
 n_drifts=5
 
-tries = 10
+tries = 5
 
 subspace_sizes = [1,2,3,4,5,6]
-n_detectors = [1,2,3,5,7,10,15]
+n_detectors = [1,2,3,5,7,10,15,30]
 
-n_features = [12,14,16,18,20,24,28,32,36]
+n_features = [15,20,25,30,35,40,45]
 
 np.random.seed(654)
 random_states = np.random.randint(0,10000, tries)
@@ -63,8 +63,8 @@ for f_id, f in enumerate(n_features):
                 stream = sl.streams.StreamGenerator(n_drifts=n_drifts,
                                                     n_chunks=n_chunks,
                                                     chunk_size=chunk_size,
-                                                    n_features=10,
-                                                    n_informative=10,
+                                                    n_features=f,
+                                                    n_informative=f,
                                                     n_redundant=0,
                                                     recurring=False,
                                                     random_state=rs)

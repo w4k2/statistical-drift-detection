@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 
 
 subspace_sizes = [1,2,3,4,5,6]
-n_detectors = [1,2,3,5,7,10,15]
+n_detectors = [1,2,3,5,7,10,15,30]
 
-n_features = [12,14,16,24,28,32,36,45,50,60]
+n_features = [15,20,25,30,35,40,45]
 
 for f in n_features:
     print(f)
