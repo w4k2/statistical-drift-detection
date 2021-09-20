@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import medfilt
 
-RANDOM_STATE = 123
+RANDOM_STATE = 51523
 
 clf_names = config.clf_names()
 metrics = config.metrics()
@@ -52,7 +52,7 @@ for hash, stream in streams.items():
                          label=clf_names[clf_idx],
                          c=colors[clf_idx])
 
-        if clf_idx < 3:
+        if clf_idx < 5:
             ax[0,1].plot(np.cumsum(np.array(clf.detector.drift)==2),
                          c = colors[clf_idx])
             ax[0,1].plot(np.cumsum(np.array(clf.detector.drift)==1),

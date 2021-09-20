@@ -34,13 +34,13 @@ def streams(random_state):
     CHUNK_SIZE = 200
 
     N_FEATURES = 18
-    N_INFORMATIVE = 8
+    N_INFORMATIVE = 18
     N_REDUNDANT=0
     N_REPEATED=0
     N_CLUSTERS_PER_CLASS=1
 
-    RECURRING = [True, False]
-    CONCEPT_SIGMOID_SPACING = [5., 999.]
+    RECURRING = [False]
+    CONCEPT_SIGMOID_SPACING = [999.]
     N_DRIFS = [1,3,5,7,9]
 
     WEIGHTS = [0.5, 0.5]
