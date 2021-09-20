@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, ClassifierMixin, clone
 
 class Meta(BaseEstimator, ClassifierMixin):
-    def __init__(self, base_clf, detector, reset = True, partial=True):
+    def __init__(self, base_clf, detector, reset = True, partial=False):
         self.base_clf = base_clf
         self.detector = detector
         self.reset = reset
@@ -12,15 +12,15 @@ class Meta(BaseEstimator, ClassifierMixin):
 
 
     def partial_fit(self, X, y, classes):
-        # DO DYSKUSJI KOLEJNOŚĆ
-        # Feed predicted, real to detector
-        self.detector.feed(X, y, self.prev_pred)
+
 
         # If first chunk or not resetting just partial fit & return
         if self.prev_pred is None or self.reset == False:
             self.clf.partial_fit(X, y, classes)
             return self
 
+        # Feed predicted, real to detector
+        self.detector.feed(X, y, self.prev_pred)
 
         if len(self.detector.drift)==0:
             return self

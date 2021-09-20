@@ -7,7 +7,7 @@ from scipy.stats import hmean
 _SQRT2 = np.sqrt(2)
 
 class ESDDM(BaseEstimator, ClassifierMixin):
-    def __init__(self, sigma=3, immobilizer=5, n_detectors = 3, subspace_size='auto', random_state=None, drf_level=None):
+    def __init__(self, sigma=3, immobilizer=5, n_detectors = 5, subspace_size=1, random_state=None, drf_level=None):
         self.immobilizer = immobilizer
         self.sigma = sigma
         self.n_detectors = n_detectors
