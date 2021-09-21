@@ -14,8 +14,8 @@ n_features = [15]
 for f in n_features:
     print(f)
 
-    # res = np.load('results/1-30-th_hyperparams_clf_%i_features.npy' % f)
-    res = np.load('results/1-30-th_hyperparams_%i_features.npy' % f)
+    res = np.load('results/1-30-th_hyperparams_clf_%i_features.npy' % f)
+    # res = np.load('results/1-30-th_hyperparams_%i_features.npy' % f)
 
     res[res == np.inf] = np.nanmax(res[res != np.inf])+1 #xd
 
@@ -24,8 +24,8 @@ for f in n_features:
     res_mean = np.mean(res, axis=0)
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8), dpi=300)
-    # ax.set_title('BAC th_clf_%if_100ch_150chs_5d seed:654' % f)
-    ax.set_title('Drift difference error th_%if_100ch_150chs_5d seed:654' % f)
+    ax.set_title('BAC th_clf_%if_100ch_150chs_5d seed:654' % f)
+    # ax.set_title('Drift difference error th_%if_100ch_150chs_5d seed:654' % f)
 
     ax.imshow(res_mean, cmap='cividis')
 
@@ -44,16 +44,17 @@ for f in n_features:
                 
 
     plt.tight_layout()
-    # plt.savefig("figures/th_clf_%if_100ch_150chs_5d seed_654.png" % f)
-    plt.savefig("figures/th_%if_100ch_150chs_5d seed_654.png" % f)
+    plt.savefig("figures/th_clf_%if_100ch_150chs_5d seed_654.png" % f)
+    # plt.savefig("figures/th_%if_100ch_150chs_5d seed_654.png" % f)
 
     plt.close()
 
 
     # inny plot
-    mins = np.min(res_mean, axis=0)
+    # opts = np.min(res_mean, axis=0)
+    opts = np.max(res_mean, axis=0)
     argmins = []
-    for m_i, m in enumerate(mins):
+    for m_i, m in enumerate(opts):
         argmins.append(np.argwhere(res_mean[:,m_i]==m))
         argmins[-1] = np.mean(argmins[-1])+1
     argmins = np.array(argmins)
@@ -67,4 +68,5 @@ for f in n_features:
     plt.ylabel('threshold')
 
     plt.legend()
-    plt.savefig('figures/opt.png')
+    # plt.savefig('figures/opt.png')
+    plt.savefig('figures/opt2.png')
