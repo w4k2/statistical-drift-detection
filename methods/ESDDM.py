@@ -21,7 +21,7 @@ class ESDDM(BaseEstimator, ClassifierMixin):
         self.drf_level = drf_level
         if drf_level is None:
             # self.drf_level = np.round(np.sqrt(self.n_detectors))
-            self.drf_level = int(self.n_detectors*(2/3))
+            self.drf_level = int(self.n_detectors*(3/4))
 
         if self.drf_level < 1:
             self.drf_level = 1
