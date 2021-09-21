@@ -48,3 +48,23 @@ for f in n_features:
     plt.savefig("figures/th_%if_100ch_150chs_5d seed_654.png" % f)
 
     plt.close()
+
+
+    # inny plot
+    mins = np.min(res_mean, axis=0)
+    argmins = []
+    for m_i, m in enumerate(mins):
+        argmins.append(np.argwhere(res_mean[:,m_i]==m))
+        argmins[-1] = np.mean(argmins[-1])+1
+    argmins = np.array(argmins)
+    print(argmins, argmins.shape)
+
+    plt.plot(n_detectors, argmins, label='Optimal threshold')
+    plt.plot(n_detectors, np.sqrt(n_detectors), label = 'sqrt n_detectors')
+    plt.plot(n_detectors, np.array(n_detectors)*0.75, label = '3/4 n_detectors')
+
+    plt.xlabel('n_detectors')
+    plt.ylabel('threshold')
+
+    plt.legend()
+    plt.savefig('figures/opt.png')
