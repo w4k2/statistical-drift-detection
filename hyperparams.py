@@ -70,7 +70,7 @@ for f_id, f in enumerate(n_features):
                                                     random_state=rs)
 
 
-                clf = Meta(GaussianNB(), ESDDM(n_detectors=det, subspace_size=ss, random_state=rs, drf_level=det/2))
+                clf = Meta(GaussianNB(), ESDDM(n_detectors=det, subspace_size=ss, random_state=rs, drf_threshold=det/2))
                 eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
                 eval.process(stream, clf)
 

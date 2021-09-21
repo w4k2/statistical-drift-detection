@@ -37,12 +37,12 @@ n_chunks = 100
 chunk_size = 150
 n_drifts=5
 
-tries = 5
+tries = 1
 
-treshold = [1,3,5,7,9,11,13,15,17,19]
-n_detectors = [1,2,3,5,7,10,15,30]
+threshold = range(1,30)
+n_detectors = range(1,30)
 
-n_features = [10,15,20,25]
+n_features = [15]
 
 np.random.seed(654)
 random_states = np.random.randint(0,10000, tries)
@@ -51,16 +51,26 @@ print(random_states)
 for f_id, f in enumerate(n_features):
     print(f_id, f)
     
-    results = np.zeros((tries, len(treshold), len(n_detectors)))
-    results_err = np.zeros((tries, len(treshold), len(n_detectors)))
+    results = np.zeros((tries, len(threshold), len(n_detectors)))
+    results_err = np.zeros((tries, len(threshold), len(n_detectors)))
 
     for rs_id, rs in enumerate(random_states):
-        for th_id, th in enumerate(treshold):
+        for th_id, th in enumerate(threshold):
             for det_id, det in enumerate(n_detectors):
-
-                # nie liczyc dla det<th 
                 
                 print(f, rs_id, th, det)
+ 
+                if th>det:
+                    score = np.mean(eval.scores)
+                    results[rs_id, th_id, det_id] = 0.5
+                    print("th:", th) 
+
+                    error = dderror(n_chunks,n_drifts, drifts)
+                    results_err[rs_id, th_id, det_id] = np.inf
+                    print("det:", det) 
+
+                    continue
+
 
                 stream = sl.streams.StreamGenerator(n_drifts=n_drifts,
                                                     n_chunks=n_chunks,
@@ -72,7 +82,7 @@ for f_id, f in enumerate(n_features):
                                                     random_state=rs)
 
 
-                clf = Meta(GaussianNB(), ESDDM(n_detectors=det, subspace_size=1, random_state=rs, drf_level=th))
+                clf = Meta(GaussianNB(), ESDDM(n_detectors=det, subspace_size=1, random_state=rs, drf_threshold=th))
                 eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
                 eval.process(stream, clf)
 
@@ -125,7 +135,7 @@ for f_id, f in enumerate(n_features):
                 
 
     print(results)
-    np.save('results/th_hyperparams_clf_%i_features' % f, results)
+    np.save('results/1-30-th_hyperparams_clf_%i_features' % f, results)
 
     print(results_err)
-    np.save('results/th_hyperparams_%i_features' % f, results_err)
+    np.save('results/1-30-th_hyperparams_%i_features' % f, results_err)
