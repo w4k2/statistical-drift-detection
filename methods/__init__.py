@@ -6,6 +6,7 @@ from .NEVER import NEVER
 from .SDDM import SDDM
 from .ESDDM import ESDDM
 from .meta import Meta
+from .dderror import dderror
 
 __all__ = [
     "DDM",
@@ -16,4 +17,5 @@ __all__ = [
     "SDDM",
     "ESDDM",
     "Meta",
+    "dderror"
 ]

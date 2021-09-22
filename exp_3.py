@@ -7,10 +7,10 @@ from scipy.signal import medfilt
 
 RANDOM_STATE = 51523
 
-clf_names = config.clf_names()
+clf_names = config.e3_clf_names()
 metrics = config.metrics()
 metrics_names = config.metrics_names()
-streams = config.streams(RANDOM_STATE)
+streams = config.e3_streams(RANDOM_STATE)
 
 # detectors = ['DDM', 'EDDM', 'ADWIN', "SDDM", "ESDDM", "ALWAYS", "NEVER"]
 
@@ -21,7 +21,7 @@ ss = [15,15,15,15,15,1,1]
 for hash, stream in streams.items():
     print(hash, stream)
 
-    clfs = config.clfs()
+    clfs = config.e3_clfs()
 
     for clf in clfs:
         print("-", clf)
