@@ -9,10 +9,10 @@ np.random.seed(654)
 n_chunks = 100
 chunk_size = 100
 
-det_threshold = [1,3]# config.e2_det_threshold()
-n_detectors = [1,3]# config.e2_n_detectors()
+det_threshold = config.e2_det_threshold()
+n_detectors = config.e2_n_detectors()
 
-replications = 3# config.replications()
+replications = config.replications()
 random_states = np.random.randint(0, 10000, replications)
 
 n_features = 10
