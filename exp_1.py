@@ -20,7 +20,7 @@ chunk_size = int(config.chunk_size()/2)
 subspace_sizes = config.e1_subspace_sizes()
 n_detectors = config.e1_n_detectors().astype('int')
 
-replications = config.replications()
+replications = 2 # config.replications()
 random_states = np.random.randint(0, 10000, replications)
 
 n_features = config.n_featues().astype('int')
