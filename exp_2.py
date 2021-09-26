@@ -14,17 +14,17 @@ def find_real_drift(chunks, drifts):
     return arr[1:]
 
 np.random.seed(654)
-n_chunks = config.n_chunks()
-chunk_size = config.chunk_size()
+n_chunks = int(config.n_chunks()/2)
+chunk_size = int(config.chunk_size()/2)
 
 # det_th = np.array(config.e2_det_th()) #180 x 2
-n_detectors = config.e2_n_detectors()
+n_detectors = config.e2_n_detectors().astype('int')
 det_threshold = config.e2_det_threshold()
 
 replications = config.replications()
 random_states = np.random.randint(0, 10000, replications)
 
-n_features = config.n_featues()
+n_features = config.n_featues().astype('int')
 n_drifts = config.n_drifts()
 
 recurring = config.recurring()
@@ -60,7 +60,7 @@ for f_id, f in enumerate(n_features):
 
                                     results_drf_arrs[replication, th_id, det_id, 0] = real_drf
                                     results_drf_arrs[replication, th_id, det_id, 1] = range(n_chunks)
-                                    
+
                                     pbar.update(1)
                                     continue
 
