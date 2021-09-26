@@ -6,15 +6,13 @@ import matplotlib.pyplot as plt
 
 # n_features = [10,15,20,25]
 
-threshold = range(1,30)
-n_detectors = range(1,30)
+threshold = [1,3,5,7,9,11,13]# config.e2_det_threshold()
+n_detectors = [1,3,5,7,9,11,13]#config.e2_n_detectors()
 
-n_features = [15]
-
-for f in n_features:
+for f in [10]:
     print(f)
 
-    res = np.load('results/1-30-th_hyperparams_clf_%i_features.npy' % f)
+    res = np.load('results_ex2/err_0rec_999css.npy')
     # res = np.load('results/1-30-th_hyperparams_%i_features.npy' % f)
 
     res[res == np.inf] = np.nanmax(res[res != np.inf])+1 #xd

@@ -5,6 +5,7 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from strlearn.ensembles import SEA
+import numpy as np
 import hashlib
 from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, ESDDM
 
@@ -120,16 +121,22 @@ def e3_clf_names():
 
 
 def e1_subspace_sizes():
-    return [1,2,3,4,5,6]
+    return [1,2,3,4]
 
 def e1_n_detectors():
-    return [1,2,3,5,7,10,15,20,25,30]
+    return np.linspace(5,40,8)
+
+def n_chunks():
+    return 200
+
+def chunk_size():
+    return 250
 
 def replications():
     return 10
 
 def n_featues():
-    return [5,10,15,20,25]
+    return np.linspace(5,40,8)
 
 def n_drifts():
     return [1,3,5,7,9]
@@ -137,14 +144,27 @@ def n_drifts():
 def recurring():
     return [True, False]
 
+def incremental():
+    return [True, False]
+
 def concept_sigmoid_spacing():
-    return [10., 500., 999.]
+    return [5., 999.]
 
 def e2_n_detectors():
-    return [1,2,3,5,7,10,15,20,25,30]
+    return np.linspace(5,40,8)
 
 def e2_det_threshold():
-    return [1,2,3,5,7,10,15,20,25,30]
+    return np.linspace(1,40,40)
+
+# def e2_det_th():
+#     d = []
+#     dets = e2_n_detectors()
+#     thrs = e2_det_threshold()
+#     for det in dets:
+#         for th in thrs:
+#             if det>=th:
+#                 d.append([int(det), int(th)])
+#     return d
     
 def metrics():
     return [
