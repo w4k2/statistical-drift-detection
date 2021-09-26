@@ -55,6 +55,15 @@ for f_id, f in enumerate(n_features):
                         for th_id, th in enumerate(det_threshold):
                             for det_id, det in enumerate(n_detectors):
 
+                                if th>det:
+                                    results_clf[replication, th_id, det_id] = 0.5
+
+                                    results_drf_arrs[replication, th_id, det_id, 0] = real_drf
+                                    results_drf_arrs[replication, th_id, det_id, 1] = range(n_chunks)
+                                    
+                                    pbar.update(1)
+                                    continue
+
                                 stream = sl.streams.StreamGenerator(
                                             recurring = rec,
                                             concept_sigmoid_spacing = css,
