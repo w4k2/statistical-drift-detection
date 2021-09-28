@@ -60,8 +60,6 @@ plt.savefig('foo.png')
 # plt.savefig("figures/%if_100ch_150chs_5d seed_654.png" % f)
 
 plt.close()
-<<<<<<< HEAD
-
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
@@ -86,5 +84,3 @@ plt.savefig('foo2.png')
 # plt.savefig("figures/%if_100ch_150chs_5d seed_654.png" % f)
 
 plt.close()
-=======
->>>>>>> master
