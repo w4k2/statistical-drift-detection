@@ -26,7 +26,9 @@ dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
 for rep in range(res_arr.shape[0]):
     for th in range(res_arr.shape[1]):
         for det in range(res_arr.shape[2]):
-            err = dderror(res_arr[rep, th, det, 0], res_arr[rep, th, det, 1], res_arr.shape[4])
+            real_drf = np.argwhere(res_arr[rep, th, det, 0]==2)
+            det_drf = np.argwhere(res_arr[rep, th, det, 1]==2)
+            err = dderror(real_drf, det_drf, res_arr.shape[4])
             dderror_arr[rep,th,det] = err
 
 res_arr_mean = np.mean(dderror_arr, axis=0)
@@ -57,6 +59,31 @@ for _a, __a in enumerate(th_arr):
 
 plt.tight_layout()
 plt.savefig('foo.png')
+# plt.savefig("figures/%if_100ch_150chs_5d seed_654.png" % f)
+
+plt.close()
+
+
+fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+
+ax.imshow(res_arr_mean, cmap='cividis')
+
+ax.set_yticks(list(range(len(th_arr))))
+ax.set_yticklabels(th_arr)
+ax.set_ylabel("Threshold")
+
+ax.set_xticks(list(range(len(det_arr))))
+ax.set_xticklabels(det_arr)
+ax.set_xlabel("n detectors")
+
+for _a, __a in enumerate(th_arr):
+    for _b, __b in enumerate(det_arr):
+        ax.text(_b, _a, "%.3f" % (
+            res_arr_mean[_a, _b]) , va='center', ha='center', c='white', fontsize=11)
+            
+
+plt.tight_layout()
+plt.savefig('foo2.png')
 # plt.savefig("figures/%if_100ch_150chs_5d seed_654.png" % f)
 
 plt.close()
