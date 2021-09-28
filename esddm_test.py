@@ -16,7 +16,7 @@ stream = sl.streams.StreamGenerator(n_drifts=5,
                                     recurring=False,
                                     random_state=3578989345)
 
-clf = Meta(GaussianNB(), KDDDE(n_detectors=n_detectors, subspace_size=1, random_state=121222, drf_threshold=0.2))
+clf = Meta(GaussianNB(), KDDDE(n_detectors=n_detectors, subspace_size=1, random_state=121222, sensitivity=0.2))
 eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
 eval.process(stream, clf)
 

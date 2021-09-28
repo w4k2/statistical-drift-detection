@@ -6,7 +6,7 @@ from scipy.stats import hmean
 _SQRT2 = np.sqrt(2)
 
 class KDDDE(BaseEstimator, ClassifierMixin):
-    def __init__(self, sigma=3, immobilizer=5, n_detectors = 15, subspace_size=1, random_state=None, drf_threshold=0.75):
+    def __init__(self, sigma=3, immobilizer=5, n_detectors = 15, subspace_size=1, random_state=None, sensitivity=0.75):
         self.immobilizer = immobilizer
         self.sigma = sigma
         self.n_detectors = n_detectors
@@ -16,8 +16,9 @@ class KDDDE(BaseEstimator, ClassifierMixin):
 
         self.count = 0
         self.confidence=[]
+        self.sensitivity = sensitivity
 
-        self.drf_threshold = int(self.n_detectors*drf_threshold)
+        self.drf_threshold = int((self.n_detectors*2)*self.sensitivity)
             
 
     def feed(self, X, y, pred):

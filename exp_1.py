@@ -61,7 +61,7 @@ for ss_id, ss in enumerate(subspace_sizes):
                     print("replication: %i, stream: %s" % (replication, str_name))
                     print("ss: %i, det: %i, th: %f" % (ss, det, th))
 
-                    clf = Meta(GaussianNB(), KDDDE(n_detectors=det, subspace_size=ss, random_state=random_states[replication], drf_threshold=th))
+                    clf = Meta(GaussianNB(), KDDDE(n_detectors=det, subspace_size=ss, random_state=random_states[replication], sensitivity=th))
                     eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
                     eval.process(stream, clf)
 
