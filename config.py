@@ -12,19 +12,19 @@ from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, KDDDE
 def e3_methods():
     return [
         GaussianNB(),
-        MLPClassifier(),
-        SEA(base_estimator = SVC(probability=True)),
-        SEA(base_estimator = DecisionTreeClassifier()),
-        SEA(base_estimator = KNeighborsClassifier()),
+        # MLPClassifier(),
+        # SEA(base_estimator = SVC(probability=True)),
+        # SEA(base_estimator = DecisionTreeClassifier()),
+        # SEA(base_estimator = KNeighborsClassifier()),
     ]
 
 def e3_methods_labels():
     return [
         'GNB',
-        'MLP',
-        'SVC',
-        'DTs',
-        'kNN'
+        # 'MLP',
+        # 'SVC',
+        # 'DTs',
+        # 'kNN'
     ]
 
 def e3_streams(random_state):

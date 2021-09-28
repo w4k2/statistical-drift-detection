@@ -25,7 +25,7 @@ random_states = np.random.randint(0, 10000, replications)
 static_params = e1_config.e1_static()
 drf_types = e1_config.e1_drift_types()
 
-print(len(drf_types),replications,len(subspace_sizes),len(n_detectors),len(drf_threshold), replications)
+print(len(drf_types),replications,len(subspace_sizes),len(n_detectors),len(drf_threshold))
 t = len(drf_types)*replications*len(subspace_sizes)*len(n_detectors)*len(drf_threshold)
 pbar = tqdm(total=t)
 
@@ -36,7 +36,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         results_clf = np.zeros((replications, len(drf_threshold), len(n_detectors)))
         results_drf_arrs = np.zeros((replications, len(drf_threshold), len(n_detectors), 2, static_params['n_chunks']-1))
-        # replications x ss x detectors x (real_drf, detected_drf) x chunks
+        # replications x th x detectors x (real_drf, detected_drf) x chunks
 
         for replication in range(replications):
             str_name = "%ifeat_%idrifts_%s_%isubspace_size" % (static_params['n_features'],static_params['n_drifts'],drf_type,ss)
