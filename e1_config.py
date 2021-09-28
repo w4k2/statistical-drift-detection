@@ -2,9 +2,7 @@ import numpy as np
 
 def sqspace(start, end, num):
     space = (((np.power(np.linspace(0,1,num),2))*(end-start))+start).astype(int)[1:]
-    print(space)
     return space
-
 
 def e1_subspace_sizes():
     return [1,2,3]

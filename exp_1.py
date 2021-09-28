@@ -4,6 +4,9 @@ from methods import KDDDE, Meta
 from sklearn.naive_bayes import GaussianNB
 import e1_config
 from tqdm import tqdm
+import sys
+
+subspace_size = int(sys.argv[1])
 
 def find_real_drift(chunks, drifts):
     interval = round(chunks/drifts)
@@ -15,7 +18,8 @@ def find_real_drift(chunks, drifts):
 
 np.random.seed(654)
 
-subspace_sizes = e1_config.e1_subspace_sizes()
+subspace_sizes = np.array([subspace_size]) #e1_config.e1_subspace_sizes()
+print(subspace_sizes)
 n_detectors = e1_config.e1_n_detectors().astype('int')
 drf_threshold = e1_config.e1_drf_threshold()
 
