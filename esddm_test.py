@@ -1,22 +1,22 @@
 import strlearn as sl
 import matplotlib.pyplot as plt
 import numpy as np
-from methods import ESDDM, Meta
+from methods import KDDDE, Meta
 from sklearn.naive_bayes import GaussianNB
 
-n_chunks = 200
-chunk_size = 250
+n_chunks = 100
+chunk_size = 200
 n_detectors = 10
-stream = sl.streams.StreamGenerator(n_drifts=11,
+stream = sl.streams.StreamGenerator(n_drifts=5,
                                     n_chunks=n_chunks,
                                     chunk_size=chunk_size,
-                                    n_features=21,
-                                    n_informative=21,
+                                    n_features=15,
+                                    n_informative=15,
                                     n_redundant=0,
                                     recurring=False,
                                     random_state=3578989345)
 
-clf = Meta(GaussianNB(), ESDDM(n_detectors=n_detectors, subspace_size=2, random_state=121222))
+clf = Meta(GaussianNB(), KDDDE(n_detectors=n_detectors, subspace_size=1, random_state=121222, drf_threshold=0.2))
 eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
 eval.process(stream, clf)
 
