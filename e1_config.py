@@ -6,6 +6,9 @@ def e1_subspace_sizes():
 def e1_n_detectors():
     return np.linspace(10,20,11)
 
+def e1_n_detectors2():
+    return np.linspace(20,100,11)
+
 def e1_drf_threshold():
     return np.linspace(0.0,1.0,11)
 
