@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror
 
-
-
 res_clf = np.load('results_ex1/clf_5feat_5drifts_sudden_1subspace_size.npy')
 res_arr = np.load('results_ex1/drf_arr_5feat_5drifts_sudden_1subspace_size.npy')
 
