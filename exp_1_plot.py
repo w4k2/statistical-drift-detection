@@ -6,7 +6,7 @@ import e1_config
 res_clf = np.load('results_ex1/clf_15feat_5drifts_sudden_1subspace_size.npy')
 res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_sudden_1subspace_size.npy')
 
-print(res_clf.shape) #replications x threshold x detectors 
+print(res_clf.shape) #replications x threshold x detectors
 print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
 
 th_arr = e1_config.e1_drf_threshold()
@@ -34,26 +34,24 @@ res_arr_mean = np.mean(dderror_arr, axis=0)
 # plt.imshow(res_arr_mean)
 # plt.savefig('foo.png')
 
-
-
-
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
-ax.imshow(res_clf_mean, cmap='cividis')
+ax.imshow(res_clf_mean, cmap='binary', origin='lower')
 
 ax.set_yticks(list(range(len(th_arr))))
-ax.set_yticklabels(th_arr)
+ax.set_yticklabels(['%.1f' % v for v in th_arr])
 ax.set_ylabel("Threshold")
 
 ax.set_xticks(list(range(len(det_arr))))
-ax.set_xticklabels(det_arr)
+ax.set_xticklabels(['%.0f' % v for v in det_arr])
 ax.set_xlabel("n detectors")
 
 for _a, __a in enumerate(th_arr):
     for _b, __b in enumerate(det_arr):
+        v = res_clf_mean[_a, _b]
         ax.text(_b, _a, "%.3f" % (
-            res_clf_mean[_a, _b]) , va='center', ha='center', c='white', fontsize=11)
-            
+            v) , va='center', ha='center', c='white' if v > np.mean(res_clf_mean) else 'black', fontsize=11)
+
 
 plt.tight_layout()
 plt.savefig('foo.png')
