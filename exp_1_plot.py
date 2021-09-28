@@ -63,10 +63,10 @@ plt.close()
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 
-ax.imshow(res_arr_mean, cmap='cividis')
+ax.imshow(res_arr_mean, cmap='binary', origin='upper')
 
 ax.set_yticks(list(range(len(th_arr))))
-ax.set_yticklabels(th_arr)
+ax.set_yticklabels(['%.1f' % v for v in th_arr])
 ax.set_ylabel("Threshold")
 
 ax.set_xticks(list(range(len(det_arr))))
@@ -76,7 +76,7 @@ ax.set_xlabel("n detectors")
 for _a, __a in enumerate(th_arr):
     for _b, __b in enumerate(det_arr):
         ax.text(_b, _a, "%.3f" % (
-            res_arr_mean[_a, _b]) , va='center', ha='center', c='white', fontsize=11)
+            res_arr_mean[_a, _b]) , va='center', ha='center', c='red', fontsize=11)
             
 
 plt.tight_layout()
