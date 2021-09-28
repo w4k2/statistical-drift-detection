@@ -1,12 +1,11 @@
 import numpy as np
-from numpy.random.mtrand import dirichlet
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KernelDensity
 from scipy.stats import hmean
 
 _SQRT2 = np.sqrt(2)
 
-class ESDDM(BaseEstimator, ClassifierMixin):
+class KDDDE(BaseEstimator, ClassifierMixin):
     def __init__(self, sigma=3, immobilizer=5, n_detectors = 15, subspace_size=1, random_state=None, drf_threshold=None):
         self.immobilizer = immobilizer
         self.sigma = sigma
@@ -18,13 +17,10 @@ class ESDDM(BaseEstimator, ClassifierMixin):
         self.count = 0
         self.confidence=[]
 
-        self.drf_level = drf_threshold
         if drf_threshold is None:
-            # self.drf_level = np.round(np.sqrt(self.n_detectors))
-            self.drf_level = int(self.n_detectors*(3/4))
-
-        if self.drf_level < 1:
-            self.drf_level = 1
+            self.drf_level = int(self.n_detectors*.75)
+        else:
+            self.drf_level = int(self.n_detectors*drf_threshold)
             
 
     def feed(self, X, y, pred):

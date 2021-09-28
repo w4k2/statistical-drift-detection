@@ -1,8 +1,8 @@
 import strlearn as sl
 import numpy as np
-from methods import ESDDM, Meta, dderror
+from methods import KDDDE, Meta
 from sklearn.naive_bayes import GaussianNB
-import config
+import e1_config
 from tqdm import tqdm
 
 def find_real_drift(chunks, drifts):
@@ -14,83 +14,67 @@ def find_real_drift(chunks, drifts):
     return arr[1:]
 
 np.random.seed(654)
-n_chunks = int(config.n_chunks()/2)
-chunk_size = int(config.chunk_size()/2)
 
-subspace_sizes = config.e1_subspace_sizes()
-n_detectors = config.e1_n_detectors().astype('int')
+subspace_sizes = e1_config.e1_subspace_sizes()
+n_detectors = e1_config.e1_n_detectors().astype('int')
+drf_threshold = e1_config.e1_drf_threshold()
 
-replications = 2 # config.replications()
+replications = e1_config.e1_replications()
 random_states = np.random.randint(0, 10000, replications)
 
-n_features = config.n_featues().astype('int')
-n_drifts = config.n_drifts()
-recurring =  config.recurring()
-concept_sigmoid_spacing = config.concept_sigmoid_spacing()
-incremental =  config.incremental()
+static_params = e1_config.e1_static()
+drf_types = e1_config.e1_drift_types()
 
-print(n_features)
-
-t = len(n_features)*len(n_drifts)*len(recurring)*len(concept_sigmoid_spacing)*replications*len(subspace_sizes)*len(n_detectors)
+print(len(drf_types),replications,len(subspace_sizes),len(n_detectors),len(drf_threshold), replications)
+t = len(drf_types)*replications*len(subspace_sizes)*len(n_detectors)*len(drf_threshold)
 pbar = tqdm(total=t)
 
-for f_id, f in enumerate(n_features):
-    for d_id, drifts in enumerate(n_drifts):
-        real_drf = find_real_drift(n_chunks, drifts)
+real_drf = find_real_drift(static_params['n_chunks'], static_params['n_drifts'])
 
-        for r_id, rec in enumerate(recurring):
-            for i_id, incr in enumerate(incremental):
-                for css_id, css in enumerate(concept_sigmoid_spacing):
-                    if incr and css != 5.:
-                        continue
-                    
-                    results_clf = np.zeros((replications, len(subspace_sizes), len(n_detectors)))
-                    results_drf_arrs = np.zeros((replications, len(subspace_sizes), len(n_detectors), 2, n_chunks-1))
-                    # replications x ss x detectors x (real_drf, detected_drf) x chunks
+for ss_id, ss in enumerate(subspace_sizes):
+    for drf_type in drf_types:
 
-                    for replication in range(replications):
+        results_clf = np.zeros((replications, len(drf_threshold), len(n_detectors)))
+        results_drf_arrs = np.zeros((replications, len(drf_threshold), len(n_detectors), 2, static_params['n_chunks']-1))
+        # replications x ss x detectors x (real_drf, detected_drf) x chunks
 
-                        str_name = "%ifeat_%idrifts_%irec_%iincr_%icss" % (f,drifts,rec,incr,css)
+        for replication in range(replications):
+            str_name = "%ifeat_%idrifts_%s_%isubspace_size" % (static_params['n_features'],static_params['n_drifts'],drf_type,ss)
+            print(str_name)
 
-                        for ss_id, ss in enumerate(subspace_sizes):
-                            for det_id, det in enumerate(n_detectors):
+            for det_id, det in enumerate(n_detectors):
+                for th_id, th in enumerate(drf_threshold):
+                    config = {
+                        **static_params,
+                        **drf_types[drf_type],
+                        'random_state': random_states[replication]
+                                }
+                    stream = sl.streams.StreamGenerator(**config)
 
-                                stream = sl.streams.StreamGenerator(
-                                            recurring = rec,
-                                            concept_sigmoid_spacing = css,
-                                            n_drifts=drifts,
-                                            random_state=random_states[replication],
-                                            weights=[0.5, 0.5],
-                                            y_flip=0.01,
-                                            n_features=f,
-                                            n_informative=f,
-                                            n_redundant=0,
-                                            n_repeated=0,
-                                            n_clusters_per_class=1,
-                                            n_chunks=n_chunks,
-                                            chunk_size=chunk_size,
-                                            n_classes = 2,
-                                            incremental = incr
-                                        )
+                    # import pprint
+                    # pp = pprint.PrettyPrinter(indent=4)
 
+                    # filename = '%08i_%s' % (random_states[replication], drf_type)
+                    # print(filename, stream)
+                    # pp.pprint(config)
+                
+                    print("replication: %i, stream: %s" % (replication, str_name))
+                    print("ss: %i, det: %i, th: %f" % (ss, det, th))
 
-                                print("replication: %i, stream: %s" % (replication, str_name))
-                                print("ss: %i, det: %i" % (ss, det))
+                    clf = Meta(GaussianNB(), KDDDE(n_detectors=det, subspace_size=ss, random_state=random_states[replication], drf_threshold=th))
+                    eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
+                    eval.process(stream, clf)
 
-                                clf = Meta(GaussianNB(), ESDDM(n_detectors=det, subspace_size=ss, random_state=random_states[replication]))
-                                eval = sl.evaluators.TestThenTrain(metrics=(sl.metrics.balanced_accuracy_score))
-                                eval.process(stream, clf)
+                    # detected_drifts = np.argwhere(np.array(clf.detector.drift) == 2)
 
-                                # detected_drifts = np.argwhere(np.array(clf.detector.drift) == 2)
+                    score = np.mean(eval.scores)
+                    results_clf[replication, th_id, det_id] = score
 
-                                score = np.mean(eval.scores)
-                                results_clf[replication, ss_id, det_id] = score
+                    results_drf_arrs[replication, th_id, det_id, 0] = real_drf
+                    results_drf_arrs[replication, th_id, det_id, 1] = np.array(clf.detector.drift)
 
-                                results_drf_arrs[replication, ss_id, det_id, 0] = real_drf
-                                results_drf_arrs[replication, ss_id, det_id, 1] = np.array(clf.detector.drift)
+                    pbar.update(1)
 
-                                pbar.update(1)
-
-                    np.save('results_ex1/clf_%s' % str_name, results_clf)
-                    np.save('results_ex1/drf_arr_%s' % str_name, results_drf_arrs)
+        np.save('results_ex1/clf_%s' % str_name, results_clf)
+        np.save('results_ex1/drf_arr_%s' % str_name, results_drf_arrs)
 pbar.close()

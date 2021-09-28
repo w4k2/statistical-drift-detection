@@ -1,6 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+res_clf = np.load('results_ex1/clf_5feat_5drifts_sudden_1subspace_size.npy')
+res_arr = np.load('results_ex1/drf_arr_5feat_5drifts_sudden_1subspace_size.npy')
+
+print(res_clf.shape) #replications x threshold x detectors 
+print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
+
+
+exit()
 
 subspace_sizes = [1,2,3,4,5,6]
 n_detectors = [1,2,3,5,7,10,15,30]

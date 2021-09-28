@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 from strlearn.ensembles import SEA
 import numpy as np
 import hashlib
-from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, ESDDM
+from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, KDDDE
 
 def e3_methods():
     return [
@@ -94,9 +94,9 @@ def e3_clfs():
     for m in e3_methods():
         clfs.append(Meta(detector = SDDM(), base_clf = m))
 
-    #ESDDM
+    #KDDDE
     for m in e3_methods():
-        clfs.append(Meta(detector = ESDDM(), base_clf = m))
+        clfs.append(Meta(detector = KDDDE(), base_clf = m))
 
     #ALWAYS
     for m in e3_methods():
@@ -111,7 +111,7 @@ def e3_clfs():
 
 def e3_clf_names():
     names = []
-    detectors = ['DDM', 'EDDM', 'ADWIN', "SDDM", "ESDDM", "ALWAYS", "NEVER"]
+    detectors = ['DDM', 'EDDM', 'ADWIN', "SDDM", "KDDDE", "ALWAYS", "NEVER"]
 
     for d in detectors:
         for m in e3_methods_labels():
@@ -120,52 +120,6 @@ def e3_clf_names():
     return names
 
 
-def e1_subspace_sizes():
-    return [1,2,3,4]
-
-def e1_n_detectors():
-    return np.linspace(5,40,8)
-
-def n_chunks():
-    return 200
-
-def chunk_size():
-    return 250
-
-def replications():
-    return 10
-
-def n_featues():
-    return np.linspace(5,40,8)
-
-def n_drifts():
-    return [1,3,5,7,9]
-
-def recurring():
-    return [True, False]
-
-def incremental():
-    return [True, False]
-
-def concept_sigmoid_spacing():
-    return [5., 999.]
-
-def e2_n_detectors():
-    return np.linspace(5,40,8)
-
-def e2_det_threshold():
-    return np.linspace(1,40,40)
-
-# def e2_det_th():
-#     d = []
-#     dets = e2_n_detectors()
-#     thrs = e2_det_threshold()
-#     for det in dets:
-#         for th in thrs:
-#             if det>=th:
-#                 d.append([int(det), int(th)])
-#     return d
-    
 def metrics():
     return [
         sl.metrics.f1_score,
