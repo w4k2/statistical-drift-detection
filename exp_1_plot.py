@@ -18,16 +18,13 @@ res_clf_mean = np.mean(res_clf, axis=0)
 print(res_clf_mean)
 print(res_clf_mean.shape)
 
-# plt.imshow(res_clf_mean)
-# plt.savefig('foo.png')
-
 dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
 
 for rep in range(res_arr.shape[0]):
     for th in range(res_arr.shape[1]):
         for det in range(res_arr.shape[2]):
-            real_drf = np.argwhere(res_arr[rep, th, det, 0]==2)
-            det_drf = np.argwhere(res_arr[rep, th, det, 1]==2)
+            real_drf = np.argwhere(res_arr[rep, th, det, 0]==2).flatten()
+            det_drf = np.argwhere(res_arr[rep, th, det, 1]==2).flatten()
             err = dderror(real_drf, det_drf, res_arr.shape[4])
             dderror_arr[rep,th,det] = err
 
@@ -36,12 +33,12 @@ res_arr_mean = np.mean(dderror_arr, axis=0)
 # plt.imshow(res_arr_mean)
 # plt.savefig('foo.png')
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+fig, ax = plt.subplots(1, 1, figsize=(8, 8), dpi=300)
 
 ax.imshow(res_clf_mean, cmap='binary', origin='lower')
 
 ax.set_yticks(list(range(len(th_arr))))
-ax.set_yticklabels(['%.1f' % v for v in th_arr])
+ax.set_yticklabels(['%.2f' % v for v in th_arr])
 ax.set_ylabel("Threshold")
 
 ax.set_xticks(list(range(len(det_arr))))
@@ -52,7 +49,7 @@ for _a, __a in enumerate(th_arr):
     for _b, __b in enumerate(det_arr):
         v = res_clf_mean[_a, _b]
         ax.text(_b, _a, "%.3f" % (
-            v) , va='center', ha='center', c='white' if v > np.mean(res_clf_mean) else 'black', fontsize=11)
+            v) , va='center', ha='center', c='white' if v > np.mean(res_clf_mean) else 'black', fontsize=5)
 
 
 plt.tight_layout()
@@ -61,12 +58,12 @@ plt.savefig('foo.png')
 
 plt.close()
 
-fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+fig, ax = plt.subplots(1, 1, figsize=(8, 8), dpi=300)
 
 ax.imshow(res_arr_mean, cmap='binary', origin='upper')
 
 ax.set_yticks(list(range(len(th_arr))))
-ax.set_yticklabels(['%.1f' % v for v in th_arr])
+ax.set_yticklabels(['%.2f' % v for v in th_arr])
 ax.set_ylabel("Threshold")
 
 ax.set_xticks(list(range(len(det_arr))))
@@ -76,7 +73,7 @@ ax.set_xlabel("n detectors")
 for _a, __a in enumerate(th_arr):
     for _b, __b in enumerate(det_arr):
         ax.text(_b, _a, "%.3f" % (
-            res_arr_mean[_a, _b]) , va='center', ha='center', c='red', fontsize=11)
+            res_arr_mean[_a, _b]) , va='center', ha='center', c='red', fontsize=5)
             
 
 plt.tight_layout()
