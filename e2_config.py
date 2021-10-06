@@ -78,7 +78,7 @@ def metrics_names():
         ]
 
 def e2_replications():
-    return 5
+    return 10
 
 def e2_static():
     return {
