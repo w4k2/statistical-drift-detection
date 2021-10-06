@@ -35,7 +35,7 @@ real_drf = find_real_drift(static_params['n_chunks'], static_params['n_drifts'])
 for rec in recurring:
     for drf_type in drf_types:
 
-        results_clf = np.zeros((replications, len(base_detectors)))
+        results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
         results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
         # replications x detectors x (real_drf, detected_drf) x chunks
 
@@ -60,8 +60,8 @@ for rec in recurring:
             eval = sl.evaluators.TestThenTrain(metrics=metrics)
             eval.process(stream, detectors)
 
-            scores = np.mean(eval.scores, axis=1)
-            results_clf[replication] = scores[:,0]
+            scores = eval.scores
+            results_clf[replication] = scores[:,:,0]
 
             for det_id in range(len(detectors)):
                 results_drf_arrs[replication, det_id, 0] = real_drf
