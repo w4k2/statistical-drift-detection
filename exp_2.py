@@ -27,14 +27,13 @@ base_detectors = e2_config.e2_clfs()
 
 metrics = e2_config.metrics()
 
-print(len(drf_types),len(recurring),replications,len(base_detectors))
-t = len(drf_types)*len(recurring)*replications*len(base_detectors)
+print(len(drf_types),len(recurring),replications)
+t = len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 real_drf = find_real_drift(static_params['n_chunks'], static_params['n_drifts'])
 
 for rec in recurring:
     for drf_type in drf_types:
-
         results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
         results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
         # replications x detectors x (real_drf, detected_drf) x chunks
