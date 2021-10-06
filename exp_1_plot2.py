@@ -8,22 +8,16 @@ drf_types = e1_config.e1_drift_types()
 th_arr = e1_config.e1_drf_threshold()
 det_arr = e1_config.e1_n_detectors()
 
-print(th_arr, det_arr)
-
 fig, ax = plt.subplots(3, 3, figsize=(18, 18), dpi=300)
+fig.suptitle("Classification score", fontsize=25)
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        if drf == 'incremental':
-            continue
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
-
         print(res_clf.shape) #replications x threshold x detectors
 
         res_clf_mean = np.mean(res_clf, axis=0)
-        print(res_clf_mean)
-        print(res_clf_mean.shape)
 
         ax[drf_id,ss_id].imshow(res_clf_mean, cmap='binary', origin='lower')
 
@@ -37,27 +31,18 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         ax[drf_id,ss_id].set_title("%s %i ss" % (drf, ss))
 
-
-        # for _a, __a in enumerate(th_arr):
-        #     for _b, __b in enumerate(det_arr):
-        #         v = res_clf_mean[_a, _b]
-        #         ax[drf_id,ss_id].text(_b, _a, "%.3f" % (
-        #             v) , va='center', ha='center', c='white' if v > np.mean(res_clf_mean) else 'black', fontsize=5)
-
-
 plt.tight_layout()
-plt.savefig('foo.png')
+fig.subplots_adjust(top=0.93)
+plt.savefig('figures_ex1/clf.png')
 plt.close()
 
 fig, ax = plt.subplots(3, 3, figsize=(18, 18), dpi=300)
+fig.suptitle("Detection error", fontsize=25)
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        if drf == 'incremental':
-            continue
 
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
-
         print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
 
         dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
@@ -84,11 +69,6 @@ for ss_id, ss in enumerate(subspace_sizes):
     
         ax[drf_id,ss_id].set_title("%s %i ss" % (drf, ss))
 
-        # for _a, __a in enumerate(th_arr):
-        #     for _b, __b in enumerate(det_arr):
-        #         ax[drf_id,ss_id].text(_b, _a, "%.3f" % (
-        #             res_arr_mean[_a, _b]) , va='center', ha='center', c='red', fontsize=5)
-                    
-
 plt.tight_layout()
-plt.savefig('foo2.png')
+fig.subplots_adjust(top=0.93)
+plt.savefig('figures_ex1/err.png')

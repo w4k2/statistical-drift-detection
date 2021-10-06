@@ -16,8 +16,8 @@ for ss_id, ss in enumerate(subspace_sizes):
     fig, ax = plt.subplots(3, 2, figsize=(12, 18), dpi=300)
 
     for drf_id, drf in enumerate(drf_types):
-        if drf == 'incremental':
-            continue
+        # if drf == 'incremental':
+        #     continue
 
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
         print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
