@@ -1,6 +1,7 @@
 import e2_config
 import numpy as np
 import matplotlib.pyplot as plt
+from methods.dderror import dderror
 
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
@@ -19,6 +20,24 @@ for rec_id, rec in enumerate(recurring):
 
         res_arr = np.load('results_ex2/drf_arr_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
         # replications x detectors x (real, detected) x chunks-1
+
+        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1]))
+
+        for rep in range(res_arr.shape[0]):
+            for det in range(res_arr.shape[1]):
+                real_drf = np.argwhere(res_arr[rep, det, 0]==2).flatten()
+                det_drf = np.argwhere(res_arr[rep, det, 1]==2).flatten()
+                err = dderror(real_drf, det_drf, res_arr.shape[3])
+                dderror_arr[rep, det] = err
+
+        res_arr_mean = np.mean(dderror_arr, axis=0)
+
+        # print(res_arr_mean)
+        # exit()
+
+        """
+        Plot
+        """
 
         plt.close()
         fig, ax = plt.subplots(1, 2, figsize=(20, 6), dpi=300)
@@ -45,11 +64,14 @@ for rec_id, rec in enumerate(recurring):
             drf_cnt = drf_cnt[drf_cnt>1]
 
             det_y = [det_id for i in range(len(det_sum))]
-            ax[1].scatter(det_sum, det_y, alpha=0.4, s=drf_cnt*15, c=colors[det_id])
+            ax[1].scatter(det_sum, det_y, alpha=0.4, s=drf_cnt*15, c=colors[det_id], label=res_arr_mean[det_id])
 
         ax[1].set_yticks(list(range(len(detector_names))))
-        ax[1].set_yticklabels(detector_names)
+        ax[1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
         ax[1].set_title("Detections")
+
+        # ax[1].legend(loc=3, facecolor='white', framealpha=.95, edgecolor='white', ncol=3)
+
         
         fig.subplots_adjust(top=0.93)
         plt.tight_layout()
