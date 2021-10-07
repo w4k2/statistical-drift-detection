@@ -16,7 +16,7 @@ def find_real_drift(chunks, drifts):
 
 np.random.seed(654)
 
-replications = 5
+replications = 10
 random_states = np.random.randint(0, 10000, replications)
 
 static_params = e2_config.e2_static()
