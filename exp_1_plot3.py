@@ -10,10 +10,9 @@ det_arr = e1_config.e1_n_detectors()
 
 print(th_arr, det_arr)
 
-
 for ss_id, ss in enumerate(subspace_sizes):
     plt.close()
-    fig, ax = plt.subplots(3, 2, figsize=(12, 18), dpi=300)
+    fig, ax = plt.subplots(3, 3, figsize=(18, 18), dpi=300)
 
     for drf_id, drf in enumerate(drf_types):
         # if drf == 'incremental':
@@ -57,6 +56,18 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         ax[drf_id,1].grid()
         ax[drf_id,1].set_title("opt %s %i ss" % (drf, ss))
+
+
+        binary = res_arr_mean == np.min(res_arr_mean)
+        ax[drf_id,2].imshow(binary, cmap='binary', origin='upper')
+        ax[drf_id,2].set_yticks(list(range(len(th_arr))))
+        ax[drf_id,2].set_yticklabels(['%.2f' % v for v in th_arr])
+        ax[drf_id,2].set_ylabel("Threshold")
+
+        ax[drf_id,2].set_xticks(list(range(len(det_arr))))
+        ax[drf_id,2].set_xticklabels(det_arr)
+        ax[drf_id,2].set_xlabel("n detectors")
+        ax[drf_id,2].set_title("%s %i ss" % (drf, ss))
 
     plt.tight_layout()
     plt.savefig('figures_ex1/err_%i.png' % ss)
