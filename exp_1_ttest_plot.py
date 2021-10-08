@@ -62,11 +62,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         candidates = dimg + mask
 
-        print(np.where(candidates))
         thresholds, detectors = np.where(candidates)
-
-        print(thresholds)
-        print(detectors)
 
         bd = np.min(detectors)
         bt = np.min(thresholds[detectors==bd])
@@ -76,21 +72,19 @@ for ss_id, ss in enumerate(subspace_sizes):
         mat = np.copy(candidates).astype('int')
         mat[bt, bd]=2
 
-
-
         """
         Plot.
         """
-        fig, ax = plt.subplots(3,3,figsize=(8,8))
+        fig, ax = plt.subplots(2,3,figsize=(8,5))
 
         ax[0,0].imshow(mean_data, vmin=-1, vmax=1)
         ax[0,1].imshow(mask)
-        ax[1,0].imshow(pimg)
-        ax[1,1].imshow(dimg)
-        ax[1,2].imshow(candidates)
-        ax[2,1].imshow(mat)
+        ax[0,2].imshow(pimg)
+        ax[1,0].imshow(dimg)
+        ax[1,1].imshow(candidates)
+        ax[1,2].imshow(mat)
 
-        for i in range(3):
+        for i in range(2):
             for j in range(3):
                 ax[i,j].set_yticks(list(range(len(th_arr))))
                 ax[i,j].set_yticklabels(['%.2f' % v for v in th_arr], fontsize=6)
@@ -102,6 +96,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 
 
         plt.tight_layout()
-        plt.savefig('foo.png')
+        plt.savefig('figures_ex1/%s_%i.png' % (drf, ss))
 
-        exit()
+        plt.clf()
+        # exit()
