@@ -127,7 +127,6 @@ def e2_n_drifts():
         3: { 'n_drifts': 3},
         7: { 'n_drifts': 7},
         9: { 'n_drifts': 9},
-        11: { 'n_drifts': 11},
     }
 
 def e2_n_features():
@@ -137,3 +136,31 @@ def e2_n_features():
         25: { 'n_features': 25, 'n_informative':25},
         30: { 'n_features': 30, 'n_informative':30},
     }
+
+def e2_clfs(kddde_n_det):
+    clfs = []
+    #DDM
+    for m in e2_methods():
+        clfs.append(Meta(detector = DDM(), base_clf = m))
+
+    #EDDM
+    for m in e2_methods():
+        clfs.append(Meta(detector = EDDM(), base_clf = m))
+
+    #ADWIN
+    for m in e2_methods():
+        clfs.append(Meta(detector = ADWIN(), base_clf = m))
+
+    #KDDDE
+    for m in e2_methods():
+        clfs.append(Meta(detector = KDDDE(n_detectors=kddde_n_det), base_clf = m))
+
+    #ALWAYS
+    for m in e2_methods():
+        clfs.append(Meta(detector = ALWAYS(), base_clf = m))
+
+    #NEVER
+    for m in e2_methods():
+        clfs.append(Meta(detector = NEVER(), base_clf = m))
+
+    return clfs

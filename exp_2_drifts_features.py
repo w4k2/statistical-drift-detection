@@ -16,7 +16,7 @@ def find_real_drift(chunks, drifts):
 
 np.random.seed(13654)
 
-replications = e2_config.e2_replications()
+replications = 1# e2_config.e2_replications()
 random_states = np.random.randint(0, 10000, replications)
 
 static_params = e2_config.e2_static2()
@@ -27,7 +27,6 @@ n_drifts = e2_config.e2_n_drifts()
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-base_detectors = e2_config.e2_clfs()
 
 metrics = e2_config.metrics()
 
@@ -36,6 +35,8 @@ t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
+    base_detectors = e2_config.e2_clfs(kddde_n_det = n_f)
+
     for n_d in n_drifts:
         real_drf = find_real_drift(static_params['n_chunks'], n_d)
 
