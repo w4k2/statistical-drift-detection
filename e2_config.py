@@ -63,7 +63,8 @@ def e2_clf_names():
 
     for d in detectors:
         for m in e2_methods_labels():
-            names.append(d + "-" + m)
+            # names.append(d + "-" + m)
+            names.append(d)
 
     return names
 

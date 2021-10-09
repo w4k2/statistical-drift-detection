@@ -40,7 +40,7 @@ for rec_id, rec in enumerate(recurring):
         """
 
         plt.close()
-        fig, ax = plt.subplots(2, 2, figsize=(20, 12), dpi=300)
+        fig, ax = plt.subplots(2, 2, figsize=(25, 10), dpi=300)
         fig.suptitle("%s, %s" % (rec, drf_type), fontsize=15)
 
         for det_id, det_name in enumerate(detector_names):
