@@ -91,6 +91,16 @@ def e2_static():
         'n_redundant': 0
         }
 
+def e2_static2():
+    return {
+        # 'n_drifts': 5,
+        'n_chunks': 200,
+        'chunk_size': 250,
+        # 'n_features': 15,
+        # 'n_informative': 15,
+        'n_redundant': 0
+        }
+
 def e2_drift_types():
     return {
     'sudden': {},
@@ -109,4 +119,21 @@ def e2_recurring():
             'recurring': True
         },
         'not-recurring': {}
+    }
+
+def e2_n_drifts():
+    return {
+        1: { 'n_drifts': 1},
+        3: { 'n_drifts': 3},
+        7: { 'n_drifts': 7},
+        9: { 'n_drifts': 9},
+        11: { 'n_drifts': 11},
+    }
+
+def e2_n_features():
+    return {
+        10: { 'n_features': 10, 'n_informative': 10},
+        20: { 'n_features': 20, 'n_informative':20},
+        25: { 'n_features': 25, 'n_informative':25},
+        30: { 'n_features': 30, 'n_informative':30},
     }
