@@ -45,17 +45,24 @@ for ss_id, ss in enumerate(subspace_sizes):
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
         print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
 
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
+        dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], res_arr.shape[2]))
 
         for rep in range(res_arr.shape[0]):
             for th in range(res_arr.shape[1]):
                 for det in range(res_arr.shape[2]):
                     real_drf = np.argwhere(res_arr[rep, th, det, 0]==2).flatten()
                     det_drf = np.argwhere(res_arr[rep, th, det, 1]==2).flatten()
-                    err = dderror(real_drf, det_drf, res_arr.shape[4])
-                    dderror_arr[rep,th,det] = err
+                    err = dderror(real_drf, det_drf, res_arr.shape[4])[1]
+                    dderror_arr[rep,th,det] = err            
 
         res_arr_mean = np.mean(dderror_arr, axis=0)
+
+        # for i in range(3):
+        #     res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
+        #     res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])
+        # res_arr_mean = 1 - res_arr_mean
+
+
 
         ax[drf_id,ss_id].imshow(res_arr_mean, cmap='binary', origin='upper')
 
@@ -71,4 +78,4 @@ for ss_id, ss in enumerate(subspace_sizes):
 
 plt.tight_layout()
 fig.subplots_adjust(top=0.93)
-plt.savefig('figures_ex1/err.png')
+plt.savefig('figures_ex1/err_d2.png')
