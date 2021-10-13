@@ -64,8 +64,9 @@ for ss_id, ss in enumerate(subspace_sizes):
         """
         Plot err
         """
-        fig, ax = plt.subplots(3, 1, figsize=(8, 24), dpi=300)
+        fig, ax = plt.subplots(1, 3, figsize=(24,8), dpi=150)
         cmaps = ['Reds', 'Greens', 'Blues']
+        metrics = ['d1',  'd2', 'cnt']
         for i in range(3):
             ax[i].imshow(res_arr_mean[:,:,i], cmap=cmaps[i], origin='upper')
 
@@ -76,7 +77,7 @@ for ss_id, ss in enumerate(subspace_sizes):
             ax[i].set_xticks(list(range(len(det_arr))))
             ax[i].set_xticklabels(det_arr)
             ax[i].set_xlabel("n detectors")
-            ax[i].set_title("%s %i ss" % (drf, ss))
+            ax[i].set_title("%s %s %i ss" % (metrics[i], drf, ss))
 
             for _a, __a in enumerate(th_arr):
                 for _b, __b in enumerate(det_arr):
