@@ -1,6 +1,6 @@
 import strlearn as sl
 import numpy as np
-from methods import KDDDE, Meta
+from methods import SDDE, Meta
 from sklearn.naive_bayes import GaussianNB
 from sklearn.base import clone
 import e2_config

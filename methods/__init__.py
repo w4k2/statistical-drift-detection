@@ -4,7 +4,7 @@ from .ADWIN import ADWIN
 from .ALWAYS import ALWAYS
 from .NEVER import NEVER
 from .SDDM import SDDM
-from .KDDDE import KDDDE
+from .SDDE import SDDE
 from .meta import Meta
 from .dderror import dderror
 
@@ -15,7 +15,7 @@ __all__ = [
     "ALWAYS",
     "NEVER",
     "SDDM",
-    "KDDDE",
+    "SDDE",
     "Meta",
     "dderror"
 ]

@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.base import clone
 import e2_config
 from tqdm import tqdm
-from methods import KDDDE, Meta
+from methods import SDDE, Meta
 from sklearn.naive_bayes import GaussianNB
 
 def find_real_drift(chunks, drifts):
@@ -24,15 +24,15 @@ drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
 base_detectors = [
-    # Meta(detector = KDDDE(sensitivity = 0.3), base_clf = GaussianNB()),
-    # Meta(detector = KDDDE(sensitivity = 0.35), base_clf = GaussianNB()),
-    # Meta(detector = KDDDE(sensitivity = 0.4), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.45), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.5), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.55), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.6), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.7), base_clf = GaussianNB()),
-    Meta(detector = KDDDE(sensitivity = 0.8), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.3), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.45), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.5), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.55), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.6), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.7), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.8), base_clf = GaussianNB()),
 ]
 
 metrics = e2_config.metrics()

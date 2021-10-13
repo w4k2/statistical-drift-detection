@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 from strlearn.ensembles import SEA
 import numpy as np
 import hashlib
-from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, KDDDE
+from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, SDDE
 
 def e2_methods():
     return [
@@ -42,9 +42,9 @@ def e2_clfs():
     for m in e2_methods():
         clfs.append(Meta(detector = ADWIN(), base_clf = m))
 
-    #KDDDE
+    #SDDE
     for m in e2_methods():
-        clfs.append(Meta(detector = KDDDE(), base_clf = m))
+        clfs.append(Meta(detector = SDDE(), base_clf = m))
 
     #ALWAYS
     for m in e2_methods():
@@ -58,7 +58,7 @@ def e2_clfs():
 
 def e2_clf_names():
     names = []
-    detectors = ['DDM', 'EDDM', 'ADWIN', "KDDDE", "ALWAYS", "NEVER"]
+    detectors = ['DDM', 'EDDM', 'ADWIN', "SDDE", "ALWAYS", "NEVER"]
     # detectors = ['DDM', 'EDDM', 'ADWIN', "ALWAYS", "NEVER"]
 
     for d in detectors:
@@ -137,7 +137,7 @@ def e2_n_features():
         30: { 'n_features': 30, 'n_informative':30},
     }
 
-def e2_clfs(kddde_n_det):
+def e2_clfs(sdde_n_det):
     clfs = []
     #DDM
     for m in e2_methods():
@@ -151,9 +151,9 @@ def e2_clfs(kddde_n_det):
     for m in e2_methods():
         clfs.append(Meta(detector = ADWIN(), base_clf = m))
 
-    #KDDDE
+    #SDDE
     for m in e2_methods():
-        clfs.append(Meta(detector = KDDDE(n_detectors=kddde_n_det), base_clf = m))
+        clfs.append(Meta(detector = SDDE(n_detectors= sdde_n_det), base_clf = m))
 
     #ALWAYS
     for m in e2_methods():

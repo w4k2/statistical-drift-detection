@@ -1,6 +1,6 @@
 import strlearn as sl
 import numpy as np
-from methods import KDDDE, Meta
+from methods import SDDE, Meta
 from sklearn.naive_bayes import GaussianNB
 from sklearn.base import clone
 import e2_config
@@ -35,7 +35,7 @@ t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
-    base_detectors = e2_config.e2_clfs(kddde_n_det = n_f)
+    base_detectors = e2_config.e2_clfs(sdde_n_det = n_f)
 
     for n_d in n_drifts:
         real_drf = find_real_drift(static_params['n_chunks'], n_d)
