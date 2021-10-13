@@ -15,7 +15,7 @@ for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
 
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
+        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2], 3))
 
         for rep in range(res_arr.shape[0]):
             for th in range(res_arr.shape[1]):
@@ -29,74 +29,78 @@ for ss_id, ss in enumerate(subspace_sizes):
         # b = 9 det[2]
         # n = 10 rep [0]
 
-        a = dderror_arr.shape[1]
-        b = dderror_arr.shape[2]
+        for metric in range(3):
 
-        # # Gather data
-        # data = np.random.normal(size=(a,b,n))
+            dderror_metric = dderror_arr[:,:,:,metric]
+            
+            a = dderror_metric.shape[1]
+            b = dderror_metric.shape[2]
 
-        # Calculate mean
-        mean_data = np.mean(dderror_arr,axis=0) # th x det
+            # # Gather data
+            # data = np.random.normal(size=(a,b,n))
 
-        # best mean
-        best_mean = np.min(mean_data)
-        # print(mean_data==best_mean)
-        # exit()
+            # Calculate mean
+            mean_data = np.mean(dderror_metric,axis=0) # th x det
 
-        # Calculate CMP
-        cmp = np.mean(dderror_arr[:,mean_data==best_mean], axis=1)
+            # best mean
+            best_mean = np.min(mean_data)
+            # print(mean_data==best_mean)
+            # exit()
 
-        # Mask
-        mask = mean_data == best_mean
+            # Calculate CMP
+            cmp = np.mean(dderror_metric[:,mean_data==best_mean], axis=1)
 
-        # CMP-img
-        pimg = np.zeros((a,b))
+            # Mask
+            mask = mean_data == best_mean
 
-        # Test
-        for i in range(a):
-            for j in range(b):
-                pimg[i,j] = ttest_rel(cmp, dderror_arr[:,i,j]).pvalue
+            # CMP-img
+            pimg = np.zeros((a,b))
 
-        # DEP-img
-        dimg = pimg > alpha
+            # Test
+            for i in range(a):
+                for j in range(b):
+                    pimg[i,j] = ttest_rel(cmp, dderror_metric[:,i,j]).pvalue
 
-        candidates = dimg + mask
+            # DEP-img
+            dimg = pimg > alpha
 
-        thresholds, detectors = np.where(candidates)
+            candidates = dimg + mask
 
-        bd = np.min(detectors)
-        bt = np.min(thresholds[detectors==bd])
+            thresholds, detectors = np.where(candidates)
 
-        print(bd, bt)
+            bd = np.min(detectors)
+            bt = np.min(thresholds[detectors==bd])
 
-        mat = np.copy(candidates).astype('int')
-        mat[bt, bd]=2
+            print(bd, bt)
 
-        """
-        Plot.
-        """
-        fig, ax = plt.subplots(2,3,figsize=(8,5))
+            mat = np.copy(candidates).astype('int')
+            mat[bt, bd]=2
 
-        ax[0,0].imshow(mean_data, vmin=-1, vmax=1)
-        ax[0,1].imshow(mask)
-        ax[0,2].imshow(pimg)
-        ax[1,0].imshow(dimg)
-        ax[1,1].imshow(candidates)
-        ax[1,2].imshow(mat)
+            """
+            Plot.
+            """
+            fig, ax = plt.subplots(2,3,figsize=(8,5))
 
-        for i in range(2):
-            for j in range(3):
-                ax[i,j].set_yticks(list(range(len(th_arr))))
-                ax[i,j].set_yticklabels(['%.2f' % v for v in th_arr], fontsize=6)
-                ax[i,j].set_ylabel("Threshold")
+            ax[0,0].imshow(mean_data, vmin=-1, vmax=1)
+            ax[0,1].imshow(mask)
+            ax[0,2].imshow(pimg)
+            ax[1,0].imshow(dimg)
+            ax[1,1].imshow(candidates)
+            ax[1,2].imshow(mat)
 
-                ax[i,j].set_xticks(list(range(len(det_arr))))
-                ax[i,j].set_xticklabels(det_arr, fontsize=6)
-                ax[i,j].set_xlabel("n detectors")
+            for i in range(2):
+                for j in range(3):
+                    ax[i,j].set_yticks(list(range(len(th_arr))))
+                    ax[i,j].set_yticklabels(['%.2f' % v for v in th_arr], fontsize=6)
+                    ax[i,j].set_ylabel("Threshold")
+
+                    ax[i,j].set_xticks(list(range(len(det_arr))))
+                    ax[i,j].set_xticklabels(det_arr, fontsize=6)
+                    ax[i,j].set_xlabel("n detectors")
 
 
-        plt.tight_layout()
-        plt.savefig('figures_ex1/%s_%i.png' % (drf, ss))
+            plt.tight_layout()
+            plt.savefig('figures_ex1/metric%i_%s_%i.png' % (metric, drf, ss))
 
-        plt.clf()
-        # exit()
+            plt.clf()
+            exit()
