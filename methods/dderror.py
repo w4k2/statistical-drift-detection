@@ -24,3 +24,5 @@ def dderror(drifts, detections, n_chunks):
     cmetric = np.abs((n_drifts/n_detections)-1)
 
     return d1metric, d2metric, cmetric
+    # d1 - odleglosc detekcji od najblizszego dryfu
+    # d2 - dryfu od najblizszej detekcji

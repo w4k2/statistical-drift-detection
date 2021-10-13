@@ -21,7 +21,7 @@ for ss_id, ss in enumerate(subspace_sizes):
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
         print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
 
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
+        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2], 3))
 
         for rep in range(res_arr.shape[0]):
             for th in range(res_arr.shape[1]):
