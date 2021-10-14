@@ -38,7 +38,7 @@ for i, filepath in enumerate(filepaths):
 
     for replication in range(replications):
 
-        detectors = e2_config.e2_clfs(n_features[i])
+        detectors = e2_config.e2_clfs(n_features[i], .35)
 
         str_name = filepath.split("/")[1]
         

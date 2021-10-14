@@ -137,7 +137,7 @@ def e2_n_features():
         30: { 'n_features': 30, 'n_informative':30},
     }
 
-def e2_clfs(sdde_n_det):
+def e2_clfs(sdde_n_det, sdde_sensitivity=.55):
     clfs = []
     #DDM
     for m in e2_methods():
@@ -153,7 +153,7 @@ def e2_clfs(sdde_n_det):
 
     #SDDE
     for m in e2_methods():
-        clfs.append(Meta(detector = SDDE(n_detectors= sdde_n_det), base_clf = m))
+        clfs.append(Meta(detector = SDDE(n_detectors= sdde_n_det, sensitivity=sdde_sensitivity), base_clf = m))
 
     #ALWAYS
     for m in e2_methods():
