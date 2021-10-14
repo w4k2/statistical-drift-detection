@@ -1,7 +1,5 @@
 import strlearn as sl
 import numpy as np
-from methods import SDDE, Meta
-from sklearn.naive_bayes import GaussianNB
 from sklearn.base import clone
 import e2_config
 from tqdm import tqdm
@@ -30,18 +28,21 @@ recurring = e2_config.e2_recurring()
 
 metrics = e2_config.metrics()
 
-print(len(n_drifts), len(n_features), len(drf_types),len(recurring),replications)
-t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
+print(len(n_drifts), len(n_features), 1 ,len(recurring),replications)
+t = len(n_drifts)*len(n_features)*1*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
-    base_detectors = e2_config.e2_clfs(sdde_n_det = n_f)
+    base_detectors = e2_config.e2_clfs(sdde_n_det = n_f, sdde_sensitivity=0.45)
 
     for n_d in n_drifts:
         real_drf = find_real_drift(static_params['n_chunks'], n_d)
 
         for rec in recurring:
             for drf_type in drf_types:
+
+                if drf_type != 'sudden':
+                    continue
 
                 results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
                 results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
@@ -79,7 +80,7 @@ for n_f in n_features:
 
                     pbar.update(1)
 
-                np.save('results_ex2_d_f/clf_%s' % str_name, results_clf)
-                np.save('results_ex2_d_f/drf_arr_%s' % str_name, results_drf_arrs)
+                np.save('results_ex2_d_f_45/clf_%s' % str_name, results_clf)
+                np.save('results_ex2_d_f_45/drf_arr_%s' % str_name, results_drf_arrs)
 
 pbar.close()

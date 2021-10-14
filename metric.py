@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.core.einsumfunc import einsum
 from methods.dderror import dderror
 
 drange = 25
 
-lss = np.linspace(0,drange,100)
+lss = np.linspace(0,drange,1000)
 
 means = np.zeros((drange-2, drange-2, 3))
 stds = np.zeros((drange-2, drange-2, 3))
@@ -21,12 +22,6 @@ for dd1, n_drifts in enumerate(en1):
             if len(acc)==0:
                 drifts = (np.random.uniform(size=n_drifts)*drange).astype(int)
                 detections = drifts
-            # elif len(acc)==1:
-            #     drifts = (np.random.uniform(size=n_drifts)*drange).astype(int)
-            #     detections = []
-            # elif len(acc)==2:
-            #     drifts = (np.random.uniform(size=n_drifts)*drange).astype(int)
-            #     detections = np.arange(drange)
             else:
                 drifts = (np.random.uniform(size=n_drifts)*drange).astype(int)
                 detections = (np.random.uniform(size=n_detections)*drange).astype(int)
@@ -53,31 +48,43 @@ for dd1, n_drifts in enumerate(en1):
         maxs[dd1, dd2] -= np.min(maxs[dd1, dd2])
         maxs[dd1, dd2] /= np.max(maxs[dd1, dd2])
 
-        fig, ax = plt.subplots(2,2,figsize=(12, 12))
+        """
+        Plot
+        """
+        fig, ax = plt.subplots(3,4,figsize=(24, 18))
+        metrics= ['all', 'd1', 'd2', 'cnt']
+        cmaps = ['binary', 'Reds', 'Greens', 'Blues']
 
-        ax[0,0].imshow(means)
-        ax[1,0].imshow(stds)
-        ax[0,1].imshow(mins)
-        ax[1,1].imshow(maxs)
+        for i in range(4):
+            if i==0:
+                ax[0,i].imshow(means, cmap=cmaps[i])
+                ax[1,i].imshow(stds, cmap=cmaps[i])
+                ax[2,i].imshow(maxs, cmap=cmaps[i])
 
-        ax[0,0].set_title('means')
-        ax[1,0].set_title('stds')
-        ax[0,1].set_title('mins')
-        ax[1,1].set_title('maxs')
+                ax[0,i].set_title('means %s' % metrics[i])
+                ax[1,i].set_title('stds %s' % metrics[i])
+                ax[2,i].set_title('maxs %s' % metrics[i])
+            else:
+                ax[0,i].imshow(means[:,:,i-1], cmap=cmaps[i])
+                ax[1,i].imshow(stds[:,:,i-1], cmap=cmaps[i])
+                ax[2,i].imshow(maxs[:,:,i-1], cmap=cmaps[i])
 
-        # for i in range(len(en1)):
-        #     for j in range(len(en2)):
-        #         if i%5 == 1:
-        #             if j%5==1:
+                ax[0,i].set_title('means %s' % metrics[i])
+                ax[1,i].set_title('stds %s' % metrics[i])
+                ax[2,i].set_title('maxs %s' % metrics[i])
 
-                        # ax[0,0].text(j,i, '%.2f' % means[i,j,0], ha='center',
-                        #         va='center')
-                        # ax[1,0].text(j,i, '%.2f' % stds[i,j], ha='center',
-                        #         va='center')
-                        # ax[0,1].text(j,i, '%.2f' % mins[i,j], ha='center',
-                        #         va='center')
-                        # ax[1,1].text(j,i, '%.2f' % maxs[i,j], ha='center',
-                        #         va='center')
+                for k in range(len(en1)):
+                    for j in range(len(en2)):
+                        if k%5 == 1:
+                            if j%5==1:
+                                ax[0,i].text(j,k, '%.2f' % means[k,j,i-1], ha='center',
+                                        va='center')
+                                ax[1,i].text(j,k, '%.2f' % stds[k,j,i-1], ha='center',
+                                        va='center')
+                                ax[2,i].text(j,k, '%.2f' % maxs[k,j,i-1], ha='center',
+                                        va='center')
+                                # ax[1,1].text(j,k, '%.2f' % maxs[k,j,i], ha='center',
+                                #         va='center')
 
         #aaa.set_xticks([])
         #aaa.set_yticks([np.max(np.array(acc))])
@@ -87,6 +94,6 @@ for dd1, n_drifts in enumerate(en1):
         #aaa.set_ylabel('det %i' % n_detections)
         #aaa.set_title('%.2f | %.2f' % (np.nanmean(acc), np.nanstd(acc)))
 
-        plt.tight_layout()
-        plt.savefig('bar1.png')
-        plt.close()
+    plt.tight_layout()
+    plt.savefig('bar1.png')
+    plt.close()

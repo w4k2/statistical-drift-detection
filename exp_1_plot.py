@@ -64,10 +64,11 @@ for ss_id, ss in enumerate(subspace_sizes):
         """
         Plot err
         """
-        fig, ax = plt.subplots(1, 3, figsize=(24,8), dpi=150)
-        cmaps = ['Reds', 'Greens', 'Blues']
+        fig, ax = plt.subplots(1, 4, figsize=(32,8), dpi=150)
+        cmaps = ['Reds_r', 'Greens_r', 'Blues_r']
         metrics = ['d1',  'd2', 'cnt']
         for i in range(3):
+            
             ax[i].imshow(res_arr_mean[:,:,i], cmap=cmaps[i], origin='upper')
 
             ax[i].set_yticks(list(range(len(th_arr))))
@@ -83,7 +84,21 @@ for ss_id, ss in enumerate(subspace_sizes):
                 for _b, __b in enumerate(det_arr):
                     ax[i].text(_b, _a, "%.3f" % (
                         res_arr_mean[_a, _b, i]) , va='center', ha='center', c='red', fontsize=5)
-                        
+        
+            # normalizacja
+            res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
+            res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])            
+
+        
+        ax[3].imshow(res_arr_mean, origin='upper')
+        ax[3].set_yticks(list(range(len(th_arr))))
+        ax[3].set_yticklabels(['%.2f' % v for v in th_arr])
+        ax[3].set_ylabel("Threshold")
+
+        ax[3].set_xticks(list(range(len(det_arr))))
+        ax[3].set_xticklabels(det_arr)
+        ax[3].set_xlabel("n detectors")
+        ax[3].set_title("%s %s %i ss" % (metrics[i], drf, ss))
 
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
