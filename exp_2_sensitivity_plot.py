@@ -23,7 +23,7 @@ for rec_id, rec in enumerate(recurring):
         # replications x detectors x (real, detected) x chunks-1
 
 
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1]))
+        dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
 
         for rep in range(res_arr.shape[0]):
             for det in range(res_arr.shape[1]):
@@ -69,7 +69,7 @@ for rec_id, rec in enumerate(recurring):
             ax[1].scatter(det_sum, det_y, alpha=0.4, s=drf_cnt*15, c=colors[det_id], label=res_arr_mean[det_id])
 
         ax[1].set_yticks(list(range(len(detector_names))))
-        ax[1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+        ax[1].set_yticklabels("%s - %.3f,%.3f,%.3f " % (d, res_arr_mean[i,0],res_arr_mean[i,1],res_arr_mean[i,2]) for i, d in enumerate(detector_names))
         ax[1].set_title("Detections")
 
         fig.subplots_adjust(top=0.93)

@@ -22,7 +22,7 @@ for ss_id, ss in enumerate(subspace_sizes):
         print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
 
         res_clf_mean = np.mean(res_clf, axis=0)
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2]))
+        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2], 3))
 
         for rep in range(res_arr.shape[0]):
             for th in range(res_arr.shape[1]):
@@ -64,24 +64,26 @@ for ss_id, ss in enumerate(subspace_sizes):
         """
         Plot err
         """
-        fig, ax = plt.subplots(1, 1, figsize=(8, 8), dpi=300)
+        fig, ax = plt.subplots(1, 3, figsize=(24,8), dpi=150)
+        cmaps = ['Reds', 'Greens', 'Blues']
+        metrics = ['d1',  'd2', 'cnt']
+        for i in range(3):
+            ax[i].imshow(res_arr_mean[:,:,i], cmap=cmaps[i], origin='upper')
 
-        ax.imshow(res_arr_mean, cmap='binary', origin='upper')
+            ax[i].set_yticks(list(range(len(th_arr))))
+            ax[i].set_yticklabels(['%.2f' % v for v in th_arr])
+            ax[i].set_ylabel("Threshold")
 
-        ax.set_yticks(list(range(len(th_arr))))
-        ax.set_yticklabels(['%.2f' % v for v in th_arr])
-        ax.set_ylabel("Threshold")
+            ax[i].set_xticks(list(range(len(det_arr))))
+            ax[i].set_xticklabels(det_arr)
+            ax[i].set_xlabel("n detectors")
+            ax[i].set_title("%s %s %i ss" % (metrics[i], drf, ss))
 
-        ax.set_xticks(list(range(len(det_arr))))
-        ax.set_xticklabels(det_arr)
-        ax.set_xlabel("n detectors")
-        ax.set_title("%s %i ss" % (drf, ss))
-
-        for _a, __a in enumerate(th_arr):
-            for _b, __b in enumerate(det_arr):
-                ax.text(_b, _a, "%.3f" % (
-                    res_arr_mean[_a, _b]) , va='center', ha='center', c='red', fontsize=5)
-                    
+            for _a, __a in enumerate(th_arr):
+                for _b, __b in enumerate(det_arr):
+                    ax[i].text(_b, _a, "%.3f" % (
+                        res_arr_mean[_a, _b, i]) , va='center', ha='center', c='red', fontsize=5)
+                        
 
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
