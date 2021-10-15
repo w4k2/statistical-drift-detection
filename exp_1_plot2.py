@@ -75,7 +75,7 @@ for ss_id, ss in enumerate(subspace_sizes):
         for i in range(3):
             all_errors[ss_id, drf_id, :,:,i] -= np.min(vmins[i])
             all_errors[ss_id, drf_id, :,:,i] /= (np.max(vmaxs[i]) - np.min(vmins[i]))
-        all_errors[ss_id, drf_id] = 1 - all_errors[ss_id, drf_id]
+        # all_errors[ss_id, drf_id] = 1 - all_errors[ss_id, drf_id]
 
 vmax_global = np.max(all_errors)
 vmin_global = np.min(all_errors)

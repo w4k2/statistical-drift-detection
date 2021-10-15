@@ -21,7 +21,7 @@ for rec_id, rec in enumerate(recurring):
         res_arr = np.load('results_ex2/drf_arr_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
         # replications x detectors x (real, detected) x chunks-1
 
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1]))
+        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], 3))
 
         for rep in range(res_arr.shape[0]):
             for det in range(res_arr.shape[1]):
@@ -40,7 +40,7 @@ for rec_id, rec in enumerate(recurring):
         """
 
         plt.close()
-        fig, ax = plt.subplots(2, 2, figsize=(25, 10), dpi=300)
+        fig, ax = plt.subplots(2, 2, figsize=(25, 10))
         fig.suptitle("%s, %s" % (rec, drf_type), fontsize=15)
 
         for det_id, det_name in enumerate(detector_names):
@@ -82,14 +82,14 @@ for rec_id, rec in enumerate(recurring):
             ax[1,0].imshow(zzz, origin='lower')
 
         ax[1,0].set_yticks([5,15,25,35,45,55])
-        ax[1,0].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+        ax[1,0].set_yticklabels("%s - %.3f, %.3f, %.3f" % (d, res_arr_mean[i,0],res_arr_mean[i,1],res_arr_mean[i,2]) for i, d in enumerate(detector_names))
 
         ax[0,1].set_yticks(list(range(len(detector_names))))
-        ax[0,1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+        ax[0,1].set_yticklabels("%s - %.3f, %.3f, %.3f" % (d, res_arr_mean[i,0],res_arr_mean[i,1],res_arr_mean[i,2]) for i, d in enumerate(detector_names))
         ax[0,1].set_title("Detections")
         ax[1,1].grid(ls=":")
         ax[1,1].set_yticks(list(range(len(detector_names))))
-        ax[1,1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+        ax[1,1].set_yticklabels("%s - %.3f, %.3f, %.3f" % (d, res_arr_mean[i,0],res_arr_mean[i,1],res_arr_mean[i,2]) for i, d in enumerate(detector_names))
 
         # ax[1].legend(loc=3, facecolor='white', framealpha=.95, edgecolor='white', ncol=3)
 

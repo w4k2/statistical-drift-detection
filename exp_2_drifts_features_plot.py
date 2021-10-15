@@ -51,7 +51,7 @@ for n_f in n_features:
                 """
 
                 plt.close()
-                fig, ax = plt.subplots(2, 2, figsize=(25, 10), dpi=300)
+                fig, ax = plt.subplots(2, 2, figsize=(25, 10))
                 fig.suptitle("%s, %s" % (rec, drf_type), fontsize=15)
 
                 for det_id, det_name in enumerate(detector_names):
