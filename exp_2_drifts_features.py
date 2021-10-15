@@ -28,8 +28,8 @@ recurring = e2_config.e2_recurring()
 
 metrics = e2_config.metrics()
 
-print(len(n_drifts), len(n_features), 1 ,len(recurring),replications)
-t = len(n_drifts)*len(n_features)*1*len(recurring)*replications
+print(len(n_drifts), len(n_features), len(drf_types) ,len(recurring),replications)
+t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
@@ -41,8 +41,11 @@ for n_f in n_features:
         for rec in recurring:
             for drf_type in drf_types:
 
-                if drf_type != 'sudden':
-                    continue
+                # if drf_type != 'sudden':
+                #     continue
+
+                # if n_d != 5:
+                #     continue
 
                 results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
                 results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
