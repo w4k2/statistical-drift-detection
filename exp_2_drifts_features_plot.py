@@ -25,14 +25,14 @@ for n_f in n_features:
                 # if n_f < 30:
                 #     continue
 
-                res_clf = np.load('results_ex2_d_f/clf_%ifeat_%idrifts_%s_%s.npy' %(n_f, n_d, drf_type, rec))
+                res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s.npy' %(n_f, n_d, drf_type, rec))
                 # replications x detectors x chunks-1
                 res_clf_mean = np.mean(res_clf, axis=0)
 
-                res_arr = np.load('results_ex2_d_f/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(n_f, n_d, drf_type, rec))
+                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(n_f, n_d, drf_type, rec))
                 # replications x detectors x (real, detected) x chunks-1
 
-                dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1]))
+                dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
 
                 for rep in range(res_arr.shape[0]):
                     for det in range(res_arr.shape[1]):
@@ -93,21 +93,21 @@ for n_f in n_features:
                     ax[1,0].imshow(zzz, origin='lower')
 
                 ax[1,0].set_yticks([5,15,25,35,45,55])
-                ax[1,0].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+                ax[1,0].set_yticklabels("%s - %.3f" % (d, np.sum(res_arr_mean[i])) for i, d in enumerate(detector_names))
 
                 ax[0,1].set_yticks(list(range(len(detector_names))))
-                ax[0,1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+                ax[0,1].set_yticklabels("%s - %.3f" % (d, np.sum(res_arr_mean[i])) for i, d in enumerate(detector_names))
                 ax[0,1].set_title("Detections")
                 ax[1,1].grid(ls=":")
                 ax[1,1].set_yticks(list(range(len(detector_names))))
-                ax[1,1].set_yticklabels("%s - %.3f" % (d, res_arr_mean[i]) for i, d in enumerate(detector_names))
+                ax[1,1].set_yticklabels("%s - %.3f" % (d, np.sum(res_arr_mean[i])) for i, d in enumerate(detector_names))
 
                 # ax[1].legend(loc=3, facecolor='white', framealpha=.95, edgecolor='white', ncol=3)
 
 
                 fig.subplots_adjust(top=0.93)
                 plt.tight_layout()
-                plt.savefig("figures_ex2_d_f/%if_%id_%s_%s.png" % (n_f, n_d, rec, drf_type))
+                plt.savefig("figures_ex2_d_f/45_%if_%id_%s_%s.png" % (n_f, n_d, rec, drf_type))
                 # plt.savefig('foo.png')
 
                 # exit()
