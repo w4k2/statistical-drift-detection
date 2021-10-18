@@ -136,7 +136,7 @@ def e2_n_features():
         15: { 'n_features': 15, 'n_informative': 15},
         20: { 'n_features': 20, 'n_informative': 20},
         25: { 'n_features': 25, 'n_informative': 25},
-        30: { 'n_features': 30, 'n_informative': 30},
+        # 30: { 'n_features': 30, 'n_informative': 30},
     }
 
 def e2_clfs(sdde_n_det, sdde_sensitivity=.55):

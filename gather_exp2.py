@@ -10,8 +10,12 @@ recurring = e2_config.e2_recurring()
 detector_names = e2_config.e2_clf_names()
 replications = e2_config.e2_replications()
 
-results_all = np.zeros((replications, len(recurring) * len(drf_types), len(detector_names), 4))
-                # replications, recurring + drf_types, detectors, (acc, d1, d2, cnt)
+drifts_n = e2_config.e2_n_drifts()
+features_n = e2_config.e2_n_features()
+
+
+results_all = np.zeros((replications, len(recurring) * len(drf_types) * len(features_n) * len(drifts_n), len(detector_names), 4))
+                # replications, recurring + drf_types + features + drifts_num, detectors, (acc, d1, d2, cnt)
 
 str_cnt = 0
 str_names=[]
@@ -19,34 +23,42 @@ metric_names = ["Accuracy", "d1", "d2", "cnt_ratio"]
 
 for rec_id, rec in enumerate(recurring):
     for drf_id, drf_type in enumerate(drf_types):
-        res_clf = np.load('results_ex2/clf_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
-        # replications x detectors x chunks-1
 
-        res_arr = np.load('results_ex2/drf_arr_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
-        # replications x detectors x (real, detected) x chunks-1
+        #features, drifts
+        for f_id, f in enumerate(features_n):
+            for d_id, d in enumerate(drifts_n):
 
-        dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
+                res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
+                # replications x detectors x chunks-1
 
-        for rep in range(res_arr.shape[0]):
-            for det in range(res_arr.shape[1]):
-                real_drf = np.argwhere(res_arr[rep, det, 0]==2).flatten()
-                det_drf = np.argwhere(res_arr[rep, det, 1]==2).flatten()
-                err = dderror(real_drf, det_drf, res_arr.shape[3])
-                dderror_arr[rep, det] = err
-        
-        #accuracy
-        results_all[:, str_cnt, :, 0] = np.mean(res_clf, axis=2)
-        #d1
-        results_all[:, str_cnt, :, 1] = dderror_arr[:,:,0]
-        #d2
-        results_all[:, str_cnt, :, 2] = dderror_arr[:,:,1]
-        #cnt
-        results_all[:, str_cnt, :, 3] = dderror_arr[:,:,2]
+                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
+                # replications x detectors x (real, detected) x chunks-1
 
-        str_cnt +=1
-        str_names.append("%s_%s" % (rec, drf_type))
+                dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
 
-mean_res_all = np.mean(results_all, axis=0)
+                for rep in range(res_arr.shape[0]):
+                    for det in range(res_arr.shape[1]):
+                        real_drf = np.argwhere(res_arr[rep, det, 0]==2).flatten()
+                        det_drf = np.argwhere(res_arr[rep, det, 1]==2).flatten()
+                        err = dderror(real_drf, det_drf, res_arr.shape[3])
+                        dderror_arr[rep, det] = err
+                
+                #accuracy
+                results_all[:, str_cnt, :, 0] = np.mean(res_clf, axis=2)
+                #d1
+                results_all[:, str_cnt, :, 1] = dderror_arr[:,:,0]
+                #d2
+                results_all[:, str_cnt, :, 2] = dderror_arr[:,:,1]
+                #cnt
+                results_all[:, str_cnt, :, 3] = dderror_arr[:,:,2]
+
+                str_cnt +=1
+                str_names.append("%s_%s_drfits_%i_features_%i" % (rec, drf_type, d, f))
+
+print(len(str_names))
+print(results_all.shape) # 10 x 150 x 6 x 4
+
+mean_res_all = np.mean(results_all, axis=0) # 150 x 6 x 4
 
 mean_acc = np.concatenate((np.array(str_names)[:, np.newaxis], mean_res_all[:,:,0]), axis=1)
 mean_d1 = np.concatenate((np.array(str_names)[:, np.newaxis], mean_res_all[:,:,1]), axis=1)
@@ -98,16 +110,17 @@ for metric_id in range(4):
             _ = np.where((p < alpha) * (s < 0))
 
         conclusions = [list(1 + _[1][_[0] == i])
-                       for i in range(length)]
+                    for i in range(length)]
 
         t.append(["%s" % str_name] + ["%.3f" % v for v in e_res_temp])
 
         t.append([''] + [", ".join(["%i" % i for i in c])
-                 if len(c) > 0 and len(c) < length-1 else ("all" if len(c) == length-1 else "---")
-                 for c in conclusions])
+                if len(c) > 0 and len(c) < length-1 else ("all" if len(c) == length-1 else "---")
+                for c in conclusions])
 
-    print(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs")) 
-
+    # print(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs")) 
+    with open('table_%s.txt' % metric_names[metric_id], 'w') as f:
+        f.write(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs"))
     # exit()
 
 
