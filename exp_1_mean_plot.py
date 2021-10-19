@@ -10,7 +10,8 @@ det_arr = e1_config.e1_n_detectors()
 
 print(th_arr, det_arr)
 
-fig, ax = plt.subplots(3, 3, figsize=(25,10))
+fig, ax = plt.subplots(3, 3, figsize=(8*1.618,8),
+                       sharey=True, sharex=True)
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
@@ -42,27 +43,77 @@ for ss_id, ss in enumerate(subspace_sizes):
         """
         Plot
         """
+        aa = ax[drf_id, ss_id]
+        aa.set_title('ss: %i, drf: %s' % (ss, drf))
 
-        ax[drf_id, ss_id].set_title('ss: %i, drf: %s' % (ss, drf))
+        vec_0 = res_arr_mean_detectors[:,2]
+        vec_1 = res_arr_mean_detectors[:,1]
+        vec_2 = res_arr_mean_detectors[:,0]
 
-        ax[drf_id, ss_id].plot(res_arr_mean_detectors[:,0], color = 'red', label = 'd1')
-        ax[drf_id, ss_id].plot(res_arr_mean_detectors[:,1], color = 'green', label='d2')
-        ax[drf_id, ss_id].plot(res_arr_mean_detectors[:,2], color = 'blue', label = 'cnt')
+        colors = [
+            '#111111',
+            '#555555',
+            '#999999'
+        ]
+        alpha = .75
 
-        ax[drf_id, ss_id].plot(1-res_clf_mean_detectors, color = 'black', label = 'clf error')
+        aa.fill_between(th_arr, vec_0 * 0, vec_0,
+                        color = colors[0], label = 'dd-ratio',
+                        alpha=alpha)
+        aa.fill_between(th_arr, vec_0, vec_0 + vec_1,
+                        color = colors[1], label = 'c. det.',
+                        alpha=alpha)
+        aa.fill_between(th_arr, vec_0 + vec_1, vec_0 + vec_1 + vec_2,
+                        color = colors[2], label = 'c. drf.',
+                        alpha=alpha)
 
-        ax[drf_id, ss_id].set_xticks(list(range(len(th_arr))))
-        ax[drf_id, ss_id].set_xticklabels(['%.2f' % v for v in th_arr])
-        ax[drf_id, ss_id].set_xlabel("Threshold")
+
+        aa.plot(th_arr, vec_0,
+                color = colors[0])
+        aa.plot(th_arr, vec_0 + vec_1,
+                color = colors[1])
+        aa.plot(th_arr, vec_0 + vec_1 + vec_2,
+                color = colors[2])
+
+
+        """
+        aa.plot(th_arr, res_arr_mean_detectors[:,0],
+                color = 'red', label = 'closest drift')
+        aa.plot(th_arr, res_arr_mean_detectors[:,1],
+                color = 'green', label='closest detection')
+        aa.plot(th_arr, res_arr_mean_detectors[:,2],
+                color = 'blue', label = 'dd-ratio')
+        """
+
+        #ax[drf_id, ss_id].plot(1-res_clf_mean_detectors, color = 'black', label = 'clf error')
+
+        print(th_arr)
+
+        #ax[drf_id, ss_id].set_xticks(list(range(len(th_arr))))
+        #ax[drf_id, ss_id].set_xticklabels(['%.2f' % v for v in th_arr])
+        if drf_id == 2:
+            aa.set_xlabel("Threshold")
 
         # ax[drf_id, ss_id].set_ylim(0,35)
-        ax[drf_id, ss_id].set_ylabel("Error")
+        if ss_id == 0:
+            aa.set_ylabel("Accumulated error value")
+
+        aa.set_yscale('log')
+        aa.set_ylim(.1, 100)
+        aa.set_xlim(th_arr[0], th_arr[-1])
+        aa.grid(ls=":")
+        aa.spines['top'].set_visible(False)
+        aa.spines['right'].set_visible(False)
+
+        aa.set_yticks([.1, 1, 10, 100])
+        aa.set_yticklabels(['0.1', '1', '10', '100'])
 
 
-plt.legend()
+
+plt.legend(ncol=3, loc=9, frameon=False)
 plt.tight_layout()
+plt.savefig('foo.png')
 plt.savefig('figures_ex1/mean_all.png')
 
-        # plt.close()
-
-        # exit()
+# plt.close()
+# exit()
