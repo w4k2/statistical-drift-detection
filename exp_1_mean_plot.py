@@ -114,6 +114,7 @@ plt.legend(ncol=3, loc=9, frameon=False)
 plt.tight_layout()
 plt.savefig('foo.png')
 plt.savefig('figures_ex1/mean_all.png')
+plt.savefig('pub_figures/mean_all.eps')
 
 # plt.close()
 # exit()
