@@ -127,7 +127,7 @@ def e2_n_drifts():
         3: { 'n_drifts': 3},
         5: { 'n_drifts': 5},
         7: { 'n_drifts': 7},
-        9: { 'n_drifts': 9},
+        # 9: { 'n_drifts': 9},
     }
 
 def e2_n_features():
