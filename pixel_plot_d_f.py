@@ -7,7 +7,7 @@ import matplotlib.colors
 
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
-detector_names = e2_config.e2_clf_names()
+detector_names = e2_config.e2_clf_names()[:-2]
 
 drifts_n = e2_config.e2_n_drifts()
 features_n = e2_config.e2_n_features()
@@ -21,8 +21,9 @@ for rec_id, rec in enumerate(recurring):
         #     continue
 
         plt.close()
-        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(20, 9))
-        fig.suptitle("%s, %s" % (rec, drf_type), fontsize=15)
+        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 7),
+                               sharey=True)
+        fig.suptitle("%s %s drift" % (rec, drf_type), fontsize=12)
 
         #features, drifts
         for f_id, f in enumerate(features_n):
@@ -49,30 +50,63 @@ for rec_id, rec in enumerate(recurring):
                 """
                 Plot
                 """
-                ax[d_id,f_id].set_title("drifts: %i, features: %i" % (d, f))
+                #ax[d_id,f_id].set_title("drifts: %i, features: %i" % (d, f))
 
-                for det_id, det_name in enumerate(detector_names):
-                    drf_cnt=np.ones((res_arr.shape[3]))
+                drf_cnt=np.ones((res_arr.shape[3]))
 
-                    zzz = res_arr[:,:,1,:]
-                    zzz[zzz==1]=0 # warningi przeszkadzaja
+                czytotu = np.where(res_arr[0,0,0,:] == 2)[0]
+                print(czytotu)
 
-                    mask = zzz==0
-                    mask[:,[0,1,2,4,5],:]=False
-                    zzz[mask]=1
+                zzz = res_arr[:,:,1,:]
+                zzz[zzz==1]=0 # warningi przeszkadzaja
 
-                    zzz = np.swapaxes(zzz, 0,1)
-                    zzz = np.reshape(zzz, (-1, 199))
+                mask = zzz==0
+                mask[:,[0,1,2,4,5],:]=False
+                zzz[mask]=1
 
-                    # print(zzz, zzz.shape)
+                zzz = np.swapaxes(zzz, 0,1)
+                zzz = np.reshape(zzz, (-1, 199))
 
-                    ax[d_id,f_id].imshow(zzz, cmap= cmap, origin='lower', interpolation='none')
+                zzz = zzz[:-20, :]
 
-                ax[d_id,f_id].set_yticks([5,15,25,35,45,55])
-                ax[d_id,f_id].set_yticklabels("%s" % d for i, d in enumerate(detector_names))
+                # print(zzz, zzz.shape)
+
+                ax[d_id, f_id].spines['top'].set_visible(False)
+                ax[d_id, f_id].spines['bottom'].set_visible(False)
+                ax[d_id, f_id].spines['left'].set_visible(False)
+                ax[d_id, f_id].spines['right'].set_visible(False)
+
+                aa = ax[d_id, f_id]
+                aa.set_xticks(czytotu)
+                aa.set_xticklabels(czytotu+1, fontsize=8)
+                aa.grid(ls=":", axis='x', lw=1, color='black')
+
+                aa.hlines([0,10,20,30,40], 0, 200, color='black', lw=.5)
+
+                ax[d_id,f_id].imshow(zzz,
+                                     cmap=cmap,
+                                     origin='lower',
+                                     interpolation='none',
+                                     aspect=2)
+
+                aa.set_ylim(0, 40)
+
+                if d_id == 0:
+                    aa.set_title('%i features' % f, fontsize=10)
+
+                if f_id == 0:
+                    aa.set_ylabel('%i drifts' % d, fontsize=10)
+
+                if d_id == 3:
+                    aa.set_xlabel('number of chunks processed', fontsize=8)
+
+
+                ax[d_id,f_id].set_yticks([5,15,25,35])
+                ax[d_id,f_id].set_yticklabels("%s" % d
+                                              for i, d in enumerate(detector_names))
 
         plt.tight_layout()
         fig.subplots_adjust(top=0.93)
         plt.savefig("figures_ex2/d_f_pix_%s_%s.png" % (rec, drf_type))
-        # plt.savefig('foo.png')
-        # exit()
+        plt.savefig('foo.png')
+        #exit()
