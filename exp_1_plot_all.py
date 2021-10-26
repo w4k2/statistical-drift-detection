@@ -11,11 +11,11 @@ det_arr = e1_config.e1_n_detectors()
 """
 Classification
 """
-fig, ax = plt.subplots(3, 3, figsize=(8, 8),
+fig, ax = plt.subplots(3, 3, figsize=(5, 5),
                        sharex=True,
                        sharey=True)
 
-fig.suptitle("Classification score")
+# fig.suptitle("Classification score")
 
 addr_a = np.linspace(0, len(th_arr)-1, 5)
 addr_b = np.linspace(0, len(det_arr)-1, 5)
@@ -53,7 +53,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 
 
 plt.tight_layout()
-fig.subplots_adjust(top=0.93)
+# fig.subplots_adjust(top=0.93)
 plt.savefig('figures_ex1/clf.png')
 plt.savefig('figures_ex1/clf.eps')
 plt.close()
@@ -105,11 +105,11 @@ print(vmax_global, vmin_global)
 Second plot
 """
 
-fig, ax = plt.subplots(3, 3, figsize=(8, 8),
+fig, ax = plt.subplots(3, 3, figsize=(5, 5),
                        sharex=True,
                        sharey=True)
 
-fig.suptitle("Detection error")
+# fig.suptitle("Detection error")
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
@@ -172,7 +172,7 @@ fig, ax = plt.subplots(3, 3, figsize=(8, 8),
                        sharex=True,
                        sharey=True)
 
-fig.suptitle("Detection error")
+# fig.suptitle("Detection error")
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
