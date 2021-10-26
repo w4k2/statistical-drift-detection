@@ -95,6 +95,6 @@ for rec_id, rec in enumerate(recurring):
 
         fig.subplots_adjust(top=0.93)
         plt.tight_layout()
-        plt.savefig("figures_ex2/sensitivity_%s_%s.png" % (rec, drf_type))
+        plt.savefig("figures_ex2/sensitivity.eps")
         plt.savefig("foo.png")
         #exit()
