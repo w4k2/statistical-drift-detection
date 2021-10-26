@@ -2,27 +2,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror
 import e1_config
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 subspace_sizes = e1_config.e1_subspace_sizes()
 drf_types = e1_config.e1_drift_types()
 th_arr = e1_config.e1_drf_threshold()
 det_arr = e1_config.e1_n_detectors()
 
-print(th_arr, det_arr)
+gd = 10
+
+addr_a = np.linspace(0, len(th_arr)-1, gd)
+addr_b = np.linspace(0, len(det_arr)-1, gd)
+
+val_a = ['%.2f' % v for v in np.linspace(0, 1, gd)]
+val_b = ['%.0f' % v for v in np.linspace(1, 100, gd)]
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        # if drf == 'incremental':
-        #     continue
+        fig, ax = plt.subplots(2, 3, figsize=(12,12/1.618),
+                               sharex=True, sharey=True)
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
 
-        print(res_clf.shape) #replications x threshold x detectors
-        print(res_arr.shape) #replications x threshold x detectors x (real, detected) x chunks-1
-
         res_clf_mean = np.mean(res_clf, axis=0)
-        dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], res_arr.shape[2], 3))
+        dderror_arr = np.zeros((res_arr.shape[0],
+                                res_arr.shape[1],
+                                res_arr.shape[2], 3))
 
         for rep in range(res_arr.shape[0]):
             for th in range(res_arr.shape[1]):
@@ -37,70 +43,91 @@ for ss_id, ss in enumerate(subspace_sizes):
         """
         Plot clf
         """
-        fig, ax = plt.subplots(1, 1, figsize=(8, 8), dpi=300)
+        aa = ax[1,1]
+        im = aa.imshow(res_clf_mean, cmap='binary', origin='lower',
+                  vmin=.5, vmax=1)
 
-        ax.imshow(res_clf_mean, cmap='binary', origin='lower')
+        #divider = make_axes_locatable(aa)
+        #cax = divider.append_axes('right', size='5%', pad=0.05)
+        #fig.colorbar(im, cax=cax, orientation='vertical')
 
-        ax.set_yticks(list(range(len(th_arr))))
-        ax.set_yticklabels(['%.2f' % v for v in th_arr])
-        ax.set_ylabel("Threshold")
-
-        ax.set_xticks(list(range(len(det_arr))))
-        ax.set_xticklabels(['%.0f' % v for v in det_arr])
-        ax.set_xlabel("n detectors")        
-        ax.set_title("%s %i ss" % (drf, ss))
-
-        for _a, __a in enumerate(th_arr):
-            for _b, __b in enumerate(det_arr):
-                v = res_clf_mean[_a, _b]
-                ax.text(_b, _a, "%.3f" % (
-                    v) , va='center', ha='center', c='white' if v > np.mean(res_clf_mean) else 'black', fontsize=5)
-
-
-        plt.tight_layout()
-        plt.savefig('figures_ex1/clf_%s_%i.png' % (drf, ss))
-        plt.close()
 
         """
         Plot err
         """
-        fig, ax = plt.subplots(1, 4, figsize=(32,8), dpi=150)
-        cmaps = ['Reds_r', 'Greens_r', 'Blues_r']
+        cmaps = ['binary_r', 'binary_r', 'binary_r']
         metrics = ['d1',  'd2', 'cnt']
         for i in range(3):
-            
-            ax[i].imshow(res_arr_mean[:,:,i], cmap=cmaps[i], origin='upper')
+            aa = ax[0,i]
+            aa.imshow(res_arr_mean[:,:,i]*10, cmap=cmaps[i], origin='lower')
 
-            ax[i].set_yticks(list(range(len(th_arr))))
-            ax[i].set_yticklabels(['%.2f' % v for v in th_arr])
-            ax[i].set_ylabel("Threshold")
+            #divider = make_axes_locatable(aa)
+            #cax = divider.append_axes('right', size='5%', pad=0.05)
+            #fig.colorbar(im, cax=cax, orientation='vertical')
 
-            ax[i].set_xticks(list(range(len(det_arr))))
-            ax[i].set_xticklabels(det_arr)
-            ax[i].set_xlabel("n detectors")
-            ax[i].set_title("%s %s %i ss" % (metrics[i], drf, ss))
+            vba = res_arr_mean[:,:,i]
+            print(i, np.min(vba), np.max(vba))
 
-            for _a, __a in enumerate(th_arr):
-                for _b, __b in enumerate(det_arr):
-                    ax[i].text(_b, _a, "%.3f" % (
-                        res_arr_mean[_a, _b, i]) , va='center', ha='center', c='red', fontsize=5)
-        
             # normalizacja
             res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
-            res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])            
+            res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])
 
-        
-        ax[3].imshow(res_arr_mean, origin='upper')
-        ax[3].set_yticks(list(range(len(th_arr))))
-        ax[3].set_yticklabels(['%.2f' % v for v in th_arr])
-        ax[3].set_ylabel("Threshold")
 
-        ax[3].set_xticks(list(range(len(det_arr))))
-        ax[3].set_xticklabels(det_arr)
-        ax[3].set_xlabel("n detectors")
-        ax[3].set_title("%s %s %i ss" % (metrics[i], drf, ss))
+
+        aa = ax[1,0]
+        aa.imshow(res_arr_mean, origin='lower')
+
+
+        img_mono = res_clf_mean
+        img_poly = res_arr_mean
+        img_mono -= .5
+        img_mono *= 2
+        img_mono = 1 - img_mono
+        img_mix = img_poly * img_mono[:,:, np.newaxis]
+        img_mix = np.mean(img_mix, axis=2)
+
+        aa = ax[1,2]
+        im = aa.imshow(img_mix, origin='lower', cmap='binary_r')
+
+        #divider = make_axes_locatable(aa)
+        #cax = divider.append_axes('right', size='5%', pad=0.05)
+        #fig.colorbar(im, cax=cax, orientation='vertical')
+
+
+        for j in range(2):
+            for k in range(3):
+                aa = ax[j,k]
+                if k==0:
+                    aa.set_ylabel("threshold")
+                if j==1:
+                    aa.set_xlabel("#detectors")
+
+                aa.set_yticks(list(range(len(th_arr))))
+                aa.set_yticklabels(['%.2f' % v for v in th_arr])
+                aa.set_xticks(list(range(len(det_arr))))
+                aa.set_xticklabels(['%.0f' % v for v in det_arr])
+                aa.set_yticks(addr_a)
+                aa.set_yticklabels(val_a, fontsize=8)
+                aa.set_xticks(addr_b)
+                aa.set_xticklabels(val_b, fontsize=8)
+
+                aa.grid(ls=":")
+                [aa.spines[spine].set_visible(False)
+                 for spine in ['top', 'bottom', 'left', 'right']]
+
+
+        ax[0,0].set_title('Mean closest detection-drift distance')
+        ax[0,1].set_title('Mean closest drift-detection distance')
+        ax[0,2].set_title('Drift-detection ratio')
+        ax[1,0].set_title('Drift Detection Errors Heatmap')
+        ax[1,1].set_title('Classification accuracy')
+        ax[1,2].set_title('Overall optimization criterion')
 
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
+        plt.savefig('figures_ex1/err_%s_%i.eps' % (drf, ss))
+        plt.savefig('bar.png')
 
         plt.close()
+
+        #exit()
