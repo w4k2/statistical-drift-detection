@@ -1,7 +1,7 @@
 # statistical-drift-detection
 
-- exp_1_plot_all
-- exp_1_plot
+x exp_1_plot_all
+x exp_1_plot
 - exp_2_sensitivity_plot
 - pixel_plot_d_f
 - pixel_plot  (tylko dla 5 dryfów i 15 cech)
