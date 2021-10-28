@@ -139,7 +139,7 @@ def e2_n_features():
         # 30: { 'n_features': 30, 'n_informative': 30},
     }
 
-def e2_clfs(sdde_n_det, sdde_sensitivity=.55):
+def e2_clfs(sdde_n_det=15, sdde_sensitivity=.55):
     clfs = []
     #DDM
     for m in e2_methods():
