@@ -34,7 +34,6 @@ pbar = tqdm(total=replications*len(files))
 
 for i, filepath in enumerate(files):
     print(filepath)
-    stream = NPYParser2('%s/%s' % (directory, filepath), chunk_size=chunk_size, n_chunks=n_chunks)
     # print(stream.get_chunk())
     # exit()
     drifts = int(filepath.split('_')[3][0])
@@ -45,6 +44,7 @@ for i, filepath in enumerate(files):
     # replications x detectors x (real_drf, detected_drf) x chunks
 
     for replication in range(replications):
+        stream = NPYParser2('%s/%s' % (directory, filepath), chunk_size=chunk_size, n_chunks=n_chunks)
 
         detectors = e2_config.e2_clfs(n_features, .35)
 
