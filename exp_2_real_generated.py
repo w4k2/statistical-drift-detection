@@ -1,9 +1,6 @@
-from scipy.io import arff
 import os 
 import numpy as np
-import pandas as pd
 import strlearn as sl
-from NPY_parser import NPYParser2
 import e2_config
 from tqdm import tqdm
 
@@ -44,7 +41,7 @@ for i, filepath in enumerate(files):
     # replications x detectors x (real_drf, detected_drf) x chunks
 
     for replication in range(replications):
-        stream = NPYParser2('%s/%s' % (directory, filepath), chunk_size=chunk_size, n_chunks=n_chunks)
+        stream = sl.streams.NPYParser('%s/%s' % (directory, filepath), chunk_size=chunk_size, n_chunks=n_chunks)
 
         detectors = e2_config.e2_clfs(n_features, .35)
 

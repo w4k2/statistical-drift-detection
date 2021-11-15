@@ -108,5 +108,6 @@ for rec_id, rec in enumerate(recurring):
         plt.tight_layout()
         fig.subplots_adjust(top=0.93)
         plt.savefig("figures_ex2/d_f_pix_%s_%s.png" % (rec, drf_type))
+        plt.savefig("pub_figures/d_f_pix_%s_%s.eps" % (rec, drf_type))
         plt.savefig('foo.png')
         #exit()

@@ -23,8 +23,8 @@ cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white", "lemonc
 for str_id, stream in enumerate(streams):
 
     plt.close()
-    fig, ax = plt.subplots(len(drifts_n), len(drf_types), figsize=(18, 7), sharey=True)
-    fig.suptitle("%s" % (stream), fontsize=12)
+    fig, ax = plt.subplots(len(drifts_n), len(drf_types), figsize=(14, 5), sharey=True)
+    fig.suptitle("%s" % (stream), fontsize=14)
 
     #drifts, drf types
     for d_id, d in enumerate(drifts_n):
@@ -42,7 +42,7 @@ for str_id, stream in enumerate(streams):
             zzz[zzz==1]=0 # warningi przeszkadzaja
 
             mask = zzz==0
-            mask[[0,1,2,4,5],:]=False
+            mask[:,[0,1,2,4,5],:]=False
             zzz[mask]=1
 
             zzz = np.swapaxes(zzz, 0, 1)
@@ -62,7 +62,7 @@ for str_id, stream in enumerate(streams):
 
             aa = ax[d_id, d_type_id]
             aa.set_xticks(czytotu)
-            aa.set_xticklabels(czytotu+1, fontsize=8)
+            aa.set_xticklabels(czytotu+1, fontsize=10)
             aa.grid(ls=":", axis='x', lw=1, color='black')
 
             aa.hlines([0,10,20,30,40], 0, 400, color='black', lw=.5)
@@ -76,13 +76,13 @@ for str_id, stream in enumerate(streams):
             aa.set_ylim(0, 40)
 
             if d_id == 0:
-                aa.set_title('%s drift' % d_type, fontsize=10)
+                aa.set_title('%s drift' % d_type, fontsize=12)
 
             if d_type_id == 0:
-                aa.set_ylabel('%i drifts' % d, fontsize=10)
+                aa.set_ylabel('%i drifts' % d, fontsize=12)
 
             if d_id == 3:
-                aa.set_xlabel('number of chunks processed', fontsize=8)
+                aa.set_xlabel('number of chunks processed', fontsize=10)
 
 
             ax[d_id,d_type_id].set_yticks([5,15,25,35])

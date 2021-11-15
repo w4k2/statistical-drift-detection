@@ -91,10 +91,11 @@ for rec_id, rec in enumerate(recurring):
         if rec_id == 1:
             ax.set_xlabel('Number of chunks processed')
         if drf_id == 0:
-            ax.set_ylabel('Detector treshold')
+            ax.set_ylabel('Detector sensitivity')
 
         fig.subplots_adjust(top=0.93)
         plt.tight_layout()
+        plt.savefig("pub_figures/sensitivity.eps")
         plt.savefig("figures_ex2/sensitivity.eps")
         plt.savefig("foo.png")
         #exit()
