@@ -2,7 +2,6 @@ import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.neighbors import KernelDensity
 
-
 _SQRT2 = np.sqrt(2)
 
 class SDDM(BaseEstimator, ClassifierMixin):
@@ -64,10 +63,10 @@ class SDDM(BaseEstimator, ClassifierMixin):
     def _hellinger(self, p, q):
         return np.sqrt(np.sum((np.sqrt(p) - np.sqrt(q)) ** 2)) / _SQRT2
 
-    def _tdm(self, f_s, c_s):
+    def _tdm(self, f_s, c_s):  #total drift magnitude
         return self._hellinger(f_s[0], c_s[0])
 
-    def _cmcd(self, f_s, c_s):
+    def _cmcd(self, f_s, c_s): # Conditioned Marginal Covariate Drift
         return np.sum([
             ((f_s[3] + c_s[3])/2) * .5 * np.sum(np.abs(f_s[1+i] - c_s[1+i]), axis=0) for i in range(2)
         ])

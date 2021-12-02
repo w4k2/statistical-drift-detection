@@ -21,9 +21,10 @@ for rec_id, rec in enumerate(recurring):
         #     continue
 
         plt.close()
-        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 7),
+        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 6),
                                sharey=True)
-        fig.suptitle("%s %s drift" % (rec, drf_type), fontsize=12)
+
+        fig.suptitle("%s %s drift" % (rec if rec!='not-recurring' else 'non-recurring', drf_type), fontsize=12)
 
         #features, drifts
         for f_id, f in enumerate(features_n):
@@ -106,7 +107,7 @@ for rec_id, rec in enumerate(recurring):
                                               for i, d in enumerate(detector_names))
 
         plt.tight_layout()
-        fig.subplots_adjust(top=0.93)
+        fig.subplots_adjust(top=0.90)
         plt.savefig("figures_ex2/d_f_pix_%s_%s.png" % (rec, drf_type))
         plt.savefig("pub_figures/d_f_pix_%s_%s.eps" % (rec, drf_type))
         plt.savefig('foo.png')

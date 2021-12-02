@@ -24,15 +24,15 @@ drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
 base_detectors = [
-    # Meta(detector = SDDE(sensitivity = 0.3), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.3), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
     Meta(detector = SDDE(sensitivity = 0.45), base_clf = GaussianNB()),
     Meta(detector = SDDE(sensitivity = 0.5), base_clf = GaussianNB()),
     Meta(detector = SDDE(sensitivity = 0.55), base_clf = GaussianNB()),
     Meta(detector = SDDE(sensitivity = 0.6), base_clf = GaussianNB()),
-    Meta(detector = SDDE(sensitivity = 0.7), base_clf = GaussianNB()),
-    Meta(detector = SDDE(sensitivity = 0.8), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.7), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.8), base_clf = GaussianNB()),
 ]
 
 metrics = e2_config.metrics()
@@ -78,7 +78,7 @@ for rec in recurring:
 
             pbar.update(1)
 
-        np.save('results_ex2_2/clf_%s' % str_name, results_clf)
-        np.save('results_ex2_2/drf_arr_%s' % str_name, results_drf_arrs)
+        np.save('results_ex2_2/clf_%s_2' % str_name, results_clf)
+        np.save('results_ex2_2/drf_arr_%s_2' % str_name, results_drf_arrs)
 
 pbar.close()
