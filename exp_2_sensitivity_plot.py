@@ -6,11 +6,10 @@ from methods.dderror import dderror
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-detector_names = [".45", ".5", ".55", ".6", ".7", ".8"]
-y_values = np.array([.45, .5, .55, .6 ,.7, .8])
+detector_names = [".3", ".35", ".4", ".45", ".5", ".55", ".6"]
+y_values = np.array([.3, .35, .4, .45, .5, .55, .6])
 metrics_names = e2_config.metrics_names()
 
-colors = ['green', 'brown', 'dodgerblue', 'purple', 'gold', 'gray']
 colors = ['#333', '#333']
 black_rainbow = ['#333', '#777']
 
@@ -20,12 +19,12 @@ fig, axx = plt.subplots(2, 3, figsize=(base_width, base_width/1.618))
 for rec_id, rec in enumerate(recurring):
     for drf_id, drf_type in enumerate(drf_types):
         ax = axx[rec_id, drf_id]
-        res_clf = np.load('results_ex2_2/clf_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
+        res_clf = np.load('results_ex2_2/clf_15feat_5drifts_%s_%s_2.npy' %(drf_type, rec))
         # replications x detectors x chunks-1
         res_clf_mean = np.mean(res_clf, axis=0)
         print(res_clf_mean.shape)
 
-        res_arr = np.load('results_ex2_2/drf_arr_15feat_5drifts_%s_%s.npy' %(drf_type, rec))
+        res_arr = np.load('results_ex2_2/drf_arr_15feat_5drifts_%s_%s_2.npy' %(drf_type, rec))
         # replications x detectors x (real, detected) x chunks-1
         dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
 
@@ -83,7 +82,7 @@ for rec_id, rec in enumerate(recurring):
         #ax.grid(ls=':')
         ax.set_yticks(y_values)
         ax.set_yticklabels(["%.2f" % v for v in y_values])
-        ax.set_ylim(.4,.85)
+        ax.set_ylim(.25,.65)
         ax.set_xlim(0,200)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)

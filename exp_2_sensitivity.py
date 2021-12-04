@@ -44,6 +44,11 @@ real_drf = find_real_drift(static_params['n_chunks'], static_params['n_drifts'])
 
 for rec in recurring:
     for drf_type in drf_types:
+        # if rec=='recurring' or drf_type in ['gradual','sudden']:
+        #     pbar.update(1)
+        #     continue
+
+
         results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
         results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
         # replications x detectors x (real_drf, detected_drf) x chunks
