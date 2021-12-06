@@ -44,7 +44,7 @@ for rec_id, rec in enumerate(recurring):
         Plot
         """
 
-        ax.set_title("%s %s drift" % (drf_type, rec), fontsize=12)
+        ax.set_title("%s %s drift" % (drf_type, rec if rec!='not-recurring' else 'non-recurring'), fontsize=12)
 
         real = np.squeeze(np.argwhere(res_arr[0,0,0,:]==2))
 

@@ -40,6 +40,19 @@ for ss_id, ss in enumerate(subspace_sizes):
         res_arr_mean = np.mean(dderror_arr, axis=0) # th x det x 3
         res_arr_mean_detectors = np.mean(res_arr_mean, axis = 1) # th x 3
 
+        # print(det_arr)
+        # print(np.argwhere(det_arr==14))
+
+        # plt.plot(th_arr,res_arr_mean_detectors[:,2], label='mean_all detectors')
+        # plt.plot(th_arr,res_arr_mean[:,6,2], label='14 detectors')
+        # # plt.plot(th_arr,res_arr_mean[:,7,2], label='18 detectors')
+
+        # plt.xlabel('sensitivity')
+        # plt.ylabel('dd ratio error')
+        # plt.legend()
+        # plt.savefig('foo.png')
+        # exit()
+
         """
         Plot
         """
