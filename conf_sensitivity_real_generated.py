@@ -45,7 +45,10 @@ pbar = tqdm(total=replications*len(files))
 for i, filepath in enumerate(files):
     # print(filepath)
     drifts = int(filepath.split('_')[3][0])
-    # print(drifts)
+    if drifts != 5 :
+        print(drifts)
+        pbar.update(1)
+        continue
     drf_type= filepath.split('_')[2]
     # print(drf_type)
 
