@@ -23,12 +23,12 @@ recurring = e2_config.e2_recurring()
 
 base_detectors = [
     Meta(detector = SDDE(sensitivity = 0.3), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.45), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.5), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.55), base_clf = GaussianNB()),
-    # Meta(detector = SDDE(sensitivity = 0.6), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.45), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.5), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.55), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.6), base_clf = GaussianNB()),
 ]
 metrics = e2_config.metrics()
 
@@ -45,9 +45,11 @@ pbar = tqdm(total=replications*len(files))
 for i, filepath in enumerate(files):
     # print(filepath)
     drifts = int(filepath.split('_')[3][0])
-    if drifts != 5 :
+    fname = filepath.split('_')[1]
+    
+    if drifts != 5 or fname=='wisconsin.csv':
         print(drifts)
-        pbar.update(1)
+        pbar.update(10)
         continue
     drf_type= filepath.split('_')[2]
     # print(drf_type)
@@ -77,12 +79,12 @@ for i, filepath in enumerate(files):
 
         for det_id in range(len(detectors)):
             results_drf_arrs[replication, det_id, 0] = real_drf
-            results_drf_arrs[replication, det_id, 1] = np.array(detectors[det_id].detector.confidence)
-            print(np.array(detectors[det_id].detector.confidence))
+            results_drf_arrs[replication, det_id, 1] = np.array(detectors[det_id].detector.drift)
+            # print(np.array(detectors[det_id].detector.confidence))
 
         pbar.update(1)
 
     np.save('results_ex2_2/gen_clf_%s' % filepath, results_clf)
-    np.save('results_ex2_2/gen_conf_arr_%s' % filepath, results_drf_arrs)
+    np.save('results_ex2_2/gen_drf_arr_%s' % filepath, results_drf_arrs)
 
 pbar.close()
