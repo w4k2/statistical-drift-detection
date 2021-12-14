@@ -30,23 +30,23 @@ for str_id, stream in enumerate(streams):
 
     #drifts, drf types
     for d_type_id, d_type in enumerate(drf_types):
-        conf = np.load('results_ex2_2/gen_conf_arr_str_%s.csv_%s_5drfs.npy' % (stream, d_type))[:,0,:,:]
-        real = np.squeeze(np.argwhere(conf[0,0,:]==2))
+        drf_arr = np.load('results_ex2_2/gen_drf_arr_str_%s.csv_%s_5drfs.npy' % (stream, d_type))
+        real = np.squeeze(np.argwhere(drf_arr[0,0,0,:]==2))
         print(real)
 
-        detections = np.zeros((10,len(y_values),2,399))
+        # detections = np.zeros((10,len(y_values),2,399))
         
-        for s_id, sen in enumerate(y_values):
+        # for s_id, sen in enumerate(y_values):
 
-            conf_cpy = np.copy(conf)
+        #     conf_cpy = np.copy(conf)
 
-            minimum_to_detect = int(30*sen)
-            print(minimum_to_detect)
+        #     minimum_to_detect = int(30*sen)
+        #     print(minimum_to_detect)
 
-            conf_cpy[conf_cpy<minimum_to_detect]=0
-            conf_cpy[conf_cpy>=minimum_to_detect]=2
+        #     conf_cpy[conf_cpy<minimum_to_detect]=0
+        #     conf_cpy[conf_cpy>=minimum_to_detect]=2
 
-            detections[:,s_id,1,:] = conf_cpy[:,1,:]
+        #     detections[:,s_id,1,:] = conf_cpy[:,1,:]
 
         #     print(detections[0,s_id,1,:])
         
@@ -64,10 +64,10 @@ for str_id, stream in enumerate(streams):
         ax.hlines(y_values, 0, 400, color='#333', lw=1, zorder=1)
 
         for det_id, det_name in enumerate(detector_names):
-            drf_cnt=np.ones((detections.shape[3]))
+            drf_cnt=np.ones((drf_arr.shape[3]))
 
-            for rep in range(detections.shape[0]):
-                detected = np.argwhere(detections[rep,det_id,1,:]==2)
+            for rep in range(drf_arr.shape[0]):
+                detected = np.argwhere(drf_arr[rep,det_id,1,:]==2)
                 drf_cnt[detected] +=1
 
             det_sum = np.argwhere(drf_cnt>1)
@@ -84,7 +84,7 @@ for str_id, stream in enumerate(streams):
                         alpha=1,
                         s=drf_cnt*10,
                         c='#333',
-                        label=detections[det_id])
+                        label=drf_arr[det_id])
 
 
         ax.set_xticks(real)
