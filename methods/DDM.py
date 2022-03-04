@@ -55,5 +55,5 @@ class DDM(BaseEstimator, ClassifierMixin):
             self.drift.append(1)
         else:
             self.drift.append(0)
-    
+
         return self
