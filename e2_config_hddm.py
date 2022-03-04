@@ -80,6 +80,17 @@ def e2_recurring():
         'not-recurring': {}
     }
 
+def e2_clf_names():
+    names = []
+    detectors = ['HDDM_W', 'HDDM_A']
+
+    for d in detectors:
+        for m in e2_methods_labels():
+            # names.append(d + "-" + m)
+            names.append(d)
+
+    return names
+
 def e2_n_drifts():
     return {
         # 1: { 'n_drifts': 1},
