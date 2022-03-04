@@ -48,9 +48,10 @@ for rec_id, rec in enumerate(recurring):
             ax.imshow(zzz, cmap= 'binary', origin='lower')
 
         ax.set_yticks([5,15,25,35,45,55])
-        ax.set_yticklabels("%s - %.3f, %.3f, %.3f " % 
+        ax.set_yticklabels("%s - %.3f, %.3f, %.3f " %
             (d, res_arr_mean[i,0],res_arr_mean[i,1],res_arr_mean[i,2]) for i, d in enumerate(detector_names))
 
         plt.tight_layout()
         plt.savefig("figures_ex2/pix_%s_%s.png" % (rec, drf_type))
         plt.savefig('foo.png')
+        #exit()

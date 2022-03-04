@@ -55,7 +55,5 @@ for s in streams:
 
     plt.tight_layout()
     plt.savefig('figures_ex2/%s.png' % s)
-    # exit()
-
-
-
+    plt.savefig('foo.png')
+    #exit()
