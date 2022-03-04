@@ -5,7 +5,7 @@ from tabulate import tabulate
 from scipy.stats import ttest_rel
 
 drf_types = ['cubic', 'nearest']
-detector_names = e2_config.e2_clf_names()
+detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE', 'ALWAYS', 'NEVER', 'HDDM_W', 'HDDM_A']
 
 drifts_n = [3,5,7]
 features_n = 15
@@ -31,7 +31,7 @@ for str_id, stream in enumerate(streams):
     for d_id, d in enumerate(drifts_n):
         for d_type_id, d_type in enumerate(drf_types):
 
-            res_arr = np.load('results_ex2_real/drf_arr_str_%s.csv_%s_%idrfs.npy' %(stream, d_type, d))
+            res_arr = np.load('results_ex2_real/drf_arr_str_%s.csv_%s_%idrfs_all.npy' %(stream, d_type, d))
             print(res_arr.shape) # reps, detectors, chunks-1
 
             dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
@@ -50,8 +50,8 @@ for str_id, stream in enumerate(streams):
             #cnt
             results_all[:, str_id, d_type_id, d_id, :, 2] = dderror_arr[:,:,2]
 
-results_all = results_all[:,:,:,:,:5,:]
-detector_names = detector_names[:5]
+# results_all = results_all[:,:,:,:,:5,:]
+# detector_names = detector_names[:5]
 print(results_all.shape) # 10, 4, 2, 3, 5, 3
 
 for str_id, stream in enumerate(streams):
@@ -73,7 +73,7 @@ for str_id, stream in enumerate(streams):
         #dla kazdej metryki
         for metric_id in range(3):
             t=[]
-            t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)"])
+            t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
             t.append(['midrule'] + [''])
 
             # dla kazdeej liczby dryfow
@@ -86,7 +86,7 @@ for str_id, stream in enumerate(streams):
                 e_res_temp = np.mean(res_temp, axis=0)
                 std_res_temp = np.std(res_temp, axis=0)
 
-                length = 5
+                length = 8
 
                 s = np.zeros((length, length))
                 p = np.zeros((length, length))

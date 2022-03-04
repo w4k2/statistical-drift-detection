@@ -1,4 +1,5 @@
 import e2_config
+import e2_config_hddm
 import numpy as np
 from methods.dderror import dderror
 from tabulate import tabulate
@@ -9,11 +10,11 @@ from scipy.stats import ttest_rel
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-detector_names = e2_config.e2_clf_names()
+detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE', 'ALWAYS', 'NEVER', 'HDDM_W', 'HDDM_A']
 replications = e2_config.e2_replications()
 
-drifts_n = e2_config.e2_n_drifts()
-features_n = e2_config.e2_n_features()
+drifts_n = e2_config_hddm.e2_n_drifts()
+features_n = e2_config_hddm.e2_n_features()
 
 
 results_all = np.zeros((replications, len(recurring), len(drf_types), len(features_n), len(drifts_n), len(detector_names), 4))
@@ -29,11 +30,13 @@ for rec_id, rec in enumerate(recurring):
         for f_id, f in enumerate(features_n):
             for d_id, d in enumerate(drifts_n):
 
-                res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
+                res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec))
                 # replications x detectors x chunks-1
 
-                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
+                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec))
                 # replications x detectors x (real, detected) x chunks-1
+
+                print(res_clf.shape, res_arr.shape)
 
                 dderror_arr = np.zeros((res_arr.shape[0], res_arr.shape[1], 3))
 
@@ -56,7 +59,7 @@ for rec_id, rec in enumerate(recurring):
                 # str_names.append("%s_%s_drfits_%i_features_%i" % (rec, drf_type, d, f))
 
 # print(len(str_names))
-print(results_all.shape) # 10, 2, 3, 4, 4, 6, 4
+print(results_all.shape) # 10, 2, 3, 3, 3, 8, 4
 
 # mean_res_all = np.mean(results_all, axis=0) # 2, 3, 4, 4, 6, 4
 # std_res_all = np.std(results_all, axis=0)
@@ -81,7 +84,7 @@ print(results_all.shape) # 10, 2, 3, 4, 4, 6, 4
 # print("\n Mean cnt_ratio")
 # print(tabulate(mean_cnt, headers=detector_names, floatfmt=".3f"))
 
-# 10, 2, 3, 4, 4, 6, 4 
+# 10, 2, 3, 3, 3, 8, 4
 # reps x rec x drf type x features x drf num x detectors x metrics
 
 # str_names = []
@@ -96,16 +99,16 @@ for drf_id, drf_type in enumerate(drf_types): #3
         mean_features = np.mean(all_features, axis = 1)
         std_features = np.std(all_features, axis = 1)
 
-        # print(mean_features.shape) # 10 x 4, 6, 4 -> reps, drf_num, detectors x metric
-
+        # print(mean_features.shape) # 10 x 3, 8, 4 -> reps, drf_num, detectors x metric
+        # exit()
         #usrednienie po dryfach
         all_drifts = results_all[:,rec_id, drf_id]
 
         mean_drifts = np.mean(all_drifts, axis = 2)
         std_drifts = np.std(all_drifts, axis = 2)
     
-        # print(mean_drifts.shape) # 10 x 4, 6, 4 -> reps, features, detectors x metric
-
+        # print(mean_drifts.shape) # 10 x 3, 8, 4 -> reps, features, detectors x metric
+        # exit()
         #razem 
         res = np.concatenate((mean_features, mean_drifts), axis=1)
         res_std = np.concatenate((std_features, std_drifts), axis=1)
@@ -131,7 +134,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
         #dla kazdej metryki
         for metric_id in range(4):
             t=[]
-            t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)"])
+            t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
             t.append(['midrule'] + [''])
 
             # dla kazdeej liczby dryfow i cech
@@ -146,7 +149,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
 
                 # print(res_temp.shape)
                 # exit()
-                length = 6
+                length = 8
 
                 s = np.zeros((length, length))
                 p = np.zeros((length, length))
@@ -173,6 +176,4 @@ for drf_id, drf_type in enumerate(drf_types): #3
             # print(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs")) 
             with open('tables/table_%s_%s_%s.txt' % (metric_names[metric_id], drf_type, rec), 'w') as f:
                 f.write(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs"))
-            # exit()
-
 
