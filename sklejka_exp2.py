@@ -28,10 +28,10 @@ for rec_id, rec in enumerate(recurring):
                 res_arr_original = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
                 # replications x detectors(6) x (real, detected) x chunks-1
 
-                res_clf_hddm = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_2.npy' %(f, d, drf_type, rec))
+                res_clf_hddm = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_2_hddm.npy' %(f, d, drf_type, rec))
                 # replications x detectors(2) x chunks-1
 
-                res_arr_hddm = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_2.npy' %(f, d, drf_type, rec))
+                res_arr_hddm = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_2_hddm.npy' %(f, d, drf_type, rec))
                 # replications x detectors(2) x (real, detected) x chunks-1
 
                 new_clf = np.concatenate((res_clf_original, res_clf_hddm), axis=1)
