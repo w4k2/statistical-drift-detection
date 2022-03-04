@@ -145,7 +145,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
                 std_res_temp = np.std(res_temp, axis=0)
 
                 # print(res_temp.shape)
-
+                # exit()
                 length = 6
 
                 s = np.zeros((length, length))

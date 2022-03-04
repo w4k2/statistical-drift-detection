@@ -6,7 +6,7 @@ from scipy.stats import hmean
 _SQRT2 = np.sqrt(2)
 
 class SDDE(BaseEstimator, ClassifierMixin):
-    def __init__(self, sigma=3, immobilizer=5, n_detectors = 15, subspace_size=1, random_state=None, sensitivity=0.55):
+    def __init__(self, sigma=3, immobilizer=5, n_detectors = 15, subspace_size=1, random_state=None, sensitivity=0.35):
         self.immobilizer = immobilizer
         self.sigma = sigma
         self.n_detectors = n_detectors

@@ -47,7 +47,7 @@ for ss_id, ss in enumerate(subspace_sizes):
         if drf_id == 0:
             ax[drf_id, ss_id].set_title("subspace %i" % (ss), fontsize=10)
         if ss_id == 0:
-            ax[drf_id, ss_id].set_ylabel("%s drift\nthreshold" % drf, fontsize=10)
+            ax[drf_id, ss_id].set_ylabel("%s drift\nsensitivity" % drf, fontsize=10)
         if drf_id == len(drf_types)-1:
             ax[drf_id, ss_id].set_xlabel("#detectors", fontsize=10)
 
@@ -55,7 +55,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 plt.tight_layout()
 # fig.subplots_adjust(top=0.93)
 plt.savefig('figures_ex1/clf.png')
-plt.savefig('figures_ex1/clf.eps')
+plt.savefig('pub_figures/clf.eps')
 plt.close()
 #exit()
 
@@ -140,9 +140,9 @@ for ss_id, ss in enumerate(subspace_sizes):
          for spine in ['top', 'bottom', 'left', 'right']]
 
         if drf_id == 0:
-            ax[drf_id, ss_id].set_title("subspace %i" % (ss), fontsize=10)
+            ax[drf_id, ss_id].set_title("subspace size: %i" % (ss), fontsize=10)
         if ss_id == 0:
-            ax[drf_id, ss_id].set_ylabel("%s drift\nthreshold" % drf, fontsize=10)
+            ax[drf_id, ss_id].set_ylabel("%s drift\nsensitivity" % drf, fontsize=10)
         if drf_id == len(drf_types)-1:
             ax[drf_id, ss_id].set_xlabel("#detectors", fontsize=10)
 
@@ -161,7 +161,7 @@ for ss_id, ss in enumerate(subspace_sizes):
 plt.tight_layout()
 #fig.subplots_adjust(top=0.93)
 plt.savefig('figures_ex1/err_rgb.png')
-plt.savefig('figures_ex1/err_rgb.eps')
+plt.savefig('pub_figures/err_rgb.eps')
 
 
 """
@@ -217,9 +217,9 @@ for ss_id, ss in enumerate(subspace_sizes):
          for spine in ['top', 'bottom', 'left', 'right']]
 
         if drf_id == 0:
-            ax[drf_id, ss_id].set_title("subspace %i" % (ss), fontsize=10)
+            ax[drf_id, ss_id].set_title("subspace size: %i" % (ss), fontsize=10)
         if ss_id == 0:
-            ax[drf_id, ss_id].set_ylabel("%s drift\nthreshold" % drf, fontsize=10)
+            ax[drf_id, ss_id].set_ylabel("%s drift\nsensitivity" % drf, fontsize=10)
         if drf_id == len(drf_types)-1:
             ax[drf_id, ss_id].set_xlabel("#detectors", fontsize=10)
 
@@ -237,5 +237,6 @@ for ss_id, ss in enumerate(subspace_sizes):
 
 plt.tight_layout()
 #fig.subplots_adjust(top=0.93)
+plt.savefig('foo.png')
 plt.savefig('figures_ex1/clf_err_rgb.png')
-plt.savefig('figures_ex1/clf_err_rgb.eps')
+plt.savefig('pub_figures/clf_err_rgb.eps')

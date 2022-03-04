@@ -139,30 +139,30 @@ def e2_n_features():
         # 30: { 'n_features': 30, 'n_informative': 30},
     }
 
-def e2_clfs(sdde_n_det, sdde_sensitivity=.55):
+def e2_clfs(sdde_n_det=15, sdde_sensitivity=.55):
     clfs = []
-    #DDM
-    for m in e2_methods():
-        clfs.append(Meta(detector = DDM(), base_clf = m))
+    # #DDM
+    # for m in e2_methods():
+    #     clfs.append(Meta(detector = DDM(), base_clf = m))
 
-    #EDDM
-    for m in e2_methods():
-        clfs.append(Meta(detector = EDDM(), base_clf = m))
+    # #EDDM
+    # for m in e2_methods():
+    #     clfs.append(Meta(detector = EDDM(), base_clf = m))
 
-    #ADWIN
-    for m in e2_methods():
-        clfs.append(Meta(detector = ADWIN(), base_clf = m))
+    # #ADWIN
+    # for m in e2_methods():
+    #     clfs.append(Meta(detector = ADWIN(), base_clf = m))
 
     #SDDE
     for m in e2_methods():
         clfs.append(Meta(detector = SDDE(n_detectors= sdde_n_det, sensitivity=sdde_sensitivity), base_clf = m))
 
-    #ALWAYS
-    for m in e2_methods():
-        clfs.append(Meta(detector = ALWAYS(), base_clf = m))
+    # #ALWAYS
+    # for m in e2_methods():
+    #     clfs.append(Meta(detector = ALWAYS(), base_clf = m))
 
-    #NEVER
-    for m in e2_methods():
+    # #NEVER
+    # for m in e2_methods():
         clfs.append(Meta(detector = NEVER(), base_clf = m))
 
     return clfs

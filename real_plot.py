@@ -2,17 +2,23 @@ import e2_config
 import numpy as np
 import matplotlib.pyplot as plt
 from methods.dderror import dderror
+import os
 
-streams = [
-    "covtypeNorm-1-2vsAll-pruned.arff",
-    "INSECTS-abrupt_imbalanced_norm_5prc.arff",
-    "INSECTS-abrupt_imbalanced_norm.arff",
-    "INSECTS-gradual_imbalanced_norm_5prc.arff",
-    "INSECTS-gradual_imbalanced_norm.arff",
-    "INSECTS-incremental_imbalanced_norm_5prc.arff",
-    "INSECTS-incremental_imbalanced_norm.arff",
-    "poker-lsn-1-2vsAll-pruned.arff"
-]
+# streams = [
+#     "covtypeNorm-1-2vsAll-pruned.arff",
+#     "INSECTS-abrupt_imbalanced_norm_5prc.arff",
+#     "INSECTS-abrupt_imbalanced_norm.arff",
+#     "INSECTS-gradual_imbalanced_norm_5prc.arff",
+#     "INSECTS-gradual_imbalanced_norm.arff",
+#     "INSECTS-incremental_imbalanced_norm_5prc.arff",
+#     "INSECTS-incremental_imbalanced_norm.arff",
+#     "poker-lsn-1-2vsAll-pruned.arff"
+# ]
+
+directory = 'real-gen-streams'
+
+for _,_,streams in os.walk(directory):
+    print(streams)
 
 n_features = [54,33,33,33,33,33,33,10]
 n_chunks = [265, 300, 300, 100, 100, 380, 380, 359]
@@ -23,8 +29,10 @@ colors = ['red', 'gold', 'purple', 'green', 'cornflowerblue', 'gray']
 detector_names = e2_config.e2_clf_names()
 
 for s in streams:
-    results_clf = np.load("results_ex2_real/clf_%s.npy" % s)[0]
-    results_drf_arr = np.load("results_ex2_real/drf_arr_%s.npy" % s)[0,:,1,:]
+    results_clf = np.load("results_ex2_real/clf_%s" % s)[0]
+    results_drf_arr = np.load("results_ex2_real/drf_arr_%s" % s)
+    real = np.argwhere(results_drf_arr[0,0,0,:]==2)
+    results_drf_arr = results_drf_arr[0,:,1,:]
 
     print(results_clf.shape) # detectors x chunks - 1
     print(results_drf_arr.shape) #detectors x chunks - 1
@@ -38,6 +46,8 @@ for s in streams:
 
     ax[0].legend()
     ax[0].set_title("Classification accuracy")
+    ax[0].vlines(real, 0, 1, color='tomato')
+
 
     ax[1].set_xlim(0,len(results_clf[1]))
 
@@ -46,6 +56,7 @@ for s in streams:
         det_y = [det_id for i in range(len(detected))]
 
         ax[1].scatter(detected, det_y, alpha=0.4, c=colors[det_id])
+        ax[1].vlines(real, 0, 6, color='tomato')
 
     ax[1].set_yticks(list(range(len(detector_names))))
     ax[1].set_yticklabels("%s" % (d) for i, d in enumerate(detector_names))

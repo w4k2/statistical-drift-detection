@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror
 import e1_config
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 subspace_sizes = e1_config.e1_subspace_sizes()
 drf_types = e1_config.e1_drift_types()
@@ -98,7 +97,7 @@ for ss_id, ss in enumerate(subspace_sizes):
             for k in range(3):
                 aa = ax[j,k]
                 if k==0:
-                    aa.set_ylabel("threshold")
+                    aa.set_ylabel("sensitivity")
                 if j==1:
                     aa.set_xlabel("#detectors")
 
@@ -125,8 +124,8 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
-        plt.savefig('figures_ex1/err_%s_%i.eps' % (drf, ss))
-        plt.savefig('bar.png')
+        plt.savefig('pub_figures/err_%s_%i.eps' % (drf, ss))
+        plt.savefig('foo.png')
 
         plt.close()
 

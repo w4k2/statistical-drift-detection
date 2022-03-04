@@ -40,11 +40,24 @@ for ss_id, ss in enumerate(subspace_sizes):
         res_arr_mean = np.mean(dderror_arr, axis=0) # th x det x 3
         res_arr_mean_detectors = np.mean(res_arr_mean, axis = 1) # th x 3
 
+        # print(det_arr)
+        # print(np.argwhere(det_arr==14))
+
+        # plt.plot(th_arr,res_arr_mean_detectors[:,2], label='mean_all detectors')
+        # plt.plot(th_arr,res_arr_mean[:,6,2], label='14 detectors')
+        # # plt.plot(th_arr,res_arr_mean[:,7,2], label='18 detectors')
+
+        # plt.xlabel('sensitivity')
+        # plt.ylabel('dd ratio error')
+        # plt.legend()
+        # plt.savefig('foo.png')
+        # exit()
+
         """
         Plot
         """
         aa = ax[drf_id, ss_id]
-        aa.set_title('ss: %i, drf: %s' % (ss, drf))
+        aa.set_title('subspace size: %i, drift: %s' % (ss, drf))
 
         vec_0 = res_arr_mean_detectors[:,2]
         vec_1 = res_arr_mean_detectors[:,1]
@@ -58,13 +71,13 @@ for ss_id, ss in enumerate(subspace_sizes):
         alpha = .75
 
         aa.fill_between(th_arr, vec_0 * 0, vec_0,
-                        color = colors[0], label = 'dd-ratio',
+                        color = colors[0], label = 'R',
                         alpha=alpha)
         aa.fill_between(th_arr, vec_0, vec_0 + vec_1,
-                        color = colors[1], label = 'c. det.',
+                        color = colors[1], label = 'D2',
                         alpha=alpha)
         aa.fill_between(th_arr, vec_0 + vec_1, vec_0 + vec_1 + vec_2,
-                        color = colors[2], label = 'c. drf.',
+                        color = colors[2], label = 'D1',
                         alpha=alpha)
 
 
@@ -92,7 +105,7 @@ for ss_id, ss in enumerate(subspace_sizes):
         #ax[drf_id, ss_id].set_xticks(list(range(len(th_arr))))
         #ax[drf_id, ss_id].set_xticklabels(['%.2f' % v for v in th_arr])
         if drf_id == 2:
-            aa.set_xlabel("Threshold")
+            aa.set_xlabel("Sensitivity")
 
         # ax[drf_id, ss_id].set_ylim(0,35)
         if ss_id == 0:
