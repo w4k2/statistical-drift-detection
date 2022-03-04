@@ -1,4 +1,5 @@
 import e2_config
+from e2_config_hddm import e2_n_drifts, e2_n_features
 import numpy as np
 import matplotlib.pyplot as plt
 from methods.dderror import dderror
@@ -7,10 +8,10 @@ import matplotlib.colors
 
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
-detector_names = e2_config.e2_clf_names()[:-2]
+detector_names = ['DDM', 'EDDM', "ADWIN", 'SDDE', 'HDDM_W', 'HDDM_A']
 
-drifts_n = e2_config.e2_n_drifts()
-features_n = e2_config.e2_n_features()
+drifts_n = e2_n_drifts()
+features_n = e2_n_features()
 
 cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white", "lemonchiffon", "black"])
 
@@ -21,7 +22,7 @@ for rec_id, rec in enumerate(recurring):
         #     continue
 
         plt.close()
-        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 6),
+        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(10, 6),
                                sharey=True)
 
         fig.suptitle("%s %s drift" % (rec if rec!='not-recurring' else 'non-recurring', drf_type), fontsize=12)
@@ -29,30 +30,11 @@ for rec_id, rec in enumerate(recurring):
         #features, drifts
         for f_id, f in enumerate(features_n):
             for d_id, d in enumerate(drifts_n):
-
-                # res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
-                # replications x detectors x chunks-1
-                # res_clf_mean = np.mean(res_clf, axis=0)
-
-                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
-                # replications x detectors x (real, detected) x chunks-1
-
-                # dderror_arr = np.zeros((res_arr.shape[0],res_arr.shape[1], 3))
-
-                # for rep in range(res_arr.shape[0]):
-                #     for det in range(res_arr.shape[1]):
-                #         real_drf = np.argwhere(res_arr[rep, det, 0]==2).flatten()
-                #         det_drf = np.argwhere(res_arr[rep, det, 1]==2).flatten()
-                #         err = dderror(real_drf, det_drf, res_arr.shape[3])
-                #         dderror_arr[rep, det] = err
-
-                # res_arr_mean = np.mean(dderror_arr, axis=0)
+                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec))
 
                 """
                 Plot
                 """
-                #ax[d_id,f_id].set_title("drifts: %i, features: %i" % (d, f))
-
                 drf_cnt=np.ones((res_arr.shape[3]))
 
                 czytotu = np.where(res_arr[0,0,0,:] == 2)[0]
@@ -62,15 +44,21 @@ for rec_id, rec in enumerate(recurring):
                 zzz[zzz==1]=0 # warningi przeszkadzaja
 
                 mask = zzz==0
-                mask[:,[0,1,2,4,5],:]=False
+                mask[:,[0,1,2,4,5,6,7],:]=False
                 zzz[mask]=1
 
                 zzz = np.swapaxes(zzz, 0,1)
                 zzz = np.reshape(zzz, (-1, 199))
 
-                zzz = zzz[:-20, :]
+                #zzz = zzz[:-20, :]
+                zmask = np.ones(80).astype(bool)
+                zmask[-40:-20] = False
 
-                # print(zzz, zzz.shape)
+                print(zmask)
+
+                zzz = zzz[zmask]
+
+                print('ZZZ', zzz.shape)
 
                 ax[d_id, f_id].spines['top'].set_visible(False)
                 ax[d_id, f_id].spines['bottom'].set_visible(False)
@@ -82,15 +70,16 @@ for rec_id, rec in enumerate(recurring):
                 aa.set_xticklabels(czytotu+1, fontsize=8)
                 aa.grid(ls=":", axis='x', lw=1, color='black')
 
-                aa.hlines([0,10,20,30,40], 0, 200, color='black', lw=.5)
+                aa.hlines([0,10,20,30,40,50], 0, 200, color='black', lw=.5)
 
                 ax[d_id,f_id].imshow(zzz,
+                                     vmin=0, vmax=2,
                                      cmap=cmap,
                                      origin='lower',
                                      interpolation='none',
                                      aspect=2)
 
-                aa.set_ylim(0, 40)
+                aa.set_ylim(0, 60)
 
                 if d_id == 0:
                     aa.set_title('%i features' % f, fontsize=10)
@@ -102,9 +91,11 @@ for rec_id, rec in enumerate(recurring):
                     aa.set_xlabel('number of chunks processed', fontsize=8)
 
 
-                ax[d_id,f_id].set_yticks([5,15,25,35])
+                ax[d_id,f_id].set_yticks([5,15,25,35,45,55])
+
                 ax[d_id,f_id].set_yticklabels("%s" % d
                                               for i, d in enumerate(detector_names))
+
 
         plt.tight_layout()
         fig.subplots_adjust(top=0.90)
