@@ -1,7 +1,7 @@
 import os 
 import numpy as np
 import strlearn as sl
-import e2_config
+import e2_config_hddm as e2_config
 from tqdm import tqdm
 
 def find_real_drift(chunks, drifts):

@@ -27,47 +27,6 @@ def e2_methods_labels():
         # 'kNN'
     ]
 
-
-def e2_clfs():
-    clfs = []
-    #DDM
-    for m in e2_methods():
-        clfs.append(Meta(detector = DDM(), base_clf = m))
-
-    #EDDM
-    for m in e2_methods():
-        clfs.append(Meta(detector = EDDM(), base_clf = m))
-
-    #ADWIN
-    for m in e2_methods():
-        clfs.append(Meta(detector = ADWIN(), base_clf = m))
-
-    #SDDE
-    for m in e2_methods():
-        clfs.append(Meta(detector = SDDE(), base_clf = m))
-
-    #ALWAYS
-    for m in e2_methods():
-        clfs.append(Meta(detector = ALWAYS(), base_clf = m))
-
-    #NEVER
-    for m in e2_methods():
-        clfs.append(Meta(detector = NEVER(), base_clf = m))
-
-    return clfs
-
-def e2_clf_names():
-    names = []
-    detectors = ['DDM', 'EDDM', 'ADWIN', "SDDE", "ALWAYS", "NEVER"]
-    # detectors = ['DDM', 'EDDM', 'ADWIN', "ALWAYS", "NEVER"]
-
-    for d in detectors:
-        for m in e2_methods_labels():
-            # names.append(d + "-" + m)
-            names.append(d)
-
-    return names
-
 def metrics():
     return [
         sl.metrics.balanced_accuracy_score
@@ -123,7 +82,7 @@ def e2_recurring():
 
 def e2_n_drifts():
     return {
-        1: { 'n_drifts': 1},
+        # 1: { 'n_drifts': 1},
         3: { 'n_drifts': 3},
         5: { 'n_drifts': 5},
         7: { 'n_drifts': 7},
@@ -135,43 +94,20 @@ def e2_n_features():
         10: { 'n_features': 10, 'n_informative': 10},
         15: { 'n_features': 15, 'n_informative': 15},
         20: { 'n_features': 20, 'n_informative': 20},
-        25: { 'n_features': 25, 'n_informative': 25},
+        # 25: { 'n_features': 25, 'n_informative': 25},
         # 30: { 'n_features': 30, 'n_informative': 30},
     }
 
-def e2_clfs(sdde_n_det=15, sdde_sensitivity=.55):
+def e2_clfs(sdde_n_det=0, sdde_sensitivity=0):
     clfs = []
-    #DDM
+    
+    # HDDM_W
     for m in e2_methods():
-        clfs.append(Meta(detector = DDM(), base_clf = m))
+        clfs.append(Meta(detector = HDDM_WW(), base_clf = m))
 
-    #EDDM
+    # HDDM_A
     for m in e2_methods():
-        clfs.append(Meta(detector = EDDM(), base_clf = m))
-
-    #ADWIN
-    for m in e2_methods():
-        clfs.append(Meta(detector = ADWIN(), base_clf = m))
-
-    #SDDE
-    for m in e2_methods():
-        clfs.append(Meta(detector = SDDE(n_detectors= sdde_n_det, sensitivity=sdde_sensitivity), base_clf = m))
-
-    #ALWAYS
-    for m in e2_methods():
-        clfs.append(Meta(detector = ALWAYS(), base_clf = m))
-
-    #NEVER
-    for m in e2_methods():
-        clfs.append(Meta(detector = NEVER(), base_clf = m))
-
-    # # HDDM_W
-    # for m in e2_methods():
-    #     clfs.append(Meta(detector = HDDM_WW(), base_clf = m))
-
-    # # HDDM_A
-    # for m in e2_methods():
-    #     clfs.append(Meta(detector = HDDM_AA(), base_clf = m))
+        clfs.append(Meta(detector = HDDM_AA(), base_clf = m))
 
 
 
