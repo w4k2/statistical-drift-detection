@@ -100,7 +100,7 @@ def e2_n_features():
 
 def e2_clfs(sdde_n_det=0, sdde_sensitivity=0):
     clfs = []
-    
+
     # HDDM_W
     for m in e2_methods():
         clfs.append(Meta(detector = HDDM_WW(), base_clf = m))
@@ -112,4 +112,3 @@ def e2_clfs(sdde_n_det=0, sdde_sensitivity=0):
 
 
     return clfs
-
