@@ -35,6 +35,18 @@ for str_id, stream in enumerate(streams):
             new_clf = np.concatenate((res_clf_original, res_clf_hddm), axis=1)
             new_arr = np.concatenate((res_arr_original, res_arr_hddm), axis=1)
 
+            # print(new_clf.shape) 10, 8, 399
+
+            #always, never na ostatnie 2 
+            a_n_clf = np.copy(new_clf[:,[4,5]])
+            a_n_arr = np.copy(new_arr[:,[4,5]])
+
+            new_clf[:,[4,5]] = np.copy(new_clf[:,[6,7]])
+            new_clf[:,[6,7]] = a_n_clf
+
+            new_arr[:,[4,5]] = np.copy(new_arr[:,[6,7]])
+            new_arr[:,[6,7]] = a_n_arr
+
             np.save('results_ex2_real/drf_arr_str_%s.csv_%s_%idrfs_all.npy' %(stream, d_type, d), new_arr)
             np.save('results_ex2_real/clf_str_%s.csv_%s_%idrfs_all.npy' %(stream, d_type, d), new_clf)
 

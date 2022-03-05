@@ -5,7 +5,7 @@ from tabulate import tabulate
 from scipy.stats import ttest_rel
 
 drf_types = ['cubic', 'nearest']
-detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE', 'ALWAYS', 'NEVER', 'HDDM_W', 'HDDM_A']
+detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE',' HDDM_W', 'HDDM_A', 'ALWAYS', 'NEVER']
 
 drifts_n = [3,5,7]
 features_n = 15

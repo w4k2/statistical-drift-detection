@@ -10,7 +10,7 @@ from scipy.stats import ttest_rel
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE', 'ALWAYS', 'NEVER', 'HDDM_W', 'HDDM_A']
+detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE',' HDDM_W', 'HDDM_A', 'ALWAYS', 'NEVER']
 replications = e2_config.e2_replications()
 
 drifts_n = e2_config_hddm.e2_n_drifts()
