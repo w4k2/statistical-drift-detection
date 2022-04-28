@@ -1,6 +1,5 @@
 """
-Experiment 2 -- comparison of DD methods for semi-synthetic streams
-(with 3,5,7 drits and 10,15,20 features)
+Experiment 2 -- comparison of DD methods for semi-synthetic streams (extension only for hddm)
 """
 
 import os
