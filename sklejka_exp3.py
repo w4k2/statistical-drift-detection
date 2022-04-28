@@ -1,6 +1,8 @@
+"""
+Script for combining results of two parts of experiment 3
+"""
 import e2_config
 import e2_config_hddm
-
 import numpy as np
 
 drf_types = ['cubic', 'nearest']

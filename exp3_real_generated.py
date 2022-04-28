@@ -1,3 +1,8 @@
+"""
+Experiment 2 -- comparison of DD methods for semi-synthetic streams
+(with 3,5,7 drits and 10,15,20 features)
+"""
+
 import os
 import numpy as np
 import strlearn as sl

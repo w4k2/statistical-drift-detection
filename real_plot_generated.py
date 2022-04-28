@@ -1,6 +1,7 @@
-import e2_config
+"""
+Plot detection moments of all replications and all methods (exp 3 semi-synthetic)
+"""
 import numpy as np
-from e2_config_hddm import e2_n_drifts, e2_n_features
 import matplotlib.pyplot as plt
 import matplotlib.colors
 import os
@@ -40,7 +41,7 @@ for str_id, stream in enumerate(streams):
             czytotu = np.where(res_arr[0,0,0,:] == 2)[0]
 
             zzz = res_arr[:,:,1,:]
-            zzz[zzz==1]=0 # warningi przeszkadzaja
+            zzz[zzz==1]=0 # usunąć warningi
 
             mask = zzz==0
             mask[:,[0,1,2,4,5,6,7],:]=False

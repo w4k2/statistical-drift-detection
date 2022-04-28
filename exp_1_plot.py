@@ -1,3 +1,8 @@
+"""
+Plot heatmaps -- sensitivity & number of detectors parameters 
+Each type of stream (with sudden, gradual and incremental drift) and subspace size (1,2,3) in separate output image
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror

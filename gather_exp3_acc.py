@@ -1,4 +1,6 @@
-import e2_config
+"""
+Tables and statistical analysis of exp 3 accuracy results (with semi-synthetic streams)
+"""
 import numpy as np
 from methods.dderror import dderror
 from tabulate import tabulate
@@ -23,8 +25,6 @@ replications=10
 results_all = np.zeros((replications, len(streams), len(drf_types), len(drifts_n), len(detector_names), 4))
                 # replications, streams, drf_types, drifts_num, detectors, (acc, d1, d2, cnt)
 metric_name = "Accuracy"
-
-
 
 for str_id, stream in enumerate(streams):
     #drifts, drf types
@@ -78,7 +78,7 @@ for str_id, stream in enumerate(streams):
         t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
         t.append(['midrule'] + [''])
 
-        # dla kazdeej liczby dryfow i cech
+        # dla kadej kombincji liczby dryfow i cech
         for row_id, row in enumerate(row_names):
 
             if row_id == 4:

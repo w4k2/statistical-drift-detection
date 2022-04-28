@@ -1,30 +1,19 @@
+"""
+Config for additional experiment 2 including hddm
+"""
 import strlearn as sl
-from sklearn.neural_network import MLPClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from strlearn.ensembles import SEA
 import numpy as np
-import hashlib
 from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, SDDE, HDDM_AA, HDDM_WW
 
 def e2_methods():
     return [
         GaussianNB(),
-        # MLPClassifier(),
-        # SEA(base_estimator = SVC(probability=True)),
-        # SEA(base_estimator = DecisionTreeClassifier()),
-        # SEA(base_estimator = KNeighborsClassifier()),
     ]
 
 def e2_methods_labels():
     return [
         'GNB',
-        # 'MLP',
-        # 'SVC',
-        # 'DTs',
-        # 'kNN'
     ]
 
 def metrics():

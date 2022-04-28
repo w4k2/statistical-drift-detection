@@ -1,8 +1,10 @@
+"""
+Plot detection moments of all replications and all methods (exp 2 synthetic)
+"""
 import e2_config
 from e2_config_hddm import e2_n_drifts, e2_n_features
 import numpy as np
 import matplotlib.pyplot as plt
-from methods.dderror import dderror
 import matplotlib.colors
 
 
@@ -41,7 +43,7 @@ for rec_id, rec in enumerate(recurring):
                 print(czytotu)
 
                 zzz = res_arr[:,:,1,:]
-                zzz[zzz==1]=0 # warningi przeszkadzaja
+                zzz[zzz==1]=0 # usunąć warningi
 
                 mask = zzz==0
                 mask[:,[0,1,2,4,5,6,7],:]=False

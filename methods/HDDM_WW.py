@@ -1,5 +1,3 @@
-import numpy as np
-from numpy.core.numeric import argwhere
 from sklearn.base import BaseEstimator, ClassifierMixin
 from skmultiflow.drift_detection import HDDM_W
 

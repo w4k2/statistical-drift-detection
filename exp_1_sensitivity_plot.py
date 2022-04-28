@@ -1,3 +1,7 @@
+"""
+Plot -- how sensitivity parameter affects detections (moments and number)
+Synthetic streams
+"""
 import e2_config
 import numpy as np
 import matplotlib.pyplot as plt

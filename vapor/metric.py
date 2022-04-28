@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy.core.einsumfunc import einsum
 from methods.dderror import dderror
 
 drange = 25

@@ -1,3 +1,8 @@
+"""
+Plot heatmaps -- sensitivity & number of detectors parameters
+Each considered metric (accuracy, d1, d2, c) in separate output image
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror

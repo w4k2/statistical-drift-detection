@@ -1,3 +1,6 @@
+"""
+Experiments -- comaprison for semi-synthetic streams based on real-world concepts
+"""
 import os 
 import numpy as np
 import strlearn as sl

@@ -1,3 +1,7 @@
+"""
+Experiment -- how sensitivity parameter affects detections in generated real-concept streams
+"""
+
 import strlearn as sl
 import numpy as np
 from sklearn.base import clone

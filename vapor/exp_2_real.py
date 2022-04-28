@@ -1,7 +1,7 @@
-from scipy.io import arff
-import os 
+"""
+Experiment -- methods performance of real worlds data streams
+"""
 import numpy as np
-import pandas as pd
 import strlearn as sl
 from strlearn.streams import ARFFParser
 import e2_config

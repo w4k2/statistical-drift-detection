@@ -1,9 +1,12 @@
+"""
+Tables and statistical analysis for experiment 2
+"""
+
 import e2_config
 import e2_config_hddm
 import numpy as np
 from methods.dderror import dderror
 from tabulate import tabulate
-import matplotlib.pyplot as plt
 from scipy.stats import ttest_rel
 
 
@@ -137,7 +140,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
             t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
             t.append(['midrule'] + [''])
 
-            # dla kazdeej liczby dryfow i cech
+            # dla kazdej kombinacji liczby dryfow i cech
             for row_id, row in enumerate(row_names):
 
                 if row_id == 4:

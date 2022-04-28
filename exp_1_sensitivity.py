@@ -1,10 +1,15 @@
+"""
+Experiment -- how sensitivity parameter affects detestions (moments and number)
+Synthetic streams
+"""
+
 import strlearn as sl
 import numpy as np
-from methods import SDDE, Meta
-from sklearn.naive_bayes import GaussianNB
 from sklearn.base import clone
 import e2_config
 from tqdm import tqdm
+from methods import SDDE, Meta
+from sklearn.naive_bayes import GaussianNB
 
 def find_real_drift(chunks, drifts):
     interval = round(chunks/drifts)
@@ -16,14 +21,24 @@ def find_real_drift(chunks, drifts):
 
 np.random.seed(654)
 
-replications = e2_config.e2_replications()
+replications = 10
 random_states = np.random.randint(0, 10000, replications)
 
 static_params = e2_config.e2_static()
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-base_detectors = e2_config.e2_clfs()
+base_detectors = [
+    Meta(detector = SDDE(sensitivity = 0.3), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.35), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.4), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.45), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.5), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.55), base_clf = GaussianNB()),
+    Meta(detector = SDDE(sensitivity = 0.6), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.7), base_clf = GaussianNB()),
+    # Meta(detector = SDDE(sensitivity = 0.8), base_clf = GaussianNB()),
+]
 
 metrics = e2_config.metrics()
 
@@ -34,6 +49,11 @@ real_drf = find_real_drift(static_params['n_chunks'], static_params['n_drifts'])
 
 for rec in recurring:
     for drf_type in drf_types:
+        # if rec=='recurring' or drf_type in ['gradual','sudden']:
+        #     pbar.update(1)
+        #     continue
+
+
         results_clf = np.zeros((replications, len(base_detectors), static_params['n_chunks']-1))
         results_drf_arrs = np.zeros((replications, len(base_detectors), 2, static_params['n_chunks']-1))
         # replications x detectors x (real_drf, detected_drf) x chunks
@@ -68,7 +88,7 @@ for rec in recurring:
 
             pbar.update(1)
 
-        np.save('results_ex2/clf_%s' % str_name, results_clf)
-        np.save('results_ex2/drf_arr_%s' % str_name, results_drf_arrs)
+        np.save('results_ex2_2/clf_%s_2' % str_name, results_clf)
+        np.save('results_ex2_2/drf_arr_%s_2' % str_name, results_drf_arrs)
 
 pbar.close()

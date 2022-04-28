@@ -1,4 +1,6 @@
-import e2_config
+"""
+Tables and statistical analysis of exp 3 DD error results (with semi-synthetic streams)
+"""
 import numpy as np
 from methods.dderror import dderror
 from tabulate import tabulate
@@ -77,7 +79,7 @@ for str_id, stream in enumerate(streams):
             t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)"])
             t.append(['midrule'] + [''])
 
-            # dla kazdeej liczby dryfow
+            # dla kazdej liczby dryfow
             for row_id, row in enumerate(row_names):
 
                 if row_id == 4:

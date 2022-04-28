@@ -3,7 +3,7 @@ import numpy as np
 
 def dderror(drifts, detections, n_chunks):
 
-    if len(detections) == 0: # brak wykrytych dryfów
+    if len(detections) == 0: # no detections
         detections = np.arange(n_chunks)
 
     n_detections = len(detections)
@@ -14,15 +14,10 @@ def dderror(drifts, detections, n_chunks):
     cdri = np.min(ddm, axis=0)
     cdec = np.min(ddm, axis=1)
 
-    # print(ddm)
-    # print(cdri)
-    # print(cdec)
-    # print(" ")
-
     d1metric = np.mean(cdri)
     d2metric = np.mean(cdec)
     cmetric = np.abs((n_drifts/n_detections)-1)
 
     return d1metric, d2metric, cmetric
-    # d1 - odleglosc detekcji od najblizszego dryfu
-    # d2 - dryfu od najblizszej detekcji
+    # d1 - detection from nearest drift
+    # d2 - drift from nearest detection

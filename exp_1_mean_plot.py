@@ -1,3 +1,8 @@
+"""
+Plot -- dd error metric accumulated values when changing sensitivity parameter
+Synthetic data streams
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from methods import dderror

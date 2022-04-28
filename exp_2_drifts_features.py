@@ -1,3 +1,7 @@
+"""
+Experiment 2 -- comparison of DD methods for synthetic streams
+(with 3,5,7 drits and 10,15,20 features)
+"""
 import strlearn as sl
 import numpy as np
 from sklearn.base import clone

@@ -1,3 +1,7 @@
+"""
+Config for experiment 1
+"""
+
 import numpy as np
 
 def sqspace(start, end, num):

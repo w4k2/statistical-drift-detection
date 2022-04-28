@@ -1,3 +1,7 @@
+"""
+Experiment 1 -- reviewing and optimizing SDDE hyperparameters 
+"""
+
 import strlearn as sl
 import numpy as np
 from methods import SDDE, Meta
