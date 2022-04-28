@@ -19,7 +19,7 @@ val_b = ['%.0f' % v for v in np.linspace(1, 100, gd)]
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
         fig, ax = plt.subplots(2, 3, figsize=(12,12/1.618),
-                               sharex=True, sharey=True)
+                            sharey=True)
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
         res_arr = np.load('results_ex1/drf_arr_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
@@ -98,8 +98,8 @@ for ss_id, ss in enumerate(subspace_sizes):
                 aa = ax[j,k]
                 if k==0:
                     aa.set_ylabel("sensitivity")
-                if j==1:
-                    aa.set_xlabel("#detectors")
+                # if j==1:
+                aa.set_xlabel("#detectors")
 
                 aa.set_yticks(list(range(len(th_arr))))
                 aa.set_yticklabels(['%.2f' % v for v in th_arr])
