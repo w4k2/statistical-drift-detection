@@ -60,7 +60,6 @@ print(results_all.shape) # 10, 4, 2, 3, 6, 4
 for str_id, stream in enumerate(streams):
     for drf_id, drf_type in enumerate(drf_types):
 
-        #usrednienie po cechach
         all_str = results_all[:,str_id, drf_id]
 
         print(all_str.shape)  # reps x drfs x detectors x metrics
@@ -73,12 +72,12 @@ for str_id, stream in enumerate(streams):
 
         alpha = 0.05
 
-        #dla acc 
+        #accuracy 
         t=[]
         t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
         t.append(['midrule'] + [''])
 
-        # dla kadej kombincji liczby dryfow i cech
+        # combination of drifts number and feature number
         for row_id, row in enumerate(row_names):
 
             if row_id == 4:

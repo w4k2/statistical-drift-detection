@@ -41,7 +41,7 @@ for str_id, stream in enumerate(streams):
             czytotu = np.where(res_arr[0,0,0,:] == 2)[0]
 
             zzz = res_arr[:,:,1,:]
-            zzz[zzz==1]=0 # usunąć warningi
+            zzz[zzz==1]=0 # remove warnings
 
             mask = zzz==0
             mask[:,[0,1,2,4,5,6,7],:]=False

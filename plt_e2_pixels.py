@@ -43,7 +43,7 @@ for rec_id, rec in enumerate(recurring):
                 print(czytotu)
 
                 zzz = res_arr[:,:,1,:]
-                zzz[zzz==1]=0 # usunąć warningi
+                zzz[zzz==1]=0 # removing warnings
 
                 mask = zzz==0
                 mask[:,[0,1,2,4,5,6,7],:]=False

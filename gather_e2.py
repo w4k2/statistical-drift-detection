@@ -96,7 +96,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
     for rec_id, rec in enumerate(recurring): #2
         # str_names.append("%s, %s" % (drf_type, rec))
 
-        #usrednienie po cechach
+        #mean for features
         all_features = results_all[:,rec_id, drf_id] # reps x features x drf num x detectors x metrics
 
         mean_features = np.mean(all_features, axis = 1)
@@ -104,7 +104,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
 
         # print(mean_features.shape) # 10 x 3, 8, 4 -> reps, drf_num, detectors x metric
         # exit()
-        #usrednienie po dryfach
+        #mean for drifts
         all_drifts = results_all[:,rec_id, drf_id]
 
         mean_drifts = np.mean(all_drifts, axis = 2)
@@ -112,7 +112,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
     
         # print(mean_drifts.shape) # 10 x 3, 8, 4 -> reps, features, detectors x metric
         # exit()
-        #razem 
+        #combine 
         res = np.concatenate((mean_features, mean_drifts), axis=1)
         res_std = np.concatenate((std_features, std_drifts), axis=1)
 
@@ -134,13 +134,13 @@ for drf_id, drf_type in enumerate(drf_types): #3
 
         alpha = 0.05
 
-        #dla kazdej metryki
+        #for every metric
         for metric_id in range(4):
             t=[]
             t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
             t.append(['midrule'] + [''])
 
-            # dla kazdej kombinacji liczby dryfow i cech
+            # for combination of drifts number and feature number
             for row_id, row in enumerate(row_names):
 
                 if row_id == 4:
