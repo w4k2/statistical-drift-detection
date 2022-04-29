@@ -22,7 +22,7 @@ n_drifts = {5: { 'n_drifts': 5}}
 drf_types = e2_config.e2_drift_types()
 recurring = {'not-recurring': {}}
 
-fig, ax = plt.subplots(len(drf_types), 3, figsize=(10, 6),
+fig, ax = plt.subplots(len(drf_types), 3, figsize=(10, 3),
                                sharey=True)
 
 for drf_id, drf_type in enumerate(drf_types):
@@ -57,7 +57,14 @@ for drf_id, drf_type in enumerate(drf_types):
         aa.set_xticklabels(czytotu+1, fontsize=8)
         aa.grid(ls=":", axis='x', lw=1, color='black')
 
-        aa.set_title(category+' '+drf_type)
+        if drf_id==0:
+            aa.set_title(category)
+        if c_id==0:
+            aa.set_ylabel(drf_type, fontsize=10)
+            aa.set_yticks([])
+
+        if drf_id==2:
+            aa.set_xlabel('chunk id')
 
         zzz = zzz.reshape(10,199)
 
@@ -70,3 +77,5 @@ for drf_id, drf_type in enumerate(drf_types):
 
 plt.tight_layout()
 plt.savefig('foo.png')
+plt.savefig("pub_figures/exp4.eps")
+plt.savefig("pub_figures/exp4.png")
