@@ -11,56 +11,59 @@ from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 import matplotlib.colors
 
-cmap = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white", "lemonchiffon", "black"])
-title = ['numeric', 'numeric/binary', 'numeric/categorical']
+replications = e2_config.e2_replications()
+random_states = np.random.randint(0, 10000, replications)
 
-fig, ax = plt.subplots(3, 1, figsize=(7,3))
+static_params = e2_config.e2_static2()
 
-for i in range(3):
-    if i==0:
-        drf_arr = np.load('results_ex4/drf_arr_num.npy')
-    if i==1:
-        drf_arr = np.load('results_ex4/drf_arr_bin.npy')
-    if i==2:
-        drf_arr = np.load('results_ex4/drf_arr_cat.npy')
+n_features = {15: { 'n_features': 15, 'n_informative': 15}}
+n_drifts = {5: { 'n_drifts': 5}}
 
-    drf_cnt=np.ones((drf_arr.shape[3]))
+drf_types = e2_config.e2_drift_types()
+recurring = {'not-recurring': {}}
 
-    czytotu = np.where(drf_arr[0,0,0,:] == 2)[0]
-    print(czytotu)
+fig, ax = plt.subplots(len(drf_types), 2, figsize=(10, 6),
+                               sharey=True)
 
-    zzz = drf_arr[:,:,1,:]
-    zzz[zzz==1]=0 # removing warnings
+for drf_id, drf_type in enumerate(drf_types):
 
-    zzz = np.swapaxes(zzz, 0,1)
-    zzz = np.reshape(zzz, (-1, 199))
+    for c_id, category in enumerate(['numeric', 'categorical']):
 
-    print('ZZZ', zzz.shape)
+        if c_id==0:
+            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(15, 5, drf_type, 'not-recurring'))
 
-    # ax[i].spines['top'].set_visible(False)
-    # ax[i].spines['bottom'].set_visible(False)
-    ax[i].spines['left'].set_visible(False)
-    ax[i].spines['right'].set_visible(False)
+        if c_id==1:
+            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_cat4.npy' %(15, 5, drf_type, 'not-recurring'))
 
-    aa = ax[i]
-    aa.set_xticks(czytotu)
-    aa.set_xticklabels(czytotu+1, fontsize=8)
-    aa.grid(ls=":", axis='x', lw=1, color='black')
+        """
+        Plot
+        """
+        drf_cnt=np.ones((res_arr.shape[3]))
 
-    ax[i].imshow(zzz,
-                vmin=0, vmax=2,
-                cmap=cmap,
-                origin='lower',
-                interpolation='none',
-                aspect=2)
+        czytotu = np.where(res_arr[0,0,0,:] == 2)[0]
+        print(czytotu)
 
-    aa.set_title(title[i], fontsize=10)
-    if i==2:
-        aa.set_xlabel('number of chunks processed', fontsize=8)
-    
-    aa.set_ylabel('replication', fontsize=8)
+        zzz = res_arr[:,:,1,:]
+        zzz[zzz==1]=0 # removing warnings
+
+        ax[drf_id, c_id].spines['left'].set_visible(False)
+        ax[drf_id, c_id].spines['right'].set_visible(False)
+
+        aa = ax[drf_id, c_id]
+        aa.set_xticks(czytotu)
+        aa.set_xticklabels(czytotu+1, fontsize=8)
+        aa.grid(ls=":", axis='x', lw=1, color='black')
+
+        aa.set_title(category+' '+drf_type)
+
+        zzz = zzz.reshape(10,199)
+
+        ax[drf_id, c_id].imshow(zzz,
+                        cmap='binary',
+                        vmin=0, vmax=2,
+                        origin='lower',
+                        interpolation='none',
+                        aspect=2)
 
 plt.tight_layout()
 plt.savefig('foo.png')
-
-
