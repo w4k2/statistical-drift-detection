@@ -22,18 +22,21 @@ n_drifts = {5: { 'n_drifts': 5}}
 drf_types = e2_config.e2_drift_types()
 recurring = {'not-recurring': {}}
 
-fig, ax = plt.subplots(len(drf_types), 2, figsize=(10, 6),
+fig, ax = plt.subplots(len(drf_types), 3, figsize=(10, 6),
                                sharey=True)
 
 for drf_id, drf_type in enumerate(drf_types):
 
-    for c_id, category in enumerate(['numeric', 'categorical']):
+    for c_id, category in enumerate(['numeric', 'binary', 'categorical']):
 
         if c_id==0:
             res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(15, 5, drf_type, 'not-recurring'))
 
         if c_id==1:
-            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_cat4.npy' %(15, 5, drf_type, 'not-recurring'))
+            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_bin.npy' %(15, 5, drf_type, 'not-recurring'))
+        
+        if c_id==2:
+            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_cat.npy' %(15, 5, drf_type, 'not-recurring'))
 
         """
         Plot

@@ -1,5 +1,8 @@
 """
 Experiment 4 - evaluation on hybrid attributes
+stream #1 -> numeric only (15)
+stream #2 -> 5 binary, 10 numeric
+stream #3 -> 5 categorical(0-3 values), 10 numeric
 """
 
 import strlearn as sl
@@ -11,11 +14,11 @@ from methods import Meta, SDDE
 from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 
-def categorize(stream, num_categorical):
+def binarize(stream, num_binary):
     
     X_np, y_np= stream._make_classification()
 
-    for idx in range(num_categorical):
+    for idx in range(num_binary):
         feature_values = np.copy(X_np[:,idx])
         th = np.mean(feature_values)
 
@@ -29,8 +32,29 @@ def categorize(stream, num_categorical):
 
     s = sl.streams.NPYParser("stream_generated.npy", chunk_size=static_params['chunk_size'], n_chunks=static_params['n_chunks'])
     return s
-    
 
+def categorize(stream, num_categorical):
+    
+    X_np, y_np= stream._make_classification()
+
+    for idx in range(num_categorical):
+        feature_values = np.copy(X_np[:,idx])
+        th_mid = np.mean(feature_values)
+        th_1 = np.mean(feature_values[feature_values<th_mid])
+        th_3 = np.mean(feature_values[feature_values>th_mid])
+
+        X_np[:,idx][feature_values<th_1]=0
+        X_np[:,idx][feature_values>=th_1]=1
+        X_np[:,idx][feature_values>=th_mid]=2
+        X_np[:,idx][feature_values>=th_3]=3
+
+    file = np.concatenate([X_np, y_np[:,np.newaxis]], axis=1)
+    np.save('stream_generated.npy', file)
+    np.savetxt('stream_generated.txt', file)
+
+    s = sl.streams.NPYParser("stream_generated.npy", chunk_size=static_params['chunk_size'], n_chunks=static_params['n_chunks'])
+    return s
+    
 def find_real_drift(chunks, drifts):
     interval = round(chunks/drifts)
     arr = np.zeros((chunks))
@@ -59,8 +83,9 @@ t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
-    # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.35), base_clf = GaussianNB())]
-    base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.5), base_clf = GaussianNB())]
+    # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.35), base_clf = GaussianNB())] #numeric
+    base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.45), base_clf = GaussianNB())] # binary
+    # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.5), base_clf = GaussianNB())] # categoric
 
     for n_d in n_drifts:
         real_drf = find_real_drift(static_params['n_chunks'], n_d)
@@ -88,9 +113,13 @@ for n_f in n_features:
                         **n_drifts[n_d],
                         'random_state': random_states[replication]
                                 }
+                    #original numeric
                     stream = sl.streams.StreamGenerator(**config)
 
-                    #make categorical
+                    # binary
+                    # stream = binarize(stream, 5)
+
+                    # categoric
                     stream = categorize(stream, 5)
 
                     print("replication: %i, stream: %s" % (replication, str_name))
@@ -109,7 +138,11 @@ for n_f in n_features:
 
                 # np.save('results_ex4/clf_%s' % str_name, results_clf)
                 # np.save('results_ex4/drf_arr_%s' % str_name, results_drf_arrs)
-                np.save('results_ex4/clf_%s_cat4' % str_name, results_clf)
-                np.save('results_ex4/drf_arr_%s_cat4' % str_name, results_drf_arrs)
+                
+                # np.save('results_ex4/clf_%s_bin' % str_name, results_clf)
+                # np.save('results_ex4/drf_arr_%s_bin' % str_name, results_drf_arrs)
+
+                np.save('results_ex4/clf_%s_cat' % str_name, results_clf)
+                np.save('results_ex4/drf_arr_%s_cat' % str_name, results_drf_arrs)
 
 pbar.close()
