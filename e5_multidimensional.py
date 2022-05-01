@@ -28,14 +28,15 @@ static_params = e2_config.e2_static2()
 static_params['n_chunks']=50
 static_params['chunk_size']=250
 
-n_features = np.round(np.linspace(2,100,10)).astype(int)
+n_features = np.round(np.linspace(10,100,10)).astype(int)
+print(n_features)
 n_drifts = {2: { 'n_drifts': 2}}
 
 drf_types = {'sudden': {}}
 recurring = {'not-recurring': {}}
 
 metrics = e2_config.metrics()
-base_detectors_num = 6
+base_detectors_num = 5
 
 print(len(n_drifts), len(n_features), len(drf_types) ,len(recurring), replications)
 t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
@@ -48,7 +49,7 @@ for f_id, n_f in enumerate(n_features):
 
     n = n_f
     base_detectors = [
-        Meta(detector = SDDE(n_detectors= n, sensitivity=.05), base_clf = GaussianNB()),
+        # Meta(detector = SDDE(n_detectors= n, sensitivity=.05), base_clf = GaussianNB()),
         Meta(detector = SDDE(n_detectors= n, sensitivity=.1), base_clf = GaussianNB()),
         Meta(detector = SDDE(n_detectors= n, sensitivity=.15), base_clf = GaussianNB()),
         Meta(detector = SDDE(n_detectors= n, sensitivity=.20), base_clf = GaussianNB()),
