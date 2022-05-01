@@ -24,6 +24,7 @@ recurring = {'not-recurring': {}}
 
 sensitivity = ['.2', '.3', '.4', '.5']
 categories = ['num', 'bin', 'cat']
+categories_labels = ['numeric', 'numeric/binary', 'numeric/categorical']
 
 fig, ax = plt.subplots(len(drf_types), 3, figsize=(10, 7),
                                sharey=True)
@@ -54,10 +55,10 @@ for drf_id, drf_type in enumerate(drf_types):
 
         aa.set_xticks(gt)
         aa.set_xticklabels(gt+1, fontsize=8)
-        aa.grid(ls=":", axis='x', lw=0.5, color='black')
+        # aa.grid(ls=":", axis='x', lw=0.5, color='black')
 
         if drf_id==0:
-            aa.set_title(category)
+            aa.set_title(categories_labels[c_id])
 
         if c_id==0:
             aa.set_ylabel(drf_type, fontsize=10)
@@ -66,7 +67,6 @@ for drf_id, drf_type in enumerate(drf_types):
         
         aa.hlines([10,20,30,40], 0, 199, color='black', lw=0.5)
 
-        print(detections.shape)
         det_reshaped=np.zeros((40,199))
         for i in range(4):
             s=i*10
