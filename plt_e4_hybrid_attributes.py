@@ -29,15 +29,17 @@ for drf_id, drf_type in enumerate(drf_types):
 
     for c_id, category in enumerate(['numeric', 'binary', 'categorical']):
 
-        if c_id==0:
-            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(15, 5, drf_type, 'not-recurring'))
+        # if c_id==0:
+        #     res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(15, 5, drf_type, 'not-recurring'))
 
-        if c_id==1:
-            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_bin.npy' %(15, 5, drf_type, 'not-recurring'))
+        # if c_id==1:
+        #     res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_bin.npy' %(15, 5, drf_type, 'not-recurring'))
         
-        if c_id==2:
-            res_arr = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_cat.npy' %(15, 5, drf_type, 'not-recurring'))
+        # if c_id==2:
+        res_arr_cat = np.load('results_ex4/drf_arr_%ifeat_%idrifts_%s_%s_cat2.npy' %(15, 5, drf_type, 'not-recurring'))
 
+
+        res_arr = res_arr_cat
         """
         Plot
         """
@@ -66,7 +68,7 @@ for drf_id, drf_type in enumerate(drf_types):
         if drf_id==2:
             aa.set_xlabel('chunk id')
 
-        zzz = zzz.reshape(10,199)
+        zzz = zzz.reshape(10*2,199)
 
         ax[drf_id, c_id].imshow(zzz,
                         cmap='binary',

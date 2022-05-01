@@ -83,8 +83,13 @@ t = len(n_drifts)*len(n_features)*len(drf_types)*len(recurring)*replications
 pbar = tqdm(total=t)
 
 for n_f in n_features:
+    base_detectors = [
+        Meta(detector = SDDE(n_detectors= n_f, sensitivity=.35), base_clf = GaussianNB()),
+        Meta(detector = SDDE(n_detectors= n_f, sensitivity=.45), base_clf = GaussianNB()),
+        Meta(detector = SDDE(n_detectors= n_f, sensitivity=.55), base_clf = GaussianNB())
+    ]
     # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.35), base_clf = GaussianNB())] #numeric
-    base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.45), base_clf = GaussianNB())] # binary
+    # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.45), base_clf = GaussianNB())] # binary
     # base_detectors = [Meta(detector = SDDE(n_detectors= n_f, sensitivity=.5), base_clf = GaussianNB())] # categoric
 
     for n_d in n_drifts:
@@ -142,7 +147,7 @@ for n_f in n_features:
                 # np.save('results_ex4/clf_%s_bin' % str_name, results_clf)
                 # np.save('results_ex4/drf_arr_%s_bin' % str_name, results_drf_arrs)
 
-                np.save('results_ex4/clf_%s_cat' % str_name, results_clf)
-                np.save('results_ex4/drf_arr_%s_cat' % str_name, results_drf_arrs)
+                np.save('results_ex4/clf_%s' % str_name, results_clf)
+                np.save('results_ex4/drf_arr_%s' % str_name, results_drf_arrs)
 
 pbar.close()
