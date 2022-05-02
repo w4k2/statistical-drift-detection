@@ -1,15 +1,7 @@
 """
 Experiment 7 - measure time complexity of method
 """
-
-import time
-import strlearn as sl
 import numpy as np
-from sklearn.base import clone
-import e2_config
-from tqdm import tqdm
-from methods import Meta, SDDE
-from sklearn.naive_bayes import GaussianNB
 import matplotlib.pyplot as plt
 
 chunk_sizes = [50,100,150,200,250]
@@ -19,10 +11,10 @@ subspace_sizes = [1,2]
 res = np.load('results_ex7/time.npy')
 #replications, chunk_sizes, features, subspace_sizes
 
-fig, ax = plt.subplots(1,2,figsize=(10,10))
+fig, ax = plt.subplots(1,2,figsize=(10,6))
 
 ls=[':', "-"]
-colors=['r', 'b', 'g', 'grey', 'gold']
+colors=['tomato', 'cornflowerblue', 'forestgreen', 'grey', 'gold']
 
 for ch_s_id, ch_s in enumerate(chunk_sizes):
     for sub_size_id, sub_size in enumerate(subspace_sizes):
@@ -31,6 +23,7 @@ for ch_s_id, ch_s in enumerate(chunk_sizes):
         ax[0].plot(features, np.mean(r, axis=0), ls=ls[sub_size_id], color=colors[ch_s_id], label='chunk size %i, subspace_size %i' % (ch_s, sub_size))
         ax[0].scatter(features, np.mean(r, axis=0), color=colors[ch_s_id])
 ax[0].set_xlabel('features')
+ax[0].set_ylabel('time [s]')
 ax[0].legend()
 
 for feat_id, feat in enumerate(features):
