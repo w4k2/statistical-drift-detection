@@ -115,11 +115,13 @@ class SDDE(BaseEstimator, ClassifierMixin):
         return self
 
     def _is_drift(self, el, els):
+        
+        s = np.std(els)
 
-        els = np.copy(els[1:])
-        bas = np.power(10,-(np.mean(np.log(els))//2))
-
-        s = np.std(els*bas)/bas
+        if s==0:
+            els = np.copy(els[1:])
+            bas = np.power(10,-(np.mean(np.log(els))//2))
+            s = np.std(els*bas)/bas
         
         return np.abs(el - np.mean(els)) > s * self.sigma
 
