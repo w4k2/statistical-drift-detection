@@ -115,12 +115,13 @@ class SDDE(BaseEstimator, ClassifierMixin):
         return self
 
     def _is_drift(self, el, els):
-        a = np.sum(np.abs(els-np.mean(els)))
-        s = np.std(els)
-        if a != 0 and s==0:
-            return False
 
-        return np.abs(el - np.mean(els)) > np.std(els) * self.sigma
+        els = np.copy(els[1:])
+        bas = np.power(10,-(np.mean(np.log(els))//2))
+
+        s = np.std(els*bas)/bas
+        
+        return np.abs(el - np.mean(els)) > s * self.sigma
 
     def _hellinger(self, p, q):
         return np.sqrt(np.sum((np.sqrt(p) - np.sqrt(q)) ** 2)) / _SQRT2

@@ -36,7 +36,7 @@ drf_types = {'sudden': {}}
 recurring = {'not-recurring': {}}
 
 metrics = e2_config.metrics()
-base_detectors_num = 3
+base_detectors_num = 2
 
 print(len(n_drifts), len(chunk_sizes), len(drf_types) ,len(recurring), replications)
 t = len(n_drifts)*len(chunk_sizes)*len(drf_types)*len(recurring)*replications
@@ -50,7 +50,6 @@ for ch_s_id, ch_s in enumerate(chunk_sizes):
     static_params['chunk_size']=ch_s
 
     base_detectors = [
-        Meta(detector = SDDE(n_detectors= n_features, sensitivity=.15), base_clf = GaussianNB()),
         Meta(detector = SDDE(n_detectors= n_features, sensitivity=.25), base_clf = GaussianNB()),
         Meta(detector = SDDE(n_detectors= n_features, sensitivity=.35), base_clf = GaussianNB()),
         ]
@@ -87,7 +86,7 @@ for ch_s_id, ch_s in enumerate(chunk_sizes):
                     for det_id in range(len(detectors)):
                         results_drf_arrs[ch_s_id, replication, det_id, 0] = real_drf
                         results_drf_arrs[ch_s_id, replication, det_id, 1] = np.array(detectors[det_id].detector.drift)
-
+                        print(detectors[det_id].detector.drift)
                     pbar.update(1)
 
                 np.save('results_ex8/clf_res', results_clf)

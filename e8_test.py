@@ -29,7 +29,7 @@ static_params['n_chunks']=50
 
 n_features = 15
 
-chunk_sizes = [500]
+chunk_sizes = [700]
 n_drifts = {2: { 'n_drifts': 2}}
 
 drf_types = {'sudden': {}}
@@ -87,6 +87,7 @@ for ch_s_id, ch_s in enumerate(chunk_sizes):
                     for det_id in range(len(detectors)):
                         results_drf_arrs[ch_s_id, replication, det_id, 0] = real_drf
                         results_drf_arrs[ch_s_id, replication, det_id, 1] = np.array(detectors[det_id].detector.drift)
+                        print(np.array(detectors[det_id].detector.drift))
 
                     pbar.update(1)
 
