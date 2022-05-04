@@ -12,7 +12,7 @@ print(res.shape) # chunksizes x reps x sensitivity x 2 x chunks-1
 
 chunk_sizes = np.linspace(100,1000,5).astype('int')
 
-fig, ax = plt.subplots(len(chunk_sizes), 2, figsize=(10,10), sharex=True)
+fig, ax = plt.subplots(len(chunk_sizes), 2, figsize=(7,7), sharex=True)
 
 for sens_id, sensitivity in enumerate(['0.25', '0.35']):
     for ch_s_id, ch_s in enumerate(chunk_sizes):
