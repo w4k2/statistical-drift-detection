@@ -52,7 +52,7 @@ for sens_id, sensitivity in enumerate(['0.25', '0.35']):
         if ch_s_id==0:
             ax[0,sens_id].set_title('sen: %s' % sensitivity)
         if sens_id==0:
-            aa.set_ylabel('ch. s.: %i' % ch_s)
+            aa.set_ylabel('ch. s. %i' % ch_s)
 
         
         aa.set_yticks([])

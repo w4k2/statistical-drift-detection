@@ -23,7 +23,6 @@ def binarize(stream, num_binary):
 
         X_np[:,idx][feature_values>th]=1
         X_np[:,idx][feature_values<=th]=0
-
     
     file = np.concatenate([X_np, y_np[:,np.newaxis]], axis=1)
     np.save('stream_generated.npy', file)
