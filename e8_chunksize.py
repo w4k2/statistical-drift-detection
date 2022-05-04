@@ -29,7 +29,7 @@ static_params['n_chunks']=50
 
 n_features = 15
 
-chunk_sizes = np.linspace(100,1000,10).astype('int')
+chunk_sizes = np.linspace(100,1000,5).astype('int')
 n_drifts = {2: { 'n_drifts': 2}}
 
 drf_types = {'sudden': {}}

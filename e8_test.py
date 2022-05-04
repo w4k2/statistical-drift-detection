@@ -29,7 +29,7 @@ static_params['n_chunks']=50
 
 n_features = 15
 
-chunk_sizes = [405]
+chunk_sizes = [500]
 n_drifts = {2: { 'n_drifts': 2}}
 
 drf_types = {'sudden': {}}
