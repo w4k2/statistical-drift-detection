@@ -14,6 +14,8 @@ print(res.shape) #y_flip, informative, reps, 2, 49
 print(res_clf.shape) #y_flip, informative, reps, 49
 
 fig, ax = plt.subplots(6,5,figsize=(13,11), sharex=True, sharey=True)
+drfs = np.argwhere(res[0, 0, 0, 0]==2)
+print(drfs)
 
 for y_f_id, y_f in enumerate(y_flip):
     for attr_n_id, attr_n in enumerate(attr_noise):
@@ -23,8 +25,6 @@ for y_f_id, y_f in enumerate(y_flip):
             ax[0,attr_n_id].set_title('magnitude: %.2f' % attr_n) 
         if y_f_id==5:
             ax[y_f_id,attr_n_id].set_xlabel('chunk id') 
-
-
 
         dets = res[y_f_id, attr_n_id, :, 1]
 
@@ -36,12 +36,13 @@ for y_f_id, y_f in enumerate(y_flip):
         for dets_rep in dets:
             
             d = np.argwhere(dets_rep==2)
-            aa.vlines(d, 0.5, 1, color='tomato', alpha=0.3)
+            aa.vlines(d, 0.5, 1, color='tomato', alpha=0.1)
         
         clf = res_clf[y_f_id, attr_n_id]
         clf_mean = np.mean(clf, axis=0)
         aa.plot(clf_mean)
         aa.set_ylim(0.5,1)
+        aa.set_xticks(drfs)
 
 plt.tight_layout()
 plt.savefig('foo.png')
