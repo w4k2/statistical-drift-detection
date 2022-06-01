@@ -13,15 +13,17 @@ from scipy.stats import ttest_rel
 drf_types = e2_config.e2_drift_types()
 recurring = e2_config.e2_recurring()
 
-detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE',' HDDM_W', 'HDDM_A', 'ALWAYS', 'NEVER']
+detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE',
+                  ' HDDM_W', 'HDDM_A', 'ALWAYS', 'NEVER']
 replications = e2_config.e2_replications()
 
 drifts_n = e2_config_hddm.e2_n_drifts()
 features_n = e2_config_hddm.e2_n_features()
 
 
-results_all = np.zeros((replications, len(recurring), len(drf_types), len(features_n), len(drifts_n), len(detector_names), 4))
-                # replications, recurring, drf_types, features, drifts_num, detectors, (acc, d1, d2, cnt)
+results_all = np.zeros((replications, len(recurring), len(
+    drf_types), len(features_n), len(drifts_n), len(detector_names), 4))
+# replications, recurring, drf_types, features, drifts_num, detectors, (acc, d1, d2, cnt)
 
 # str_names=[]
 metric_names = ["Accuracy", "d1", "d2", "cnt_ratio"]
@@ -33,10 +35,12 @@ for rec_id, rec in enumerate(recurring):
         for f_id, f in enumerate(features_n):
             for d_id, d in enumerate(drifts_n):
 
-                res_clf = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec))
+                res_clf = np.load(
+                    'results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_all.npy' % (f, d, drf_type, rec))
                 # replications x detectors x chunks-1
 
-                res_arr = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec))
+                res_arr = np.load(
+                    'results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' % (f, d, drf_type, rec))
                 # replications x detectors x (real, detected) x chunks-1
 
                 print(res_clf.shape, res_arr.shape)
@@ -45,24 +49,30 @@ for rec_id, rec in enumerate(recurring):
 
                 for rep in range(res_arr.shape[0]):
                     for det in range(res_arr.shape[1]):
-                        real_drf = np.argwhere(res_arr[rep, det, 0]==2).flatten()
-                        det_drf = np.argwhere(res_arr[rep, det, 1]==2).flatten()
+                        real_drf = np.argwhere(
+                            res_arr[rep, det, 0] == 2).flatten()
+                        det_drf = np.argwhere(
+                            res_arr[rep, det, 1] == 2).flatten()
                         err = dderror(real_drf, det_drf, res_arr.shape[3])
                         dderror_arr[rep, det] = err
-                
+
                 #accuracy
-                results_all[:, rec_id, drf_id, f_id, d_id, :, 0] = np.mean(res_clf, axis=2)
+                results_all[:, rec_id, drf_id, f_id,
+                            d_id, :, 0] = np.mean(res_clf, axis=2)
                 #d1
-                results_all[:, rec_id, drf_id, f_id, d_id, :, 1] = dderror_arr[:,:,0]
+                results_all[:, rec_id, drf_id, f_id,
+                            d_id, :, 1] = dderror_arr[:, :, 0]
                 #d2
-                results_all[:, rec_id, drf_id, f_id, d_id, :, 2] = dderror_arr[:,:,1]
+                results_all[:, rec_id, drf_id, f_id,
+                            d_id, :, 2] = dderror_arr[:, :, 1]
                 #cnt
-                results_all[:, rec_id, drf_id, f_id, d_id, :, 3] = dderror_arr[:,:,2]
+                results_all[:, rec_id, drf_id, f_id,
+                            d_id, :, 3] = dderror_arr[:, :, 2]
 
                 # str_names.append("%s_%s_drfits_%i_features_%i" % (rec, drf_type, d, f))
-
+np.save("results_2", results_all)
 # print(len(str_names))
-print(results_all.shape) # 10, 2, 3, 3, 3, 8, 4
+print(results_all.shape)  # 10, 2, 3, 3, 3, 8, 4
 
 # mean_res_all = np.mean(results_all, axis=0) # 2, 3, 4, 4, 6, 4
 # std_res_all = np.std(results_all, axis=0)
@@ -92,27 +102,28 @@ print(results_all.shape) # 10, 2, 3, 3, 3, 8, 4
 
 # str_names = []
 
-for drf_id, drf_type in enumerate(drf_types): #3
-    for rec_id, rec in enumerate(recurring): #2
+for drf_id, drf_type in enumerate(drf_types):  # 3
+    for rec_id, rec in enumerate(recurring):  # 2
         # str_names.append("%s, %s" % (drf_type, rec))
 
         #mean for features
-        all_features = results_all[:,rec_id, drf_id] # reps x features x drf num x detectors x metrics
+        # reps x features x drf num x detectors x metrics
+        all_features = results_all[:, rec_id, drf_id]
 
-        mean_features = np.mean(all_features, axis = 1)
-        std_features = np.std(all_features, axis = 1)
+        mean_features = np.mean(all_features, axis=1)
+        std_features = np.std(all_features, axis=1)
 
         # print(mean_features.shape) # 10 x 3, 8, 4 -> reps, drf_num, detectors x metric
         # exit()
         #mean for drifts
-        all_drifts = results_all[:,rec_id, drf_id]
+        all_drifts = results_all[:, rec_id, drf_id]
 
-        mean_drifts = np.mean(all_drifts, axis = 2)
-        std_drifts = np.std(all_drifts, axis = 2)
-    
+        mean_drifts = np.mean(all_drifts, axis=2)
+        std_drifts = np.std(all_drifts, axis=2)
+
         # print(mean_drifts.shape) # 10 x 3, 8, 4 -> reps, features, detectors x metric
         # exit()
-        #combine 
+        #combine
         res = np.concatenate((mean_features, mean_drifts), axis=1)
         res_std = np.concatenate((std_features, std_drifts), axis=1)
 
@@ -136,8 +147,9 @@ for drf_id, drf_type in enumerate(drf_types): #3
 
         #for every metric
         for metric_id in range(4):
-            t=[]
-            t.append(["", "(1)", "(2)", "(3)", "(4)", "(5)", "(6)", "(7)", "(8)"])
+            t = []
+            t.append(["", "(1)", "(2)", "(3)", "(4)",
+                     "(5)", "(6)", "(7)", "(8)"])
             t.append(['midrule'] + [''])
 
             # for combination of drifts number and feature number
@@ -146,7 +158,7 @@ for drf_id, drf_type in enumerate(drf_types): #3
                 if row_id == 4:
                     t.append(['midrule'] + [''])
 
-                res_temp = res[:,row_id,:,metric_id]
+                res_temp = res[:, row_id, :, metric_id]
                 e_res_temp = np.mean(res_temp, axis=0)
                 std_res_temp = np.std(res_temp, axis=0)
 
@@ -159,7 +171,8 @@ for drf_id, drf_type in enumerate(drf_types): #3
 
                 for i in range(length):
                     for j in range(length):
-                        s[i, j], p[i, j] = ttest_rel(res_temp.T[i], res_temp.T[j])
+                        s[i, j], p[i, j] = ttest_rel(
+                            res_temp.T[i], res_temp.T[j])
 
                 if metric_id == 0:
                     _ = np.where((p < alpha) * (s > 0))
@@ -167,16 +180,16 @@ for drf_id, drf_type in enumerate(drf_types): #3
                     _ = np.where((p < alpha) * (s < 0))
 
                 conclusions = [list(1 + _[1][_[0] == i])
-                            for i in range(length)]
+                               for i in range(length)]
 
                 t.append(["%s" % row] + ["%.3f" % v for v in e_res_temp])
                 t.append([''] + ["%.3f" % v for v in std_res_temp])
 
                 t.append([''] + [", ".join(["%i" % i for i in c])
-                        if len(c) > 0 and len(c) < length-1 else ("all" if len(c) == length-1 else "---")
-                        for c in conclusions])
+                                 if len(c) > 0 and len(c) < length-1 else ("all" if len(c) == length-1 else "---")
+                                 for c in conclusions])
 
-            # print(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs")) 
+            # print(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs"))
             with open('tables/table_%s_%s_%s.txt' % (metric_names[metric_id], drf_type, rec), 'w') as f:
-                f.write(tabulate(t, detector_names, floatfmt="%.3f", tablefmt="latex_booktabs"))
-
+                f.write(tabulate(t, detector_names,
+                        floatfmt="%.3f", tablefmt="latex_booktabs"))
