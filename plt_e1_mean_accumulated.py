@@ -5,7 +5,7 @@ Synthetic data streams
 
 import numpy as np
 import matplotlib.pyplot as plt
-from methods import dderror
+from methods.dderror import dderror
 import e1_config
 
 subspace_sizes = e1_config.e1_subspace_sizes()

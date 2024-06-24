@@ -5,7 +5,7 @@ Each type of stream (with sudden, gradual and incremental drift) and subspace si
 
 import numpy as np
 import matplotlib.pyplot as plt
-from methods import dderror
+from methods.dderror import dderror
 import e1_config
 
 subspace_sizes = e1_config.e1_subspace_sizes()
@@ -23,7 +23,7 @@ val_b = ['%.0f' % v for v in np.linspace(1, 100, gd)]
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        fig, ax = plt.subplots(2, 3, figsize=(12,12/1.618),
+        fig, ax = plt.subplots(1, 1, figsize=(7,7),
                             sharey=True)
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
@@ -44,89 +44,39 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         res_arr_mean = np.mean(dderror_arr, axis=0)
 
-        """
-        Plot clf
-        """
-        aa = ax[1,1]
-        im = aa.imshow(res_clf_mean, cmap='binary', origin='lower',
-                  vmin=.5, vmax=1)
+        # """
+        # Plot clf
+        # """
+        # aa = ax[1,1]
+        # im = aa.imshow(res_clf_mean, cmap='binary', origin='lower',
+        #           vmin=.5, vmax=1)
 
-        #divider = make_axes_locatable(aa)
-        #cax = divider.append_axes('right', size='5%', pad=0.05)
-        #fig.colorbar(im, cax=cax, orientation='vertical')
-
-
-        """
-        Plot err
-        """
-        cmaps = ['binary_r', 'binary_r', 'binary_r']
-        metrics = ['d1',  'd2', 'cnt']
         for i in range(3):
-            aa = ax[0,i]
-            aa.imshow(res_arr_mean[:,:,i]*10, cmap=cmaps[i], origin='lower')
-
-            #divider = make_axes_locatable(aa)
-            #cax = divider.append_axes('right', size='5%', pad=0.05)
-            #fig.colorbar(im, cax=cax, orientation='vertical')
-
-            vba = res_arr_mean[:,:,i]
-            print(i, np.min(vba), np.max(vba))
-
             # normalizacja
             res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
             res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])
 
 
+        ax.imshow(res_arr_mean, origin='lower')
+        ax.set_ylabel("sensitivity")
+        # if j==1:
+        ax.set_xlabel("#detectors")
 
-        aa = ax[1,0]
-        aa.imshow(res_arr_mean, origin='lower')
+        ax.set_yticks(list(range(len(th_arr))))
+        ax.set_yticklabels(['%.2f' % v for v in th_arr])
+        ax.set_xticks(list(range(len(det_arr))))
+        ax.set_xticklabels(['%.0f' % v for v in det_arr])
+        ax.set_yticks(addr_a)
+        ax.set_yticklabels(val_a, fontsize=8)
+        ax.set_xticks(addr_b)
+        ax.set_xticklabels(val_b, fontsize=8)
 
+        ax.grid(ls=":")
+        [ax.spines[spine].set_visible(False)
+            for spine in ['top', 'bottom', 'left', 'right']]
 
-        img_mono = res_clf_mean
-        img_poly = res_arr_mean
-        img_mono -= .5
-        img_mono *= 2
-        img_mono = 1 - img_mono
-        img_mix = img_poly * img_mono[:,:, np.newaxis]
-        img_mix = np.mean(img_mix, axis=2)
-
-        aa = ax[1,2]
-        im = aa.imshow(img_mix, origin='lower', cmap='binary_r')
-
-        #divider = make_axes_locatable(aa)
-        #cax = divider.append_axes('right', size='5%', pad=0.05)
-        #fig.colorbar(im, cax=cax, orientation='vertical')
-
-
-        for j in range(2):
-            for k in range(3):
-                aa = ax[j,k]
-                if k==0:
-                    aa.set_ylabel("sensitivity")
-                # if j==1:
-                aa.set_xlabel("#detectors")
-
-                aa.set_yticks(list(range(len(th_arr))))
-                aa.set_yticklabels(['%.2f' % v for v in th_arr])
-                aa.set_xticks(list(range(len(det_arr))))
-                aa.set_xticklabels(['%.0f' % v for v in det_arr])
-                aa.set_yticks(addr_a)
-                aa.set_yticklabels(val_a, fontsize=8)
-                aa.set_xticks(addr_b)
-                aa.set_xticklabels(val_b, fontsize=8)
-
-                aa.grid(ls=":")
-                [aa.spines[spine].set_visible(False)
-                 for spine in ['top', 'bottom', 'left', 'right']]
-
-
-        ax[0,0].set_title('Mean closest detection-drift distance')
-        ax[0,1].set_title('Mean closest drift-detection distance')
-        ax[0,2].set_title('Drift-detection ratio')
-        ax[1,0].set_title('Drift Detection Errors Heatmap')
-        ax[1,1].set_title('Classification accuracy')
-        ax[1,2].set_title('Overall optimization criterion')
-
+        ax.set_title('Drift Detection Errors Heatmap')
+  
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
         plt.savefig('pub_figures/err_%s_%i.eps' % (drf, ss))
@@ -134,4 +84,4 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         plt.close()
 
-        #exit()
+        # exit()

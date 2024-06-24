@@ -3,7 +3,7 @@ Config for experiment 2
 """
 import strlearn as sl
 from sklearn.naive_bayes import GaussianNB
-from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, SDDE, HDDM_AA, HDDM_WW
+# from methods import DDM, EDDM, ADWIN, ALWAYS, NEVER, Meta, SDDM, SDDE, HDDM_AA, HDDM_WW
 
 def e2_methods():
     return [

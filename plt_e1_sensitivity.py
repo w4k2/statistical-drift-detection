@@ -101,4 +101,4 @@ for rec_id, rec in enumerate(recurring):
         plt.savefig("pub_figures/sensitivity.eps")
         plt.savefig("figures_ex2/sensitivity.eps")
         plt.savefig("foo.png")
-        #exit()
+        exit()

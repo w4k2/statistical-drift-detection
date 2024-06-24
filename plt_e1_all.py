@@ -5,7 +5,7 @@ Each considered metric (accuracy, d1, d2, c) in separate output image
 
 import numpy as np
 import matplotlib.pyplot as plt
-from methods import dderror
+from methods.dderror import dderror
 import e1_config
 
 subspace_sizes = e1_config.e1_subspace_sizes()
@@ -62,7 +62,7 @@ plt.tight_layout()
 plt.savefig('figures_ex1/clf.png')
 plt.savefig('pub_figures/clf.eps')
 plt.close()
-#exit()
+# exit()
 
 """
 Error
@@ -110,7 +110,7 @@ print(vmax_global, vmin_global)
 Second plot
 """
 
-fig, ax = plt.subplots(3, 3, figsize=(5, 5),
+fig, ax = plt.subplots(3, 3, figsize=(7, 7),
                        sharex=True,
                        sharey=True)
 
@@ -167,8 +167,8 @@ plt.tight_layout()
 #fig.subplots_adjust(top=0.93)
 plt.savefig('figures_ex1/err_rgb.png')
 plt.savefig('pub_figures/err_rgb.eps')
-
-
+plt.savefig('foo.png')
+exit()
 """
 Third plot
 """
