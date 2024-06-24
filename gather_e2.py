@@ -2,23 +2,43 @@
 Tables and statistical analysis for experiment 2
 """
 
-import e2_config
-import e2_config_hddm
+def dderror(drifts, detections, n_chunks):
+
+    if len(detections) == 0: # no detections
+        detections = np.arange(n_chunks)
+
+    n_detections = len(detections)
+    n_drifts = len(drifts)
+
+    ddm = np.abs(drifts[:, np.newaxis] - detections[np.newaxis,:])
+
+    cdri = np.min(ddm, axis=0)
+    cdec = np.min(ddm, axis=1)
+
+    d1metric = np.mean(cdri)
+    d2metric = np.mean(cdec)
+    cmetric = np.abs((n_drifts/n_detections)-1)
+
+    return d1metric, d2metric, cmetric
+    # d1 - detection from nearest drift
+    # d2 - drift from nearest detection
+
+# import e2_config
+# import e2_config_hddm
 import numpy as np
-from methods.dderror import dderror
 from tabulate import tabulate
 from scipy.stats import ttest_rel
 
 
-drf_types = e2_config.e2_drift_types()
-recurring = e2_config.e2_recurring()
+drf_types = ['sudden', 'gradual', 'incremental']
+recurring = ['recurring', 'not-recurring']
 
 detector_names = ['DDM', 'EDDM', 'ADWIN', 'SDDE',
-                  ' HDDM_W', 'HDDM_A', 'ALWAYS', 'NEVER']
-replications = e2_config.e2_replications()
+                  ' HDDM_W', 'HDDM_A']
+replications = 10
 
-drifts_n = e2_config_hddm.e2_n_drifts()
-features_n = e2_config_hddm.e2_n_features()
+drifts_n = [3,5,7]
+features_n = [10,15,20]
 
 
 results_all = np.zeros((replications, len(recurring), len(
@@ -38,10 +58,12 @@ for rec_id, rec in enumerate(recurring):
                 res_clf = np.load(
                     'results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_all.npy' % (f, d, drf_type, rec))
                 # replications x detectors x chunks-1
+                res_clf = res_clf[:,:-2] # remove always and never
 
                 res_arr = np.load(
                     'results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' % (f, d, drf_type, rec))
                 # replications x detectors x (real, detected) x chunks-1
+                res_arr = res_arr[:,:-2] # remove always and never
 
                 print(res_clf.shape, res_arr.shape)
 
@@ -149,7 +171,7 @@ for drf_id, drf_type in enumerate(drf_types):  # 3
         for metric_id in range(4):
             t = []
             t.append(["", "(1)", "(2)", "(3)", "(4)",
-                     "(5)", "(6)", "(7)", "(8)"])
+                     "(5)", "(6)"])
             t.append(['midrule'] + [''])
 
             # for combination of drifts number and feature number
@@ -164,7 +186,7 @@ for drf_id, drf_type in enumerate(drf_types):  # 3
 
                 # print(res_temp.shape)
                 # exit()
-                length = 8
+                length = 6
 
                 s = np.zeros((length, length))
                 p = np.zeros((length, length))
