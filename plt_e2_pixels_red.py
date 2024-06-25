@@ -29,10 +29,9 @@ for rec_id, rec in enumerate(recurring):
                 
                 
                 sc = {'n_features':1, 'n_informative':1,'n_clusters_per_class':1, 'n_redundant':0 }
-                for drift_type in drf_types:
-                    s = StreamGenerator(**sc, **recurring[rec], **drf_types[drift_type], **drifts_n[d])
-                    s._make_classification()
-                    conceptsss[rec_id,drf_id,f_id,d_id] = (s.concept_probabilities)
+                s = StreamGenerator(**sc, **recurring[rec], **drf_types[drf_type], **drifts_n[d])
+                s._make_classification()
+                conceptsss[rec_id,drf_id,f_id,d_id] = (s.concept_probabilities)
 
 
 print(res_all.shape)
