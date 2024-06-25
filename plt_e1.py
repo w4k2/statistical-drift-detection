@@ -23,7 +23,7 @@ val_b = ['%.0f' % v for v in np.linspace(1, 100, gd)]
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        fig, ax = plt.subplots(1, 1, figsize=(7,7),
+        fig, ax = plt.subplots(1, 2, figsize=(8.5,5),
                             sharey=True)
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
@@ -44,38 +44,35 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         res_arr_mean = np.mean(dderror_arr, axis=0)
 
-        # """
-        # Plot clf
-        # """
-        # aa = ax[1,1]
-        # im = aa.imshow(res_clf_mean, cmap='binary', origin='lower',
-        #           vmin=.5, vmax=1)
-
         for i in range(3):
             # normalizacja
             res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
             res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])
 
 
-        ax.imshow(res_arr_mean, origin='lower')
-        ax.set_ylabel("sensitivity")
-        # if j==1:
-        ax.set_xlabel("#detectors")
+        ax[0].imshow(res_arr_mean, origin='lower')
+        ax[1].imshow(np.mean(res_arr_mean, axis=2), origin='lower', cmap='bone')
+        
+        ax[0].set_ylabel("sensitivity")
 
-        ax.set_yticks(list(range(len(th_arr))))
-        ax.set_yticklabels(['%.2f' % v for v in th_arr])
-        ax.set_xticks(list(range(len(det_arr))))
-        ax.set_xticklabels(['%.0f' % v for v in det_arr])
-        ax.set_yticks(addr_a)
-        ax.set_yticklabels(val_a, fontsize=8)
-        ax.set_xticks(addr_b)
-        ax.set_xticklabels(val_b, fontsize=8)
+        for aa in ax:
+            aa.set_xlabel("#detectors")
 
-        ax.grid(ls=":")
-        [ax.spines[spine].set_visible(False)
-            for spine in ['top', 'bottom', 'left', 'right']]
+            aa.set_yticks(list(range(len(th_arr))))
+            aa.set_yticklabels(['%.2f' % v for v in th_arr])
+            aa.set_xticks(list(range(len(det_arr))))
+            aa.set_xticklabels(['%.0f' % v for v in det_arr])
+            aa.set_yticks(addr_a)
+            aa.set_yticklabels(val_a, fontsize=8)
+            aa.set_xticks(addr_b)
+            aa.set_xticklabels(val_b, fontsize=8)
 
-        ax.set_title('Drift Detection Errors Heatmap')
+            aa.grid(ls=":")
+            [aa.spines[spine].set_visible(False)
+                for spine in ['top', 'bottom', 'left', 'right']]
+
+        ax[0].set_title('Drift Detection Errors Heatmap')
+        ax[1].set_title('Average Drift Detection Errors')
   
         plt.tight_layout()
         plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))

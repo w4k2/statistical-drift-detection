@@ -49,7 +49,7 @@ for rec_id, rec in enumerate(recurring):
                 mask[:,[0,1,2,4,5,6,7],:]=False
                 zzz[mask]=1
 
-                zzz = np.swapaxes(zzz, 0,1)
+                zzz = np.swapaxes(zzz, 0, 1)
                 zzz = np.reshape(zzz, (-1, 199))
 
                 #zzz = zzz[:-20, :]
@@ -104,4 +104,4 @@ for rec_id, rec in enumerate(recurring):
         plt.savefig("figures_ex2/d_f_pix_%s_%s.png" % (rec, drf_type))
         plt.savefig("pub_figures/d_f_pix_%s_%s.eps" % (rec, drf_type))
         plt.savefig('foo.png')
-        #exit()
+        exit()

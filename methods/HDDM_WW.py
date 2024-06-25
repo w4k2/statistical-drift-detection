@@ -1,5 +1,5 @@
 from sklearn.base import BaseEstimator, ClassifierMixin
-from skmultiflow.drift_detection import HDDM_W
+# from skmultiflow.drift_detection import HDDM_W
 
 class HDDM_WW(BaseEstimator, ClassifierMixin):
     def __init__(self, drift_confidence=0.001, warning_confidence=0.005, lambda_option=0.05, two_side_option=True):
