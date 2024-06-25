@@ -115,6 +115,8 @@ for metric_id in range(3):
 
     for drf_id, drf_type in enumerate(drf_types):  # 3
         for rec_id, rec in enumerate(recurring):  # 2
+            if rec=='not-recurring':
+                continue
             for n_f_id, n_f in enumerate(features_n):
                 for n_d_id, n_d in enumerate(drifts_n):
                     
