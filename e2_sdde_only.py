@@ -38,7 +38,7 @@ print(len(n_drifts), len(n_features), len(drf_types), replications)
 t = len(n_drifts)*len(n_features)*len(drf_types)*replications
 pbar = tqdm(total=t)
 
-sen = [0.5, 0.45, 0.4]
+sen = [0.45, 0.4, 0.35]
 
 for n_f in n_features:
     for n_d in n_drifts:
