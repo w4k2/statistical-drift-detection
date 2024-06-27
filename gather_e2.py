@@ -63,7 +63,7 @@ for rec_id, rec in enumerate(recurring):
                 res_arr = np.load(
                     'results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' % (f, d, drf_type, rec))
                 # replications x detectors x (real, detected) x chunks-1
-                res_arr = res_arr[:,:-2] # remove always and never
+                res_arr = res_arr[:,[0,1,2,3,6,7]] # remove always and never
 
                 print(res_clf.shape, res_arr.shape)
 
@@ -115,14 +115,14 @@ for metric_id in range(3):
 
     for drf_id, drf_type in enumerate(drf_types):  # 3
         for rec_id, rec in enumerate(recurring):  # 2
-            if rec=='not-recurring':
+            if rec=='recurring':
                 continue
-            for n_f_id, n_f in enumerate(features_n):
-                for n_d_id, n_d in enumerate(drifts_n):
+            for n_d_id, n_d in enumerate(drifts_n):
+                for n_f_id, n_f in enumerate(features_n):
                     
                     temp = results_all[:,rec_id,drf_id,n_f_id,n_d_id]
                     print(temp.shape)
-                    str_name = '%s | %i dim | %s | %i' % (rec[0], n_f, drf_type[0], n_d)                
+                    str_name = '%s %iD %iF' % (drf_type[0], n_d, n_f)                
                     
                     """
                     t-test
@@ -142,7 +142,7 @@ for metric_id in range(3):
                     conclusions = [list(1 + _[1][_[0] == i]) for i in range(length)]
 
                     t.append(["%s" % str_name] + ["%.3f" % v for v in results_all_mean[rec_id,drf_id,n_f_id,n_d_id,:,metric_id]])
-                    t.append([''] + ["%.3f" % v for v in results_all_std[rec_id,drf_id,n_f_id,n_d_id,:,metric_id]])
+                    # t.append([''] + ["%.3f" % v for v in results_all_std[rec_id,drf_id,n_f_id,n_d_id,:,metric_id]])
 
                     t.append([''] + [", ".join(["%i" % i for i in c])
                                     if len(c) > 0 and len(c) < length-1 else ("all" if len(c) == length-1 else "---")

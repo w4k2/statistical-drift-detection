@@ -17,19 +17,29 @@ replications = e2_config.e2_replications()
 drifts_n = e2_config_hddm.e2_n_drifts()
 features_n = e2_config_hddm.e2_n_features()
 
+for f_id, f in enumerate(features_n):
+    for d_id, d in enumerate(drifts_n):
+        for drf_id, drf_type in enumerate(drf_types):
 
-for rec_id, rec in enumerate(recurring):
-    for drf_id, drf_type in enumerate(drf_types):
-
-        #features, drifts
-        for f_id, f in enumerate(features_n):
-            for d_id, d in enumerate(drifts_n):
+            for rec_id, rec in enumerate(recurring):
+                if rec=='recurring':
+                    continue
 
                 res_clf_original = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
                 # replications x detectors(6) x chunks-1
 
                 res_arr_original = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s.npy' %(f, d, drf_type, rec))
                 # replications x detectors(6) x (real, detected) x chunks-1
+                
+                
+                res_clf_sdde = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_2_sdde.npy' %(f, d, drf_type))
+                # replications x detectors(1) x chunks-1
+
+                res_arr_sdde = np.load('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_2_sdde.npy' %(f, d, drf_type))
+                # replications x detectors(1) x (real, detected) x chunks-1
+                
+                res_clf_original[:,3] = res_clf_sdde[:,0]
+                res_arr_original[:,3] = res_arr_sdde[:,0]
 
                 res_clf_hddm = np.load('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_2_hddm.npy' %(f, d, drf_type, rec))
                 # replications x detectors(2) x chunks-1
@@ -43,4 +53,5 @@ for rec_id, rec in enumerate(recurring):
                 np.save('results_ex2_d_f_45/clf_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec), new_clf)
                 np.save('results_ex2_d_f_45/drf_arr_%ifeat_%idrifts_%s_%s_all.npy' %(f, d, drf_type, rec), new_arr)
 
+                print(f, d, drf_type, rec)
 

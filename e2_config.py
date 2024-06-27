@@ -111,7 +111,7 @@ def e2_recurring():
 
 def e2_n_drifts():
     return {
-        1: { 'n_drifts': 1},
+        # 1: { 'n_drifts': 1},
         3: { 'n_drifts': 3},
         5: { 'n_drifts': 5},
         7: { 'n_drifts': 7},
@@ -123,7 +123,7 @@ def e2_n_features():
         10: { 'n_features': 10, 'n_informative': 10},
         15: { 'n_features': 15, 'n_informative': 15},
         20: { 'n_features': 20, 'n_informative': 20},
-        25: { 'n_features': 25, 'n_informative': 25},
+        # 25: { 'n_features': 25, 'n_informative': 25},
         # 30: { 'n_features': 30, 'n_informative': 30},
     }
 

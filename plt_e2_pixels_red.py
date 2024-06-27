@@ -41,8 +41,8 @@ res_all = res_all[:,:,:,:,:,[0,1,2,3,6,7]]
 for rec_id, rec in enumerate(recurring):
     for drf_id, drf_type in enumerate(drf_types):
         
-        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 9), sharex=True, sharey=True)
-        fig.suptitle("%s | %s" % (rec if rec!='not-recurring' else 'non-recurring', drf_type), fontsize=12)
+        fig, ax = plt.subplots(len(drifts_n), len(features_n), figsize=(12, 9), sharey=True)
+        fig.suptitle("%s" % (drf_type), fontsize=12)
 
         for f_id, f in enumerate(features_n):
             for d_id, d in enumerate(drifts_n):
