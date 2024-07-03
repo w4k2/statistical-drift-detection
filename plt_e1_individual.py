@@ -23,7 +23,7 @@ val_b = ['%.0f' % v for v in np.linspace(1, 100, gd)]
 
 for ss_id, ss in enumerate(subspace_sizes):
     for drf_id, drf in enumerate(drf_types):
-        fig, ax = plt.subplots(1, 2, figsize=(8.5,5),
+        fig, ax = plt.subplots(1, 3, figsize=(11.5,4),
                             sharey=True)
 
         res_clf = np.load('results_ex1/clf_15feat_5drifts_%s_%isubspace_size.npy' %  (drf, ss))
@@ -44,15 +44,10 @@ for ss_id, ss in enumerate(subspace_sizes):
 
         res_arr_mean = np.mean(dderror_arr, axis=0)
 
-        for i in range(3):
-            # normalizacja
-            res_arr_mean[:,:,i] -= np.min(res_arr_mean[:,:,i])
-            res_arr_mean[:,:,i] /= np.max(res_arr_mean[:,:,i])
-
-
-        ax[0].imshow(res_arr_mean, origin='lower')
-        ax[1].imshow(np.mean(res_arr_mean, axis=2), origin='lower', cmap='bone')
-        
+        ax[0].imshow(res_arr_mean[:,:,0], origin='lower', cmap='bone')
+        ax[1].imshow(res_arr_mean[:,:,1], origin='lower', cmap='bone')
+        ax[2].imshow(res_arr_mean[:,:,2], origin='lower', cmap='bone')
+                
         ax[0].set_ylabel("sensitivity")
 
         for aa in ax:
@@ -71,12 +66,13 @@ for ss_id, ss in enumerate(subspace_sizes):
             [aa.spines[spine].set_visible(False)
                 for spine in ['top', 'bottom', 'left', 'right']]
 
-        ax[0].set_title('Drift Detection Errors Heatmap')
-        ax[1].set_title('Average Drift Detection Errors')
+        ax[0].set_title('D1 - Detection from nearest drift')
+        ax[1].set_title('D2 - Drift from nearest detection')
+        ax[2].set_title('R - Drifts to detections ratio')
   
         plt.tight_layout()
-        plt.savefig('figures_ex1/err_%s_%i.png' % (drf, ss))
-        plt.savefig('pub_figures/err_%s_%i.eps' % (drf, ss))
+        plt.savefig('figures_ex1/err_%s_%i_individual.png' % (drf, ss))
+        plt.savefig('pub_figures/err_%s_%i_individual.eps' % (drf, ss))
         plt.savefig('foo.png')
 
         plt.close()

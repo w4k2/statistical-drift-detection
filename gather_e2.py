@@ -3,13 +3,14 @@ Tables and statistical analysis for experiment 2
 """
 
 def dderror(drifts, detections, n_chunks):
-
-    if len(detections) == 0: # no detections
-        detections = np.arange(n_chunks)
-
+    
+    cmetric = None
     n_detections = len(detections)
     n_drifts = len(drifts)
 
+    if n_detections == 0: # no detections
+        cmetric = np.abs((n_detections/n_drifts)-1)
+        detections = np.arange(n_chunks)
     ddm = np.abs(drifts[:, np.newaxis] - detections[np.newaxis,:])
 
     cdri = np.min(ddm, axis=0)
@@ -17,11 +18,13 @@ def dderror(drifts, detections, n_chunks):
 
     d1metric = np.mean(cdri)
     d2metric = np.mean(cdec)
-    cmetric = np.abs((n_drifts/n_detections)-1)
+    
+    if cmetric is None:
+        cmetric = np.abs((n_detections/n_drifts)-1)
 
     return d1metric, d2metric, cmetric
-    # d1 - detection from nearest drift
-    # d2 - drift from nearest detection
+    # d1 - each detection from nearest drift
+    # d2 - each drift from nearest detection
 
 # import e2_config
 # import e2_config_hddm
